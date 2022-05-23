@@ -63,5 +63,11 @@ namespace UActions.Editor
         {
             return format.Format(_args);
         }
+
+        public string this[string key]
+        {
+            get => _args[key];
+            set => _args.Add(key, value);
+        }
     }
 }

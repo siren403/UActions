@@ -2,7 +2,8 @@
     "name": "UActions.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:b3f49edfedc855a48aa1a9e5d3cba438"
+        "GUID:b3f49edfedc855a48aa1a9e5d3cba438",
+        "GUID:a185ffe12b6c4f5469983adb51c965c5"
     ],
     "includePlatforms": [
         "Editor"

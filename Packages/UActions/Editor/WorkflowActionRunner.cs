@@ -53,9 +53,10 @@ namespace UActions.Editor
             {
                 var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
 
-                var withKeys = with.Keys.ToArray();
-                var withValues = with.Values.ToArray();
-                var withTypes = with.Select(_ => _.Value.GetType()).ToArray();
+
+                var withKeys = with?.Keys.ToArray() ?? Array.Empty<string>();
+                var withValues = with?.Values.ToArray() ?? Array.Empty<string>();
+                var withTypes = with?.Select(_ => _.Value.GetType()).ToArray() ?? Array.Empty<Type>();
 
                 var parameters = new List<object>();
                 ConstructorInfo matchedConstructor = null;
@@ -65,8 +66,13 @@ namespace UActions.Editor
                     var parameterInfos = constructorInfo.GetParameters();
                     parameters.Clear();
 
-                    if (parameterInfos.Length == 1 &&
-                        parameterInfos[0].ParameterType == withDictionaryType)
+                    if (with == null && !parameterInfos.Any())
+                    {
+                        matchedConstructor = constructorInfo;
+                        break;
+                    }
+                    else if (parameterInfos.Length == 1 &&
+                             parameterInfos[0].ParameterType == withDictionaryType)
                     {
                         parameters.Add(with);
                     }
@@ -108,11 +114,32 @@ namespace UActions.Editor
                         Debug.LogWarning($"[Action] {name} is not support {context.CurrentTargets}");
                     }
                 }
+
+                // IAction instance = null;
+                // if (parameters.Any())
+                // {
+                //     instance = matchedConstructor?.Invoke(parameters.ToArray()) as IAction;
+                // }
+                // else
+                // {
+                //     instance = matchedConstructor?.Invoke(null) as IAction;
+                // }
+                //
+                // if ((instance?.Targets & context.CurrentTargets.TargetPlatform) > 0)
+                // {
+                //     Debug.Log($"[{nameof(UActions)}] run action - {name}");
+                //     instance.Execute(context);
+                // }
+                // else
+                // {
+                //     Debug.LogWarning($"[Action] {name} is not support {context.CurrentTargets}");
+                // }
             }
             catch (Exception e)
             {
                 Debug.Log($"[{name}] failed! find constructor");
                 Debug.Log(e);
+                throw;
             }
         }
     }

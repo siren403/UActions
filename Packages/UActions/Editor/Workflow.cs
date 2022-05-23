@@ -8,13 +8,14 @@ namespace UActions.Editor
     public class Workflow
     {
         public Dictionary<string, string> env;
+        public Dictionary<string, Step> steps;
         public Dictionary<string, Job> jobs;
     }
 
     [Serializable]
     public class Step
     {
-        // github actions style
+        public string name;        
         public string uses;
         public Dictionary<string, object> with;
     }

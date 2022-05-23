@@ -137,7 +137,14 @@ namespace UActions.Editor
             public void Load()
             {
                 ReadEnvironmentVariables(Variables, _isOverwrite);
-                ReadEnvironmentFile(".env", Variables, _isOverwrite);
+                try
+                {
+                    ReadEnvironmentFile(".env", Variables, _isOverwrite);
+                }
+                catch (FileNotFoundException e)
+                {
+                    Debug.LogWarning("not found .env file");
+                }
 
                 if (Application.isBatchMode)
                 {

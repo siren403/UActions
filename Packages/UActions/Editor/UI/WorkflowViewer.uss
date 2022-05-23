@@ -7,8 +7,10 @@
 
 .job-name {
     align-self: center;
-    flex-grow: 1;
+    width: 60%;
 }
+
 .job-run {
-    flex-grow: 1;
+    width: 40%;
+    margin: 4px 0;
 }
