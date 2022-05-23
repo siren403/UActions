@@ -1,0 +1,36 @@
+env:
+  COMPANY: tiny
+  PRODUCT_NAME: UnityLane2
+jobs:
+  build-apk:
+    platform: android
+    steps:
+      - uses: player-settings
+        with:
+          company-name: $(COMPANY)_2
+          product-name: $(PRODUCT_NAME)
+          preset: Assets/PlayerSettings
+      - uses: player-settings-android
+        with:
+          package-name: com.$(COMPANY).$(PRODUCT_NAME)
+          architectures: !architectures
+            - "ARMv7"
+            - "ARM64"
+          keystore: !keystore
+            path: $(KEYSTORE_PATH)
+            passwd: $(KEYSTORE_PASSWD)
+            alias: $(KEYSTORE_ALIAS)
+            alias-passwd: $(KEYSTORE_ALIAS_PASSWD)
+          increment-version-code: true
+      - uses: build
+        with:
+          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
+  run-command:
+    platform: android
+    steps:
+      - uses: command
+        with:
+          args: "echo start"
+      - uses: command
+        with:
+          args: "pwd"
