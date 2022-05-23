@@ -45,6 +45,8 @@ namespace UActions.Editor
         private readonly Workflow _workflow;
         private WorkflowContext _context;
 
+        public Workflow Workflow => _workflow;
+
         public WorkflowRunner(Workflow workflow, WorkflowArgumentView argumentView,
             WorkflowActionRunner actionRunner)
         {
@@ -76,7 +78,7 @@ namespace UActions.Editor
 
                 //switch platform
                 var isSuccess = EditorUserBuildSettings.SwitchActiveBuildTarget(buildTargetGroup, buildTarget);
-                if (!isSuccess) throw new Exception("[UnityLane] SwitchPlatform Failed!");
+                if (!isSuccess) throw new Exception($"[{nameof(UActions)}] SwitchPlatform Failed!");
             }
 
             _argumentView.Platform = job.platform;

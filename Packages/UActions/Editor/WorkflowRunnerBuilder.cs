@@ -48,23 +48,18 @@ namespace UActions.Editor
                 envs = new Dictionary<string, string>();
             }
 
-            foreach (var env in envs)
-            {
-                Debug.Log($"{env.Key} {env.Value}");
-            }
-
             var argumentView = new WorkflowArgumentView(envs);
             if (!string.IsNullOrEmpty(_jobName))
             {
                 argumentView.JobName = _jobName;
             }
 
-            var actionExecutor = new WorkflowActionRunner();
+            var actionRunner = new WorkflowActionRunner();
 
             var deserializerBuilder = new DeserializerBuilder()
                 .WithNamingConvention(HyphenatedNamingConvention.Instance);
 
-            actionExecutor.Registration(deserializerBuilder);
+            actionRunner.Registration(deserializerBuilder);
 
             var deserializer = deserializerBuilder.Build();
 
@@ -80,7 +75,7 @@ namespace UActions.Editor
                 }
             }
 
-            return new WorkflowRunner(workflow, argumentView, actionExecutor);
+            return new WorkflowRunner(workflow, argumentView, actionRunner);
         }
     }
 }

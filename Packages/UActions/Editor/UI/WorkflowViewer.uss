@@ -1,0 +1,14 @@
+﻿.job {
+    border-width: 1px;
+    border-color: cadetblue;
+    margin: 2px;
+    flex-direction: row;
+}
+
+.job-name {
+    align-self: center;
+    flex-grow: 1;
+}
+.job-run {
+    flex-grow: 1;
+}

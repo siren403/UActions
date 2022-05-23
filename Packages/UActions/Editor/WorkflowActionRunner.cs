@@ -9,13 +9,14 @@ namespace UActions.Editor
 {
     public class WorkflowActionRunner
     {
+        private const string AssemblyName = "UActions.Editor";
         private readonly Dictionary<string, Type> _actionTypes;
         private readonly Type[] _registrations;
 
         public WorkflowActionRunner()
         {
             _actionTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(_ => _.GetName().Name == "UnityLane.Editor")
+                .Where(_ => _.GetName().Name == AssemblyName)
                 .SelectMany(_ => { return _.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IAction))); })
                 .ToDictionary(_ =>
                 {
@@ -29,7 +30,7 @@ namespace UActions.Editor
                 });
 
             _registrations = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(_ => _.GetName().Name == "UnityLane.Editor")
+                .Where(_ => _.GetName().Name == AssemblyName)
                 .SelectMany(_ => { return _.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IRegistration))); })
                 .ToArray();
         }
@@ -99,6 +100,7 @@ namespace UActions.Editor
                 {
                     if ((instance.Targets & context.CurrentTargets.TargetPlatform) > 0)
                     {
+                        Debug.Log($"[{nameof(UActions)}] run action - {name}");
                         instance.Execute(context);
                     }
                     else
