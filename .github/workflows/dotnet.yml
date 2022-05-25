@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
-#     paths:
-#       - '/Packages/Editor/Actions/**.cs'
+    paths:
+      - 'Packages/Editor/Actions/**/*.cs'
 jobs:
   build:
 
