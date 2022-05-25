@@ -78,6 +78,14 @@ with:
   increment-version-code: <Boolean?>
   optimized-frame-pacing: <Boolean?>
 ```
+PlayerSettingsiOS
+---
+
+```yaml
+uses: player-settings-ios
+with:
+  with: <Dictionary`2>
+```
 Process
 ---
 
