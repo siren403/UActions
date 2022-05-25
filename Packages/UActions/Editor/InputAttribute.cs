@@ -14,7 +14,7 @@ namespace UActions.Editor
         {
             if (string.IsNullOrEmpty(name)) throw new Exception("require name");
             Name = name;
-            Tag = tag;
+            Tag = tag.StartsWith("!") ? tag : $"!{tag}";
             Type = type ?? typeof(string);
             IsOptional = isOptional;
         }
@@ -28,6 +28,7 @@ namespace UActions.Editor
             {
                 throw new Exception("require tag matched type");
             }
+
             Type = type ?? typeof(string);
             IsOptional = isOptional;
         }

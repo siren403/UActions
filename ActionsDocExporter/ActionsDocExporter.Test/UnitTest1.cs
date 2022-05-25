@@ -51,6 +51,10 @@ public class UnitTest1
     {
     }
 
+    public enum E
+    {
+        
+    }
     [Fact]
     public void TypeTest()
     {
@@ -71,5 +75,10 @@ public class UnitTest1
         Assert.False(typeof(int[]).IsValueType);
         Assert.True(typeof(int[]).IsClass);
         Assert.True(typeof(int[]).IsArray);
+        
+        Assert.True(typeof(E).IsValueType);
+        Assert.False(typeof(E).IsPrimitive);
+        Assert.False(typeof(E).IsClass);
+        Assert.False(typeof(E).IsArray);
     }
 }

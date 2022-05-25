@@ -44,6 +44,7 @@ public class ActionParser
                     if (string.IsNullOrEmpty(input.Tag) ||
                         input.Type.IsPrimitive ||
                         input.Type.IsArray ||
+                        input.Type.IsEnum ||
                         input.Type == typeof(string))
                     {
                         param.Add(input.Name, $"<{input.Type.Name}{(input.IsOptional ? "?" : string.Empty)}>");
@@ -66,11 +67,9 @@ public class ActionParser
                 var yaml = _serializer.Serialize(root);
                 foreach (var input in inputs)
                 {
-                    if (!string.IsNullOrEmpty(input.Tag))
-                    {
-                        var name = input.Name.PascalToKebabCase();
-                        yaml = yaml.Replace($"{name}:", $"{name}: {input.Tag}");
-                    }
+                    if (string.IsNullOrEmpty(input.Tag)) continue;
+                    var name = input.Name.PascalToKebabCase();
+                    yaml = yaml.Replace($"{name}:", $"{name}: {input.Tag}");
                 }
 
                 markdown.Append(yaml);
@@ -83,9 +82,12 @@ public class ActionParser
                     var param = new Dictionary<object, object>();
                     foreach (var parameter in parameters)
                     {
-                        var type = parameter.ParameterType;
+                        var typeName = parameter.ParameterType.Name;
+                        var optionalMark = parameter.IsOptional ? "?" : string.Empty;
+                        var optionalValue = parameter.IsOptional ? parameter.DefaultValue : string.Empty;
+                        
                         param.Add(parameter.Name?.PascalToKebabCase(),
-                            $"<{type.Name}{(parameter.IsOptional ? "?" : string.Empty)}>");
+                            $"<{typeName}{optionalMark}{optionalValue}>");
                     }
 
                     root.Add("with", param);

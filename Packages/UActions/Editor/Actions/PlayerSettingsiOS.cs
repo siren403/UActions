@@ -12,7 +12,7 @@ namespace UActions.Editor.Actions
         {
             public void Register(DeserializerBuilder builder)
             {
-                builder.WithTagMapping(new TagName("!target-sdk"), typeof(iOSSdkVersion));
+                builder.WithTagMapping(new TagName("!iossdkversion"), typeof(iOSSdkVersion));
             }
         }
 
@@ -20,7 +20,7 @@ namespace UActions.Editor.Actions
         private readonly Dictionary<string, object> _with;
 
 
-        [Input("target-sdk", true, typeof(iOSSdkVersion))]
+        [Input("target-sdk", "!iossdkversion", typeof(iOSSdkVersion), isOptional: true)]
         public PlayerSettingsiOS(Dictionary<string, object> with)
         {
             _with = with;
