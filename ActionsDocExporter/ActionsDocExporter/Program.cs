@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using ActionsDocExporter;
-using UActions.Editor.Actions;
+using UActions.Editor;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
