@@ -1,6 +1,6 @@
 ﻿using YamlDotNet.Serialization;
 
-namespace UActions.Editor
+namespace UActions.Editor.Actions
 {
     public interface IAction
     {

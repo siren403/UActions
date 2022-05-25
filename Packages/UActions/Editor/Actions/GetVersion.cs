@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace UActions.Editor.Actions
 {
-    public class GetVersion : IAction, IActionOutput
+    public class GetVersion : IAction
     {
         private const string KeyOutput = "VERSION";
         public TargetPlatform Targets => TargetPlatform.All;
-        public string[] Keys => new[] {KeyOutput};
 
+        [Output(KeyOutput)]
         public void Execute(WorkflowContext context)
         {
             context.SetEnv(KeyOutput, PlayerSettings.bundleVersion);

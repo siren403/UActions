@@ -13,8 +13,8 @@ namespace UActions.Editor.Actions
         {
             public void Register(DeserializerBuilder builder)
             {
-                builder.WithTagMapping(new TagName("!keystore"), typeof(Keystore));
                 builder.WithTagMapping(new TagName("!architectures"), typeof(AndroidArchitecture[]));
+                builder.WithTagMapping(new TagName("!keystore"), typeof(Keystore));
             }
         }
 
@@ -31,6 +31,11 @@ namespace UActions.Editor.Actions
 
         private readonly Dictionary<string, object> _with;
 
+        [Input("package-name", isOptional: true)]
+        [Input("architectures", true, typeof(AndroidArchitecture[]), isOptional: true)]
+        [Input("keystore", true, typeof(Keystore), isOptional: true)]
+        [Input("increment-version-code", type: typeof(bool), isOptional: true)]
+        [Input("optimized-frame-pacing", type: typeof(bool), isOptional: true)]
         public PlayerSettingsAndroid(Dictionary<string, object> with)
         {
             _with = with;

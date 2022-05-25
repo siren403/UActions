@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-namespace UActions.Editor
+namespace UActions.Editor.Actions
 {
     public static class ActionHelper
     {

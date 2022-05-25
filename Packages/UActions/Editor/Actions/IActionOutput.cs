@@ -1,4 +1,6 @@
-﻿namespace UActions.Editor
+﻿using System.Collections.Generic;
+
+namespace UActions.Editor.Actions
 {
     public interface IActionOutput
     {

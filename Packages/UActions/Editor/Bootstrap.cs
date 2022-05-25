@@ -31,5 +31,12 @@ namespace UActions
                 .Build();
             return runner.Workflow;
         }
+
+        public static void ExportActionsManifest()
+        {
+            var runner = new WorkflowRunnerBuilder()
+                .LoadEnvironmentVariables()
+                .Build();
+        }
     }
 }

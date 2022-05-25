@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UActions.Editor.Actions;
 using UnityEngine;
 using YamlDotNet.Serialization;
 
@@ -71,8 +72,9 @@ namespace UActions.Editor
                         matchedConstructor = constructorInfo;
                         break;
                     }
-                    else if (parameterInfos.Length == 1 &&
-                             parameterInfos[0].ParameterType == withDictionaryType)
+
+                    if (parameterInfos.Length == 1 &&
+                        parameterInfos[0].ParameterType == withDictionaryType)
                     {
                         parameters.Add(with);
                     }

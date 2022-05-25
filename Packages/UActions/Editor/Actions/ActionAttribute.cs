@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UActions.Editor
+namespace UActions.Editor.Actions
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class ActionAttribute : Attribute

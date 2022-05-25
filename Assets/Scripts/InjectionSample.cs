@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using UActions.Runtime;
 using UnityEngine;
 
-[Serializable]
-public class Person
-{
-}
-
-[CreateAssetMenu(menuName = "Injectable/Person", fileName = "Person")]
+[CreateAssetMenu(menuName = "Injectable/Sample", fileName = nameof(InjectionSample))]
 public class InjectionSample : InjectableObject<InjectionSample>
 {
     [SerializeField] private string url;

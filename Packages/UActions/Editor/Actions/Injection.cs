@@ -32,10 +32,9 @@ namespace UActions.Editor.Actions
             }
 
             asset.Inject(_data);
-            
+
             EditorUtility.SetDirty(asset);
             AssetDatabase.SaveAssetIfDirty(asset);
-            
         }
     }
 }
