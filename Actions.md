@@ -23,6 +23,7 @@ ExecuteShellCommand
 uses: command
 with:
   args: <String>
+  working-directory: <String?>
 ```
 GetVersion
 ---
@@ -42,14 +43,6 @@ uses: injection
 with:
   path: <String>
   data: <Dictionary`2>
-```
-Log
----
-
-```yaml
-uses: log
-with:
-  message: <String>
 ```
 PlayerSettingsAction
 ---
@@ -85,6 +78,14 @@ PlayerSettingsiOS
 uses: player-settings-ios
 with:
   target-sdk: !iossdkversion <iOSSdkVersion?>
+```
+Print
+---
+
+```yaml
+uses: print
+with:
+  message: <String>
 ```
 Process
 ---
