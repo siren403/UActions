@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '/Packages/Editor/Actions/**.cs'
+      - 'Packages/Editor/Actions/**/*.cs'
 jobs:
   build:
 
@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: export Actions.md
-      run: dotnet run -- --path $(pwd)/Actions.md
+      run: dotnet run --project ./ActionsDocExporter/ActionsDocExporter -- --path $(pwd)/Actions.md
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: update Actions.md
