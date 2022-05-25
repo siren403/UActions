@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - './Packages/Editor/Actions/**.cs'
+      - '/Packages/Editor/Actions/**.cs'
 jobs:
   build:
 
