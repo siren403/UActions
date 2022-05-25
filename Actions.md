@@ -6,7 +6,7 @@ uses: auto-increment-version-code
 with:
   a: <Int32>
   b: <String>
-  c: <Int32?>
+  c: <Int32?10>
 ```
 Build
 ---
@@ -84,8 +84,7 @@ PlayerSettingsiOS
 ```yaml
 uses: player-settings-ios
 with:
-  target-sdk: !target-sdk
-    value__: <value__>
+  target-sdk: !iossdkversion <iOSSdkVersion?>
 ```
 Process
 ---
