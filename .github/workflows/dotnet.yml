@@ -1,0 +1,26 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - './Packages/Editor/Actions/**.cs'
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: execute
+      run: ./ActionsDocExporter/linux-x64/ActionsDocExporter --path ./Actions.md
+    - name: add
+      run: git add *
+    - name: commit
+      run: git commit -m 'update Actions.md'
+    - name: push
+      run: git push origin main
