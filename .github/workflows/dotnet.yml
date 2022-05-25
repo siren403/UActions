@@ -1,10 +1,11 @@
-name: .NET
+name: update Actions.md
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - './Packages/Editor/Actions/**.cs'
+      - '/Packages/Editor/Actions/**.cs'
 jobs:
   build:
 
@@ -16,11 +17,9 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
-    - name: execute
-      run: ./ActionsDocExporter/linux-x64/ActionsDocExporter --path ./Actions.md
-    - name: add
-      run: git add *
-    - name: commit
-      run: git commit -m 'update Actions.md'
-    - name: push
-      run: git push origin main
+    - name: export Actions.md
+      run: dotnet run -- --path $(pwd)/Actions.md
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: update Actions.md
+    
