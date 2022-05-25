@@ -21,9 +21,6 @@ jobs:
       run: chmod +x ./ActionsDocExporter/linux-x64/ActionsDocExporter
     - name: execute
       run: ./ActionsDocExporter/linux-x64/ActionsDocExporter --path ./Actions.md
-    - name: add
-      run: git add *
-    - name: commit
-      run: git commit -m 'update Actions.md'
-    - name: push
-      run: git push origin main
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: update Actions.md
