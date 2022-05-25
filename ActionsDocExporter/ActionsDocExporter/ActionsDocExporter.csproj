@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\..\Packages\UActions\Editor\**\*.cs" Exclude="*.meta" />
+        <Compile Include="..\..\Packages\UActions\Runtime\**\*.cs" Exclude="*.meta" />
+    </ItemGroup>
+
+<!--    <ItemGroup>-->
+<!--        <Reference Include="UnityEditor">-->
+<!--            <HintPath>$(ProjectPath)\dll\Unity2021.2.12f1\UnityEditor.dll</HintPath>-->
+<!--        </Reference>-->
+<!--        <Reference Include="UnityEngine">-->
+<!--            <HintPath>$(ProjectPath)\dll\Unity2021.2.12f1\UnityEngine.dll</HintPath>-->
+<!--        </Reference>-->
+<!--    </ItemGroup>-->
+
+    <ItemGroup>
+        <PackageReference Include="ConsoleAppFramework" Version="4.1.0" />
+        <PackageReference Include="YamlDotNet" Version="11.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="UnityEditor">
+        <HintPath>..\dll\Unity2021.2.12f1\UnityEditor.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine">
+        <HintPath>..\dll\Unity2021.2.12f1\UnityEngine.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

@@ -1,4 +1,6 @@
-
+!*.csproj
+!*.sln
+!*.sln.*
 # Created by https://www.toptal.com/developers/gitignore/api/DotnetCore
 # Edit at https://www.toptal.com/developers/gitignore?templates=DotnetCore
 
