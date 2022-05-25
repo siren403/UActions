@@ -17,6 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
+    - name: permission
+      run: chmod +x ./ActionsDocExporter/linux-x64/ActionsDocExporter
     - name: execute
       run: ./ActionsDocExporter/linux-x64/ActionsDocExporter --path ./Actions.md
     - name: add
