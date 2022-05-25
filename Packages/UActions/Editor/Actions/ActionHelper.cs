@@ -20,6 +20,16 @@ namespace UActions.Editor.Actions
             return value != null;
         }
 
+        public static T GetIsValue<T>(this Dictionary<string, object> dictionary, string key, T defaultValue = default)
+        {
+            if (dictionary.TryGetIsValue(key, out T value))
+            {
+                return value;
+            }
+
+            return defaultValue;
+        }
+
         public static bool Is(this Dictionary<string, object> dictionary, string key, bool defaultValue = false)
         {
             if (dictionary.TryGetValue(key, out var value) && value is string str)

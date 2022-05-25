@@ -9,11 +9,13 @@ namespace UActions.Editor.Actions
     public class ExecuteShellCommand : IAction
     {
         private readonly string _args;
+        private readonly string _workingDirectory;
         public TargetPlatform Targets => TargetPlatform.All;
 
-        public ExecuteShellCommand(string args)
+        public ExecuteShellCommand(string args, string workingDirectory = null)
         {
             _args = args;
+            _workingDirectory = workingDirectory;
         }
 
         public void Execute(WorkflowContext context)
@@ -36,14 +38,17 @@ namespace UActions.Editor.Actions
                     CreateNoWindow = true,
                     UseShellExecute = false,
                     Arguments = _args,
-                    RedirectStandardOutput = true
+                    RedirectStandardOutput = true,
+                    WorkingDirectory = context.Format(_workingDirectory)
                 };
 
                 var process = System.Diagnostics.Process.Start(startInfo);
                 if (process == null) return;
+                // process.WaitForExit();
+                // Debug.Log(process.StandardOutput.ReadToEnd());
                 while (!process.StandardOutput.EndOfStream)
                 {
-                    Debug.Log(process.StandardOutput.ReadLine());
+                    context.WriteLog(process.StandardOutput.ReadLine());
                 }
             }
             catch (InvalidOperationException e)

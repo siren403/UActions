@@ -77,7 +77,15 @@ namespace UActions.Editor
             _argumentView.BuildTargetGroup = buildTargetGroup.ToString();
             _argumentView.ProjectPath = Directory.GetCurrentDirectory();
 
-            _context = new WorkflowContext(_argumentView, targets);
+            if (string.IsNullOrEmpty(job.logFile))
+            {
+                _context = new WorkflowContext(_argumentView, targets);
+            }
+            else
+            {
+                var logPath = _argumentView.Format(job.logFile);
+                _context = new WorkflowContext(_argumentView, targets, new StreamWriter(logPath));
+            }
 
             if (job.steps != null)
             {
@@ -110,6 +118,9 @@ namespace UActions.Editor
                     }
                 }
             }
+            
+            _context.Dispose();
+            _context = null;
         }
     }
 }

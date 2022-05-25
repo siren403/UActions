@@ -83,14 +83,14 @@ namespace UActions.Editor
                         for (int i = 0; i < parameterInfos.Length; i++)
                         {
                             var info = parameterInfos[i];
-
+                            var infoName = info.Name.PascalToKebabCase();
                             if (!info.HasDefaultValue
                                 && withTypes[i] == info.ParameterType
-                                && withKeys[i] == info.Name.PascalToKebabCase())
+                                && withKeys[i] == infoName)
                             {
                                 parameters.Add(withValues[i]);
                             }
-                            else if (with.TryGetValue(info.Name, out var value))
+                            else if (with.TryGetValue(infoName, out var value))
                             {
                                 parameters.Add(value);
                             }

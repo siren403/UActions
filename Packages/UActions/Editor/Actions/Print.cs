@@ -2,12 +2,12 @@
 
 namespace UActions.Editor.Actions
 {
-    public class Log : IAction
+    public class Print : IAction
     {
         private readonly string _message;
         public TargetPlatform Targets => TargetPlatform.All;
 
-        public Log(string message)
+        public Print(string message)
         {
             _message = message;
         }

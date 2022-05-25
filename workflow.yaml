@@ -68,3 +68,21 @@ jobs:
       - uses: command
         with:
           args: "pwd"
+  with-fastlane:
+    platform: android
+    log-file: $(PROJECT_PATH)/workflow.log
+    steps:
+      - uses: print
+        with:
+          message: $(PROJECT_PATH)\fastlane
+      - uses: command
+        with:
+          args: fastlane custom_lane
+          working-directory: $(PROJECT_PATH)\fastlane
+  ios-test:
+    platform: android
+    steps:
+      - uses: player-settings-ios
+        with:
+          target-sdk: !iossdkversion SimulatorSDK
+      

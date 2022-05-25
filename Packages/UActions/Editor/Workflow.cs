@@ -34,6 +34,7 @@ namespace UActions.Editor
     public class Job
     {
         public string platform;
+        public string logFile;
         public Step[] steps;
     }
 }

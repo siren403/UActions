@@ -28,10 +28,7 @@ namespace UActions.Editor.Actions
 
         public void Execute(WorkflowContext context)
         {
-            if (_with.TryGetIsValue("target-sdk", out iOSSdkVersion sdkVersion))
-            {
-                PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
-            }
+            PlayerSettings.iOS.sdkVersion = _with.GetIsValue("target-sdk", iOSSdkVersion.DeviceSDK);
         }
     }
 }
