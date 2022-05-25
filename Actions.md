@@ -25,6 +25,16 @@ with:
   args: <String>
   working-directory: <String?>
 ```
+Fastlane
+---
+
+```yaml
+uses: fastlane
+with:
+  platform: <String>
+  lane: <String>
+  directory: <String>
+```
 GetVersion
 ---
 
