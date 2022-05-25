@@ -75,10 +75,14 @@ jobs:
       - uses: print
         with:
           message: $(PROJECT_PATH)\fastlane
-      - uses: command
+      - uses: fastlane
         with:
-          args: fastlane custom_lane
-          working-directory: $(PROJECT_PATH)\fastlane
+          platform: android
+          lane: custom_lane
+          directory: $(PROJECT_PATH)/fastlane
+      - uses: print
+        with:
+          message: complete!
   ios-test:
     platform: android
     steps:

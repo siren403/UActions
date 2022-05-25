@@ -116,26 +116,6 @@ namespace UActions.Editor
                         Debug.LogWarning($"[Action] {name} is not support {context.CurrentTargets}");
                     }
                 }
-
-                // IAction instance = null;
-                // if (parameters.Any())
-                // {
-                //     instance = matchedConstructor?.Invoke(parameters.ToArray()) as IAction;
-                // }
-                // else
-                // {
-                //     instance = matchedConstructor?.Invoke(null) as IAction;
-                // }
-                //
-                // if ((instance?.Targets & context.CurrentTargets.TargetPlatform) > 0)
-                // {
-                //     Debug.Log($"[{nameof(UActions)}] run action - {name}");
-                //     instance.Execute(context);
-                // }
-                // else
-                // {
-                //     Debug.LogWarning($"[Action] {name} is not support {context.CurrentTargets}");
-                // }
             }
             catch (Exception e)
             {

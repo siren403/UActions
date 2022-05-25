@@ -141,7 +141,7 @@ namespace UActions.Editor
                 {
                     ReadEnvironmentFile(".env", Variables, _isOverwrite);
                 }
-                catch (FileNotFoundException e)
+                catch (FileNotFoundException)
                 {
                     Debug.LogWarning("not found .env file");
                 }

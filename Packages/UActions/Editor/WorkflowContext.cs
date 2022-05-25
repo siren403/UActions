@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using UnityEngine;
 
 namespace UActions.Editor
 {
@@ -11,20 +12,14 @@ namespace UActions.Editor
 
         private readonly StreamWriter _logWriter;
 
-        public WorkflowContext(WorkflowArgumentView argumentView, BuildTargets currentTargets)
+        public WorkflowContext(WorkflowArgumentView argumentView, BuildTargets currentTargets, string logPath = null)
         {
             _argumentView = argumentView;
             CurrentTargets = currentTargets;
-        }
-
-        public WorkflowContext(
-            WorkflowArgumentView argumentView,
-            BuildTargets currentTargets,
-            StreamWriter logWriter)
-        {
-            _argumentView = argumentView;
-            CurrentTargets = currentTargets;
-            _logWriter = logWriter;
+            if (!string.IsNullOrEmpty(logPath))
+            {
+                _logWriter = new StreamWriter(argumentView.Format(logPath));
+            }
         }
 
         public string Format(string format) => _argumentView.Format(format);
@@ -39,8 +34,9 @@ namespace UActions.Editor
             _logWriter?.Dispose();
         }
 
-        public void WriteLog(string log)
+        public void Log(string log)
         {
+            Debug.Log(log);
             _logWriter?.WriteLine(log);
         }
     }

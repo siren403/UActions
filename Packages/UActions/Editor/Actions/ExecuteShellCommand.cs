@@ -48,7 +48,7 @@ namespace UActions.Editor.Actions
                 // Debug.Log(process.StandardOutput.ReadToEnd());
                 while (!process.StandardOutput.EndOfStream)
                 {
-                    context.WriteLog(process.StandardOutput.ReadLine());
+                    context.Log(process.StandardOutput.ReadLine());
                 }
             }
             catch (InvalidOperationException e)

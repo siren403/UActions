@@ -34,7 +34,6 @@ namespace UActions.Editor
         private readonly WorkflowArgumentView _argumentView;
         private readonly WorkflowActionRunner _actionRunner;
         private readonly Workflow _workflow;
-        private WorkflowContext _context;
 
         public Workflow Workflow => _workflow;
 
@@ -77,15 +76,7 @@ namespace UActions.Editor
             _argumentView.BuildTargetGroup = buildTargetGroup.ToString();
             _argumentView.ProjectPath = Directory.GetCurrentDirectory();
 
-            if (string.IsNullOrEmpty(job.logFile))
-            {
-                _context = new WorkflowContext(_argumentView, targets);
-            }
-            else
-            {
-                var logPath = _argumentView.Format(job.logFile);
-                _context = new WorkflowContext(_argumentView, targets, new StreamWriter(logPath));
-            }
+            using WorkflowContext context = new WorkflowContext(_argumentView, targets, job.logFile);
 
             if (job.steps != null)
             {
@@ -106,11 +97,11 @@ namespace UActions.Editor
 
                     if (hasName && hasDefined)
                     {
-                        _actionRunner.Run(_context, defined.uses, defined.with);
+                        _actionRunner.Run(context, defined.uses, defined.with);
                     }
                     else if (hasUses)
                     {
-                        _actionRunner.Run(_context, step.uses, step.with);
+                        _actionRunner.Run(context, step.uses, step.with);
                     }
                     else
                     {
@@ -118,9 +109,8 @@ namespace UActions.Editor
                     }
                 }
             }
-            
-            _context.Dispose();
-            _context = null;
+
+            context.Dispose();
         }
     }
 }
