@@ -84,7 +84,8 @@ PlayerSettingsiOS
 ```yaml
 uses: player-settings-ios
 with:
-  with: <Dictionary`2>
+  target-sdk: !target-sdk
+    value__: <value__>
 ```
 Process
 ---
