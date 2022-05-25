@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'Packages/Editor/Actions/**/*.cs'
+    - 'Packages/UActions/Editor/Actions/**/*.cs'
 jobs:
   build:
 
