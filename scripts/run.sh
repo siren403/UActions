@@ -1,1 +1,1 @@
-﻿echo run pipeline
+echo test pipeline
