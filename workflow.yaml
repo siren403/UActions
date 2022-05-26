@@ -1,6 +1,6 @@
 env:
   COMPANY: tiny
-  PRODUCT_NAME: UnityLane2
+  PRODUCT_NAME: UnityLane
 steps:
   injection:
     uses: injection
@@ -11,6 +11,22 @@ steps:
         key: 333=-====Snd3d30_3433
         number: !!int 11111
 jobs:
+  build-apk:
+    platform: android
+    steps:
+      - uses: player-settings
+        with:
+          company-name: $(COMPANY)
+          product-name: $(PRODUCT_NAME)
+      - uses: player-settings-android
+        with:
+          package-name: com.$(COMPANY).$(PRODUCT_NAME)
+          architectures: !architectures
+            - "ARMv7"
+            - "ARM64"
+      - uses: build
+        with:
+          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
   injection:
     platform: android
     steps:
@@ -36,12 +52,12 @@ jobs:
       - uses: build
         with:
           path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
-  build-apk:
+  build-sign-apk:
     platform: android
     steps:
       - uses: player-settings
         with:
-          company-name: $(COMPANY)_2
+          company-name: $(COMPANY)
           product-name: $(PRODUCT_NAME)
           preset: Assets/PlayerSettings
       - uses: player-settings-android
