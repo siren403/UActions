@@ -25,10 +25,10 @@ namespace UActions.Editor.Actions
             shell = "powershell.exe";
 #elif UNITY_EDITOR_OSX
             // zsh
-            shell = "/bin/zsh"
+            shell = "/bin/zsh";
 #elif UNITY_EDITOR_LINUX
             // bash
-            shell = "/bin/bash"
+            shell = "/bin/bash";
 #endif
 
             try
