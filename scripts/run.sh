@@ -1,5 +1,7 @@
 echo "build start"
 
+cd ../fastlane
+
 # rbenv
 eval "$(rbenv init -)"
 
