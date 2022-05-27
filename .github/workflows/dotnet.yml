@@ -6,7 +6,7 @@ on:
     branches: [ main ]
     paths:
     - 'Packages/UActions/Editor/Actions/**/*.cs'
-    - 'ActionsDocExporter/ActionsDocExporter'
+    - 'ActionsDocExporter/ActionsDocExporter/**/*'
 jobs:
   build:
 
