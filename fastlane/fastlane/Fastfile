@@ -22,10 +22,10 @@ UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
 
 platform :android do
 
-    lane :build do
+    lane :build do |options|
         PROJECT_DIR = File.expand_path('../../', Dir.pwd)
         LOGFILE = "#{PROJECT_DIR}/Editor.log"
-        ARGS = "#{LOGFILE} -job #{ENV["UA_JOB"]}"
+        ARGS = "#{LOGFILE} -job #{options[:job]}"
 
         unity(
             project_path: PROJECT_DIR,
@@ -142,19 +142,19 @@ end
 
 platform :ios do
 
-    lane :build do 
+    lane :build do |options|
 
         PROJECT_DIR = File.expand_path('../../', Dir.pwd)
         LOGFILE = "#{PROJECT_DIR}/Editor.log"
-        ARGS = "#{LOGFILE} -job #{ENV["UA_JOB"]}"
+        ARGS = "#{LOGFILE} -job #{options[:job]}"
 
         unity(
             project_path: PROJECT_DIR,
-            build_target: "Android",
+            build_target: "iOS",
             extra_args: ARGS
         )
 
-        "#{PROJECT_DIR}/Build/android/UnityLane.apk"
+        "#{PROJECT_DIR}/Build/ios/UnityLane"
     end
 
     # XCODE_PROJECT = File.expand_path("#{ENV["XCODE_PROJECT_PATH"]}/Unity-iPhone.xcodeproj", Dir.pwd)
