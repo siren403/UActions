@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: export Actions.md
-      run: dotnet run --project ./ActionsDocExporter/ActionsDocExporter -- --path $(pwd)/Actions.md
+      run: dotnet run --project ./ActionsDocExporter/ActionsDocExporter -- --base-path $(pwd) --dest-path "Actions.md" --actions-docs-path "Documents/Actions"
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: update Actions.md
