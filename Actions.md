@@ -1,4 +1,4 @@
-
+auto-increment-version-code
 ---
 
 ```yaml
@@ -16,7 +16,7 @@ uses: build
 with:
   path: <String>
 ```
-
+command
 ---
 
 ```yaml
@@ -35,7 +35,7 @@ with:
   lane: <String>
   directory: <String>
 ```
-
+get-version
 ---
 
 ```yaml
@@ -45,7 +45,7 @@ uses: get-version
 ```
 $(VERSION)
 ```
-
+injection
 ---
 
 ```yaml
@@ -54,7 +54,7 @@ with:
   path: <String>
   data: <Dictionary`2>
 ```
-
+player-settings
 ---
 
 ```yaml
@@ -65,7 +65,7 @@ with:
   version: <String?>
   preset: <String?>
 ```
-
+player-settings-android
 ---
 
 ```yaml
@@ -81,7 +81,7 @@ with:
   increment-version-code: <Boolean?>
   optimized-frame-pacing: <Boolean?>
 ```
-
+player-settings-ios
 ---
 
 ```yaml
@@ -89,7 +89,7 @@ uses: player-settings-ios
 with:
   target-sdk: !iossdkversion <iOSSdkVersion?>
 ```
-
+print
 ---
 
 ```yaml
@@ -97,7 +97,7 @@ uses: print
 with:
   message: <String>
 ```
-
+process
 ---
 
 ```yaml
@@ -105,7 +105,7 @@ uses: process
 with:
   file-name: <String>
 ```
-
+semantic-versioning
 ---
 
 ```yaml
