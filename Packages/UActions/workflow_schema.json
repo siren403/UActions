@@ -1,0 +1,89 @@
+﻿{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "",
+    "type": "object",
+    "definitions": {
+        "action": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "uses": {
+                    "type": "string"
+                },
+                "with": {
+                    "type": "object"
+                }
+            },
+            "dependencies": {
+                "with": [
+                    "uses"
+                ]
+            },
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "build"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "properties": {
+        "env": {
+            "type": "object"
+        },
+        "steps": {
+            "type": "object",
+            "patternProperties": {
+                "": {
+                    "$ref": "#/definitions/action"
+                }
+            }
+        },
+        "jobs": {
+            "type": "object",
+            "patternProperties": {
+                "": {
+                    "type": "object",
+                    "properties": {
+                        "platform": {
+                            "type": "string",
+                            "oneOf": [
+                                {
+                                    "const": "android"
+                                },
+                                {
+                                    "const": "ios"
+                                }
+                            ]
+                        },
+                        "steps": {
+                            "type": "array",
+                            "additionalItems": true,
+                            "items": {
+                                "$ref": "#/definitions/action"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required": [],
+    "dependentRequired": {
+    }
+}

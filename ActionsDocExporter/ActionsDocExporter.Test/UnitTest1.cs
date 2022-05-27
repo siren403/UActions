@@ -24,18 +24,18 @@ public class UnitTest1
             .WithNamingConvention(HyphenatedNamingConvention.Instance)
             .Build();
 
-        var parser = new ActionParser(serializer); 
+        var parser = new ActionParser(serializer);
 
         var actions = new[]
         {
             typeof(GetVersion),
-            typeof(Log),
+            typeof(Print),
             typeof(PlayerSettingsAction),
             typeof(PlayerSettingsAndroid),
         };
-        
+
         using var writer = new StreamWriter(Path.Combine(
-            Directory.GetCurrentDirectory(),  
+            Directory.GetCurrentDirectory(),
             "Actions.md"));
 
         foreach (var action in actions)
@@ -45,7 +45,9 @@ public class UnitTest1
         }
     }
 
-    public struct A{}
+    public struct A
+    {
+    }
 
     public class B
     {
@@ -53,21 +55,21 @@ public class UnitTest1
 
     public enum E
     {
-        
     }
+
     [Fact]
     public void TypeTest()
     {
         Assert.False(typeof(A).IsClass);
         Assert.True(typeof(A).IsValueType);
-        
+
         Assert.True(typeof(B).IsClass);
         Assert.False(typeof(B).IsValueType);
-        
+
         Assert.True(typeof(string).IsClass);
         Assert.False(typeof(string).IsValueType);
         Assert.False(typeof(string).IsPrimitive);
-        
+
         Assert.False(typeof(int).IsClass);
         Assert.True(typeof(int).IsValueType);
 
@@ -75,10 +77,20 @@ public class UnitTest1
         Assert.False(typeof(int[]).IsValueType);
         Assert.True(typeof(int[]).IsClass);
         Assert.True(typeof(int[]).IsArray);
-        
+
         Assert.True(typeof(E).IsValueType);
         Assert.False(typeof(E).IsPrimitive);
         Assert.False(typeof(E).IsClass);
         Assert.False(typeof(E).IsArray);
+    }
+
+    [Fact]
+    public void PathTest()
+    {
+        var current = Directory.GetCurrentDirectory();
+        _testOutputHelper.WriteLine(current);
+        var path = Path.GetRelativePath("../../", current);
+        _testOutputHelper.WriteLine(path);
+        
     }
 }

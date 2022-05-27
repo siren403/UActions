@@ -10,17 +10,39 @@ using UActions.Editor;
 public class ActionParser
 {
     private readonly ISerializer _serializer;
+    private readonly string? _basePath;
+    private readonly string? _docsPath;
 
     public ActionParser(ISerializer serializer)
     {
         _serializer = serializer;
     }
 
+    public ActionParser(ISerializer serializer, string? basePath, string? docsPath = null)
+    {
+        _serializer = serializer;
+        _basePath = basePath;
+        _docsPath = docsPath;
+    }
+
     public string ToMarkdown(Type action)
     {
         var markdown = new StringBuilder();
 
-        markdown.AppendLine($"{action.Name}");
+        var actionsAttr = action.GetCustomAttribute<ActionAttribute>();
+        var actionName = actionsAttr != null ? actionsAttr.Name : action.Name.PascalToKebabCase();
+
+        var header = string.Empty;
+        if (_basePath == null || _docsPath == null)
+        {
+            header = actionName;
+        }
+        else if (File.Exists(Path.Combine(_basePath, _docsPath, $"{actionName}.md")))
+        {
+            header = $"[{actionName}]({_docsPath}/{actionName}.md)";
+        }
+
+        markdown.AppendLine(header);
         markdown.AppendLine("---\n");
 
         var constructors = action.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
@@ -32,8 +54,7 @@ public class ActionParser
 
             markdown.AppendLine("```yaml");
 
-            var actionsAttr = action.GetCustomAttribute<ActionAttribute>();
-            root.Add("uses", actionsAttr != null ? actionsAttr.Name : action.Name.PascalToKebabCase());
+            root.Add("uses", actionName);
 
             var inputs = info.GetCustomAttributes<InputAttribute>().ToArray();
             if (inputs.Any())
@@ -85,7 +106,7 @@ public class ActionParser
                         var typeName = parameter.ParameterType.Name;
                         var optionalMark = parameter.IsOptional ? "?" : string.Empty;
                         var optionalValue = parameter.IsOptional ? parameter.DefaultValue : string.Empty;
-                        
+
                         param.Add(parameter.Name?.PascalToKebabCase(),
                             $"<{typeName}{optionalMark}{optionalValue}>");
                     }
