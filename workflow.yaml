@@ -99,8 +99,8 @@ jobs:
       - uses: print
         with:
           message: complete!
-  ios-test:
-    platform: android
+  xcode-export:
+    platform: ios
     steps:
       - uses: player-settings-ios
         with:
