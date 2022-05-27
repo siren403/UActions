@@ -32,14 +32,15 @@ public class ActionParser
         var actionsAttr = action.GetCustomAttribute<ActionAttribute>();
         var actionName = actionsAttr != null ? actionsAttr.Name : action.Name.PascalToKebabCase();
 
-        var header = string.Empty;
-        if (_basePath == null || _docsPath == null)
-        {
-            header = actionName;
-        }
-        else if (File.Exists(Path.Combine(_basePath, _docsPath, $"{actionName}.md")))
+        string header;
+        if (_basePath != null && _docsPath != null &&
+            File.Exists(Path.Combine(_basePath, _docsPath, $"{actionName}.md")))
         {
             header = $"[{actionName}]({_docsPath}/{actionName}.md)";
+        }
+        else
+        {
+            header = actionName;
         }
 
         markdown.AppendLine(header);
