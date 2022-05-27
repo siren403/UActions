@@ -99,10 +99,12 @@ jobs:
       - uses: print
         with:
           message: complete!
-  xcode-export:
+  export-xcode:
     platform: ios
     steps:
       - uses: player-settings-ios
         with:
           target-sdk: !iossdkversion SimulatorSDK
-      
+      - uses: build
+        with:
+          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
