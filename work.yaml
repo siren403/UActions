@@ -1,0 +1,37 @@
+﻿action:
+  foo: "bar"
+  bar: 2
+env:
+  TEST: |-
+    estset
+    set
+    setse
+    set
+steps:
+  build-apk:
+    uses: build
+    with:
+      path: ds
+  player-settings:
+    uses: player-settings
+    with:
+      company-name: s
+      product-name: s
+      version: s
+dynamic:
+  uses: builds
+pat:
+  S_2: str
+  I_a: 23
+exclusive:
+  foo: 1
+  fizz: 4
+jobs:
+  build:
+    platform: ios
+trustedRegistries:
+  - test
+ignored:
+  - DL3001
+  - DL3002
+  - DL3002
