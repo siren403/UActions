@@ -1,6 +1,8 @@
 UActions
 ===
 
+[![update Actions.md](https://github.com/qkrsogusl3/UActions/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/qkrsogusl3/UActions/actions/workflows/dotnet.yml)
+
 Getting started
 ---
 
