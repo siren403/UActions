@@ -32,10 +32,10 @@ jobs:
       - uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          job: build-apk
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           buildMethod: UActions.Bootstrap.Run
+          customParameters: -job build-apk
       - uses: actions/upload-artifact@v2
         with:
           name: Build-${{ matrix.targetPlatform }}
