@@ -13,6 +13,11 @@ namespace UActions.Editor.UI
             );
             uxml.CloneTree(this);
 
+            Reload();
+        }
+
+        public void Reload()
+        {
             var container = this.Q(className: "workflow-container");
             container.Clear();
 

@@ -11,6 +11,12 @@ steps:
         key: 333=-====Snd3d30_3433
         number: !!int 11111
 jobs:
+  platform-test:
+    platform: ios
+    steps:
+      - uses: print
+        with: 
+          message: test
   build-apk:
     platform: android
     steps:

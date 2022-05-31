@@ -1,6 +1,8 @@
-﻿using UActions.Editor.UI;
+﻿using System;
+using UActions.Editor.UI;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Editor
 {
@@ -12,6 +14,16 @@ namespace Editor
             var window = GetWindow<UActionsEditorWindow>();
             window.titleContent = new GUIContent("Workflow Viewer");
             window.Show();
+        }
+
+        public void OnFocus()
+        {
+            Debug.Log("focus");
+            var viewer = rootVisualElement.Q<WorkflowViewer>();
+            if (viewer != null)
+            {
+                viewer.Reload();
+            }
         }
 
         private void CreateGUI()

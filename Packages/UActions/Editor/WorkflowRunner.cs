@@ -61,6 +61,11 @@ namespace UActions.Editor
                 throw new Exception($"not found platform: {job.platform}");
             }
 
+            if (Application.isBatchMode && (buildTarget != targets.Target))
+            {
+                throw new Exception($"{jobName} is {job.platform} platform");
+            }
+
             // if (!Application.isBatchMode)
             // {
             //     buildTarget = targets.Target;
