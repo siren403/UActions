@@ -87,7 +87,10 @@ player-settings-ios
 ```yaml
 uses: player-settings-ios
 with:
+  identifier: <String?>
+  increment-version-code: <Boolean?>
   target-sdk: !iossdkversion <iOSSdkVersion?>
+  ios-version: <String?>
 ```
 print
 ---
