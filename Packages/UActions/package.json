@@ -7,5 +7,7 @@
     "keywords": [],
     "license": "MIT",
     "category": "Scripting",
-    "dependencies": {}
+    "dependencies": {
+        "com.qkrsogusl3.yamldotnet-upm": "0.0.1"
+    }
 }
