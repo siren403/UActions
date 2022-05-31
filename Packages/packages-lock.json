@@ -4,7 +4,9 @@
       "version": "file:UActions",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {}
+      "dependencies": {
+        "com.qkrsogusl3.yamldotnet-upm": "0.0.1"
+      }
     },
     "com.qkrsogusl3.yamldotnet-upm": {
       "version": "https://github.com/qkrsogusl3/YamlDotNet-UPM.git?path=YamlDotNet.Unity/Packages/YamlDotNet#upm",

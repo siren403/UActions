@@ -1,6 +1,6 @@
 env:
-  COMPANY: tiny
-  PRODUCT_NAME: UnityLane
+  COMPANY: qkrsogusl3
+  PRODUCT_NAME: AppBuilder
 steps:
   injection:
     uses: injection
@@ -11,12 +11,6 @@ steps:
         key: 333=-====Snd3d30_3433
         number: !!int 11111
 jobs:
-  platform-test:
-    platform: ios
-    steps:
-      - uses: print
-        with: 
-          message: test
   build-apk:
     platform: android
     steps:
@@ -30,6 +24,21 @@ jobs:
           architectures: !architectures
             - "ARMv7"
             - "ARM64"
+      - uses: build
+        with:
+          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
+  export-ipa:
+    platform: ios
+    steps:
+      - uses: player-settings
+        with:
+          company-name: $(COMPANY)
+          product-name: $(PRODUCT_NAME)
+      - uses: player-settings-ios
+        with:
+          identifier: com.tinycell.appbuilder
+          target-sdk: !iossdkversion DeviceSDK
+          ios-version: 15.4
       - uses: build
         with:
           path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)

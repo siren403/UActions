@@ -1,7 +1,7 @@
-app_identifier("com.tinycell.uactions") # The bundle identifier of your app
+app_identifier("com.tinycell.appbuilder") # The bundle identifier of your app
 apple_id("1982ggoo@gmail.com") # Your Apple email address
 team_id("2YN7LDAFJG") # apple developer team id
 itc_team_id("17255376765") # appstore connect team id
 
-json_key_file("./fastlane/pc-api-4836545648171937629-889-7d606226d870.json")
-package_name("com.qkrsogusl3.uactions")
+json_key_file("./secrets/pc-api-4836545648171937629-889-7d606226d870.json") # google play api
+package_name("com.qkrsogusl3.appbuilder")

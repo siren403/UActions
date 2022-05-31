@@ -27,13 +27,15 @@ platform :android do
         LOGFILE = "#{PROJECT_DIR}/Editor.log"
         ARGS = "#{LOGFILE} -job #{options[:job]}"
 
+        puts PROJECT_DIR
+
         unity(
             project_path: PROJECT_DIR,
             build_target: "Android",
             extra_args: ARGS
         )
 
-        "#{PROJECT_DIR}/Build/android/UnityLane.apk"
+        "#{PROJECT_DIR}/Build/android/#{ENV["PRODUCT_NAME"]}.apk"
     end
 
     lane :upload_app_center do |options|
@@ -48,11 +50,11 @@ platform :android do
         )
     end
 
-    lane :deploy_dev do
-        apk_path = build
+    lane :deploy_dev do |options|
+        apk_path = build(job: options[:job])
         upload_app_center(path: apk_path)
     end
-
+    ################
     lane :aab_to_appcenter do |options|
         # bundletool(
         #   ks_path: options[:keystore_path],
@@ -148,27 +150,65 @@ platform :ios do
         LOGFILE = "#{PROJECT_DIR}/Editor.log"
         ARGS = "#{LOGFILE} -job #{options[:job]}"
 
+        puts PROJECT_DIR
+
         unity(
             project_path: PROJECT_DIR,
             build_target: "iOS",
             extra_args: ARGS
         )
 
-        "#{PROJECT_DIR}/Build/ios/UnityLane"
+        "#{PROJECT_DIR}/Build/ios/#{ENV["PRODUCT_NAME"]}"
     end
 
-    # XCODE_PROJECT = File.expand_path("#{ENV["XCODE_PROJECT_PATH"]}/Unity-iPhone.xcodeproj", Dir.pwd)
-    #
-    # def build_unity(target, method, args)
-    #     unity(
-    #         unity_version: ENV["UNITY_VERSION"],
-    #         project_path: File.expand_path("../", Dir.pwd),
-    #         build_target: target,
-    #         execute_method: method,
-    #         extra_args: args
-    #     )
-    # end
-    #
+    lane :upload_app_center do |options|
+        xcode_path = build(job: options[:job])
+        match(type: "development", readonly: true)
+        profiles = lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+        update_signing(profiles: profiles, path: xcode_path, code_sign_identity: "Apple Development")
+        export_ipa(project_path: xcode_path, output_dir: "Build/iOS", export_method: "development")
+    end
+
+    lane :export_ipa do |options|
+        project_path = options[:project_path]
+        output_dir = options[:output_dir]
+        export_method = options[:export_method]
+
+        archive_path = "#{output_dir}/Archive"
+        gym(
+            scheme: "Unity-iPhone",
+            project: project_path,
+            configuration: "Release",
+            clean: true,
+            output_directory: "#{output_dir}/#{export_method}",
+            export_method: export_method,
+            include_bitcode: false,
+            export_options: {
+                compileBitcode: false
+            },
+            archive_path: archive_path
+        )
+        archive_path = File.expand_path("../#{archive_path}.xcarchive", Dir.pwd)
+        if File.exist?(archive_path)
+            sh(command: "rm -vfr #{archive_path}")
+        end
+    end
+
+    lane :update_signing do |options|
+        profiles = options[:profiles]
+        path = options[:path]
+        code_sign_identity = options[:code_sign_identity]
+
+        update_code_signing_settings(
+            path: path,
+            targets: "Unity-iPhone",
+            use_automatic_signing: false,
+            team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
+            profile_name: profiles[CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)],
+            code_sign_identity: code_sign_identity
+        )
+    end
+
     # def update_signing(path, code_sign_identity)
     #     profiles = lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
     #     update_code_signing_settings(
@@ -180,7 +220,7 @@ platform :ios do
     #         code_sign_identity: code_sign_identity
     #     )
     # end
-    #
+
     # def export_ipa(project, output_directory, export_method)
     #     archive_path = "#{output_directory}/Archive"
     #     gym(
@@ -202,6 +242,22 @@ platform :ios do
     #     end
     #
     # end
+
+    # XCODE_PROJECT = File.expand_path("#{ENV["XCODE_PROJECT_PATH"]}/Unity-iPhone.xcodeproj", Dir.pwd)
+    #
+    # def build_unity(target, method, args)
+    #     unity(
+    #         unity_version: ENV["UNITY_VERSION"],
+    #         project_path: File.expand_path("../", Dir.pwd),
+    #         build_target: target,
+    #         execute_method: method,
+    #         extra_args: args
+    #     )
+    # end
+    #
+
+    #
+
     #
     # def install_devices
     #     devices = ENV["INSTALL_DEVICES_ID"]
@@ -229,21 +285,7 @@ platform :ios do
     #     )
     # end
     #
-    # lane :unity_development do
-    #     # todo: json settings
-    #     build_unity(
-    #         "iOS",
-    #         "Samples.DeployUseCase.Build.Deploy",
-    #         "-appsettings \"Assets/DeployUseCase\" -variant \"iOS\""
-    #     )
-    #     match(type: "development", readonly: true)
-    #     update_signing(XCODE_PROJECT, "Apple Development")
-    #     export_ipa(
-    #         XCODE_PROJECT,
-    #         "Build/iOS",
-    #         "development",
-    #     )
-    # end
+
     #
     # lane :unity_development_install_devices do
     #     unity_development

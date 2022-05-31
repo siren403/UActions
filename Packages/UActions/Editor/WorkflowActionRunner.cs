@@ -119,7 +119,7 @@ namespace UActions.Editor
             }
             catch (Exception e)
             {
-                Debug.Log($"[{name}] failed! find constructor");
+                // Debug.Log($"[{name}] failed! find constructor");
                 Debug.Log(e);
                 throw;
             }

@@ -76,70 +76,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios unity_development
-
-```sh
-[bundle exec] fastlane ios unity_development
-```
-
-
-
-### ios unity_development_install_devices
-
-```sh
-[bundle exec] fastlane ios unity_development_install_devices
-```
-
-
-
-### ios unity_development_appcenter
-
-```sh
-[bundle exec] fastlane ios unity_development_appcenter
-```
-
-
-
-### ios adhoc
-
-```sh
-[bundle exec] fastlane ios adhoc
-```
-
-
-
-### ios adhoc_app_center
-
-```sh
-[bundle exec] fastlane ios adhoc_app_center
-```
-
-
-
-### ios delete
-
-```sh
-[bundle exec] fastlane ios delete
-```
-
-
-
-### ios unity_appstore_testflight
-
-```sh
-[bundle exec] fastlane ios unity_appstore_testflight
-```
-
-
-
-### ios upload_pilot
-
-```sh
-[bundle exec] fastlane ios upload_pilot
-```
-
-
-
 ### ios build
 
 ```sh
@@ -148,18 +84,10 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
-### ios test
+### ios upload_app_center
 
 ```sh
-[bundle exec] fastlane ios test
-```
-
-
-
-### ios build_ipa
-
-```sh
-[bundle exec] fastlane ios build_ipa
+[bundle exec] fastlane ios upload_app_center
 ```
 
 
