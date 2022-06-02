@@ -153,9 +153,13 @@ platform :ios do
         update_signing(profiles: profiles, path: xcode_path, code_sign_identity: "Apple Development")
 
         export_ipa(project_path: xcode_path, output_dir: "Build/iOS", export_method: "development")
-        ipa = lane_context["IPA_OUTPUT_PATH"]
-        dsym = lane_context["DSYM_OUTPUT_PATH"]
-        upload_app_center(path: ipa)
+        ipa = lane_context[:IPA_OUTPUT_PATH]
+        dsym = lane_context[:DSYM_OUTPUT_PATH]
+
+        puts lane_context
+        puts ipa
+
+        # upload_app_center(path: ipa)
     end
 
 
