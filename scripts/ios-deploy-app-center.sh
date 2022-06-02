@@ -5,6 +5,9 @@ cd fastlane
 # rbenv
 eval "$(rbenv init -)"
 
+# pyenv
+eval "$(pyenv init --path)"
+
 bundle install
 
 # fastlane

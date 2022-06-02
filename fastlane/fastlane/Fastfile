@@ -147,10 +147,11 @@ platform :ios do
     lane :build do |options|
 
         PROJECT_DIR = File.expand_path('../../', Dir.pwd)
-        LOGFILE = "#{PROJECT_DIR}/Editor.log"
-        ARGS = "#{LOGFILE} -job #{options[:job]}"
-
-        puts PROJECT_DIR
+        # LOGFILE = "#{PROJECT_DIR}/Editor.log"
+        # ARGS = "#{LOGFILE} -job #{options[:job]}"
+        ARGS = "-job #{options[:job]}"
+        
+	puts PROJECT_DIR
 
         unity(
             project_path: PROJECT_DIR,
