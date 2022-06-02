@@ -15,5 +15,5 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 echo "--- Building"
-bundle exec fastlane ios upload_app_center job:export-ipa
+bundle exec fastlane ios deploy_dev job:export-ipa
 echo "~~~ End Build"

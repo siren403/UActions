@@ -22,7 +22,12 @@ UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
 
 platform :android do
 
-    lane :build do |options|
+    lane :deploy_dev do |options|
+        apk_path = build(job: options[:job])
+        upload_app_center(path: apk_path)
+    end
+
+    private_lane :build do |options|
         PROJECT_DIR = File.expand_path('../../', Dir.pwd)
         LOGFILE = "#{PROJECT_DIR}/Editor.log"
         ARGS = "#{LOGFILE} -job #{options[:job]}"
@@ -38,7 +43,7 @@ platform :android do
         "#{PROJECT_DIR}/Build/android/#{ENV["PRODUCT_NAME"]}.apk"
     end
 
-    lane :upload_app_center do |options|
+    private_lane :upload_app_center do |options|
         appcenter_upload(
             api_token: ENV["APPCENTER_ANDROID_API_TOKEN"],
             file: options[:path],
@@ -50,101 +55,110 @@ platform :android do
         )
     end
 
-    lane :deploy_dev do |options|
-        apk_path = build(job: options[:job])
-        upload_app_center(path: apk_path)
-    end
+
     ################
-    lane :aab_to_appcenter do |options|
-        # bundletool(
-        #   ks_path: options[:keystore_path],
-        #   ks_password: options[:keystore_password],
-        #   ks_key_alias: options[:keystore_alias],
-        #   ks_key_alias_password: options[:keystore_alias_password],
-        #   bundletool_version: '1.10.0',
-        #   aab_path: options[:aab_path],
-        #   apk_output_path: options[:apk_output_path],
-        #   verbose: true
-        # )
-        bundletool(
-            ks_path: "D:/workspace/unity/AppBuilder/secrets/deploy.keystore",
-            ks_password: "000000",
-            ks_key_alias: "deploy",
-            ks_key_alias_password: "000000",
-            bundletool_version: '1.10.0',
-            aab_path: "D:/workspace/unity/AppBuilder/Build/Android/AppBuilder.aab",
-            apk_output_path: "D:/workspace/unity/AppBuilder/Build/Android/AppBuilder.apk",
-            verbose: true
-        )
-    end
-
-    lane :appcenter do |options|
-        unless options[:path]
-            raise 'require path'
-        end
-        appcenter_upload(
-            api_token: ENV["APPCENTER_ANDROID_API_TOKEN"],
-            file: options[:path],
-            notify_testers: true,
-            app_os: "Android",
-            upload_build_only: true,
-            app_name: "AppBuilder-Android",
-            release_notes: "upload #{Date.today.strftime("%Y%m%d")}"
-        )
-    end
-
-    lane :plugin do |options|
-        # UNITY_PATH = 'C:\Program Files\Unity\Hub\Editor\2021.2.12f1\Editor\Unity.exe'
-        # UNITY_VERSION = '2021.2.12f1'
-
-        UNITY_PATH = get_unity_path(options[:unity_version])
-
-        PROJECT_DIR = File.expand_path('../', Dir.pwd)
-        METHOD = 'AppBuilderSample.BasicAndroid.Build'
-        LOGFILE = "#{PROJECT_DIR}/Editor.log"
-
-        ARGS = "#{LOGFILE} -appsettings \"Assets/Samples/AppBuilder/0.0.1/Basic Android\" -keystore \"Assets/Samples/AppBuilder/0.0.1/Basic Android/user.keystore\" -keystorePasswd \"111111\" -keystoreAlias \"appbuilder\" -keystoreAliasPasswd \"111111\""
-
-        unity(
-            unity_path: UNITY_PATH,
-            # unity_version: UNITY_VERSION,
-            project_path: PROJECT_DIR,
-            build_target: "Android",
-            execute_method: METHOD,
-            extra_args: ARGS
-        )
-    end
-    lane :upload_internal do
-
-        UNITY_VERSION = "2021.2.12f1";
-        UNITY_PATH = get_unity_path(UNITY_VERSION)
-
-        PROJECT_DIR = File.expand_path('../', Dir.pwd)
-        METHOD = 'Samples.Deploy.UseCase.Build.Android'
-        LOGFILE = "#{PROJECT_DIR}/Editor.log"
-        #
-        ARGS = "#{LOGFILE} -appsettings \"Assets/Samples/Deploy/UseCase\""
-
-        unity(
-            unity_path: UNITY_PATH,
-            # unity_version: UNITY_VERSION,
-            project_path: PROJECT_DIR,
-            build_target: "Android",
-            execute_method: METHOD,
-            extra_args: ARGS
-        )
-
-        upload_to_play_store(
-            track: "internal",
-            aab: File.expand_path("../Build/Android/AppBuilder.aab", Dir.pwd),
-            release_status: "draft"
-        )
-    end
+    # lane :aab_to_appcenter do |options|
+    #     # bundletool(
+    #     #   ks_path: options[:keystore_path],
+    #     #   ks_password: options[:keystore_password],
+    #     #   ks_key_alias: options[:keystore_alias],
+    #     #   ks_key_alias_password: options[:keystore_alias_password],
+    #     #   bundletool_version: '1.10.0',
+    #     #   aab_path: options[:aab_path],
+    #     #   apk_output_path: options[:apk_output_path],
+    #     #   verbose: true
+    #     # )
+    #     bundletool(
+    #         ks_path: "D:/workspace/unity/AppBuilder/secrets/deploy.keystore",
+    #         ks_password: "000000",
+    #         ks_key_alias: "deploy",
+    #         ks_key_alias_password: "000000",
+    #         bundletool_version: '1.10.0',
+    #         aab_path: "D:/workspace/unity/AppBuilder/Build/Android/AppBuilder.aab",
+    #         apk_output_path: "D:/workspace/unity/AppBuilder/Build/Android/AppBuilder.apk",
+    #         verbose: true
+    #     )
+    # end
+    #
+    # lane :appcenter do |options|
+    #     unless options[:path]
+    #         raise 'require path'
+    #     end
+    #     appcenter_upload(
+    #         api_token: ENV["APPCENTER_ANDROID_API_TOKEN"],
+    #         file: options[:path],
+    #         notify_testers: true,
+    #         app_os: "Android",
+    #         upload_build_only: true,
+    #         app_name: "AppBuilder-Android",
+    #         release_notes: "upload #{Date.today.strftime("%Y%m%d")}"
+    #     )
+    # end
+    #
+    # lane :plugin do |options|
+    #     # UNITY_PATH = 'C:\Program Files\Unity\Hub\Editor\2021.2.12f1\Editor\Unity.exe'
+    #     # UNITY_VERSION = '2021.2.12f1'
+    #
+    #     UNITY_PATH = get_unity_path(options[:unity_version])
+    #
+    #     PROJECT_DIR = File.expand_path('../', Dir.pwd)
+    #     METHOD = 'AppBuilderSample.BasicAndroid.Build'
+    #     LOGFILE = "#{PROJECT_DIR}/Editor.log"
+    #
+    #     ARGS = "#{LOGFILE} -appsettings \"Assets/Samples/AppBuilder/0.0.1/Basic Android\" -keystore \"Assets/Samples/AppBuilder/0.0.1/Basic Android/user.keystore\" -keystorePasswd \"111111\" -keystoreAlias \"appbuilder\" -keystoreAliasPasswd \"111111\""
+    #
+    #     unity(
+    #         unity_path: UNITY_PATH,
+    #         # unity_version: UNITY_VERSION,
+    #         project_path: PROJECT_DIR,
+    #         build_target: "Android",
+    #         execute_method: METHOD,
+    #         extra_args: ARGS
+    #     )
+    # end
+    # lane :upload_internal do
+    #
+    #     UNITY_VERSION = "2021.2.12f1";
+    #     UNITY_PATH = get_unity_path(UNITY_VERSION)
+    #
+    #     PROJECT_DIR = File.expand_path('../', Dir.pwd)
+    #     METHOD = 'Samples.Deploy.UseCase.Build.Android'
+    #     LOGFILE = "#{PROJECT_DIR}/Editor.log"
+    #     #
+    #     ARGS = "#{LOGFILE} -appsettings \"Assets/Samples/Deploy/UseCase\""
+    #
+    #     unity(
+    #         unity_path: UNITY_PATH,
+    #         # unity_version: UNITY_VERSION,
+    #         project_path: PROJECT_DIR,
+    #         build_target: "Android",
+    #         execute_method: METHOD,
+    #         extra_args: ARGS
+    #     )
+    #
+    #     upload_to_play_store(
+    #         track: "internal",
+    #         aab: File.expand_path("../Build/Android/AppBuilder.aab", Dir.pwd),
+    #         release_status: "draft"
+    #     )
+    # end
 end
 
 platform :ios do
 
-    lane :build do |options|
+    lane :deploy_dev do |options|
+        xcode_path = build(job: options[:job])
+        match(type: "development", readonly: true)
+        profiles = lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+        update_signing(profiles: profiles, path: xcode_path, code_sign_identity: "Apple Development")
+
+        ipa, dsym = export_ipa(project_path: xcode_path, output_dir: "Build/iOS", export_method: "development")
+
+        upload_app_center(path: ipa)
+    end
+
+
+    private_lane :build do |options|
 
         PROJECT_DIR = File.expand_path('../../', Dir.pwd)
         # LOGFILE = "#{PROJECT_DIR}/Editor.log"
@@ -162,26 +176,20 @@ platform :ios do
         "#{PROJECT_DIR}/Build/ios/#{ENV["PRODUCT_NAME"]}/Unity-iPhone.xcodeproj"
     end
 
-    lane :upload_app_center do |options|
-        xcode_path = build(job: options[:job])
-        match(type: "development", readonly: true)
-        profiles = lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
-        update_signing(profiles: profiles, path: xcode_path, code_sign_identity: "Apple Development")
-        export_ipa(project_path: xcode_path, output_dir: "Build/iOS", export_method: "development")
-    end
-
-    lane :export_ipa do |options|
+    private_lane :export_ipa do |options|
         project_path = options[:project_path]
-        output_dir = options[:output_dir]
         export_method = options[:export_method]
 
+        output_dir = "#{options[:output_dir]}/#{export_method}"
+
         archive_path = "#{output_dir}/Archive"
+
         gym(
             scheme: "Unity-iPhone",
             project: project_path,
             configuration: "Release",
             clean: true,
-            output_directory: "#{output_dir}/#{export_method}",
+            output_directory: output_dir,
             export_method: export_method,
             include_bitcode: false,
             export_options: {
@@ -193,9 +201,15 @@ platform :ios do
         if File.exist?(archive_path)
             sh(command: "rm -vfr #{archive_path}")
         end
+
+        product_name = ENV["PRODUCT_NAME"]
+        ipa_path = File.expand_path("/#{output_dir}/#{product_name}.ipa", Dir.pwd)
+        dsym_path = File.expand_path("/#{output_dir}/#{product_name}.app.dSYM.zip", Dir.pwd)
+
+        return ipa_path, dsym_path
     end
 
-    lane :update_signing do |options|
+    private_lane :update_signing do |options|
         profiles = options[:profiles]
         path = options[:path]
         code_sign_identity = options[:code_sign_identity]
@@ -207,6 +221,28 @@ platform :ios do
             team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
             profile_name: profiles[CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)],
             code_sign_identity: code_sign_identity
+        )
+    end
+
+    private_lane :upload_app_center do |options|
+
+        unless options[:path]
+            raise 'require path'
+        end
+
+        build_only = options[:dsym].nil? ? true : false
+        dsym_path = options[:dsym]
+        notify_testers = options[:notify].nil? ? false : options[:notify]
+
+        appcenter_upload(
+            api_token: ENV["APPCENTER_IOS_API_TOKEN"],
+            file: options[:path],
+            notify_testers: notify_testers,
+            app_os: "iOS",
+            upload_build_only: build_only,
+            dsym: dsym_path,
+            app_name: ENV["APPCENTER_IOS_APP_NAME"],
+            release_notes: "upload #{Date.today.strftime("%Y%m%d")}"
         )
     end
 
