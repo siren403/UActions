@@ -150,8 +150,8 @@ platform :ios do
         # LOGFILE = "#{PROJECT_DIR}/Editor.log"
         # ARGS = "#{LOGFILE} -job #{options[:job]}"
         ARGS = "-job #{options[:job]}"
-        
-	puts PROJECT_DIR
+
+        puts PROJECT_DIR
 
         unity(
             project_path: PROJECT_DIR,
@@ -200,8 +200,10 @@ platform :ios do
         path = options[:path]
         code_sign_identity = options[:code_sign_identity]
 
+        puts path
+
         update_code_signing_settings(
-            path: path,
+            path: "#{path}/Unity-iPhone.xcodeproj",
             targets: "Unity-iPhone",
             use_automatic_signing: false,
             team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
