@@ -152,8 +152,9 @@ platform :ios do
         profiles = lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
         update_signing(profiles: profiles, path: xcode_path, code_sign_identity: "Apple Development")
 
-        ipa, dsym = export_ipa(project_path: xcode_path, output_dir: "Build/iOS", export_method: "development")
-
+        export_ipa(project_path: xcode_path, output_dir: "Build/iOS", export_method: "development")
+        ipa = lane_context["IPA_OUTPUT_PATH"]
+        dsym = lane_context["DSYM_OUTPUT_PATH"]
         upload_app_center(path: ipa)
     end
 
@@ -202,11 +203,11 @@ platform :ios do
             sh(command: "rm -vfr #{archive_path}")
         end
 
-        product_name = ENV["PRODUCT_NAME"]
-        ipa_path = File.expand_path("/#{output_dir}/#{product_name}.ipa", Dir.pwd)
-        dsym_path = File.expand_path("/#{output_dir}/#{product_name}.app.dSYM.zip", Dir.pwd)
-
-        return ipa_path, dsym_path
+        # product_name = ENV["PRODUCT_NAME"]
+        # ipa_path = File.expand_path("/#{output_dir}/#{product_name}.ipa", Dir.pwd)
+        # dsym_path = File.expand_path("/#{output_dir}/#{product_name}.app.dSYM.zip", Dir.pwd)
+        #
+        # return ipa_path, dsym_path
     end
 
     private_lane :update_signing do |options|
