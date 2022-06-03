@@ -39,7 +39,10 @@ public class SchemaCommands : ConsoleAppBase
             "android", "ios"
         }, actions));
 
-        var schemaJson = JsonSerializer.Serialize(schema);
+        var schemaJson = JsonSerializer.Serialize(schema, new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        });
 
         using var writer = new StreamWriter(path);
         writer.WriteLine(schemaJson);
@@ -95,25 +98,26 @@ public class SchemaCommands : ConsoleAppBase
                         },
                         required = new[] {"uses"}
                     }
-                },
-                {
-                    "then", new
-                    {
-                        properties = new
-                        {
-                            with = new
-                            {
-                                type = "object",
-                                properties = args.ToDictionary(_ => _.Name,
-                                    _ => new {type = ExportUtils.ValueTypeToString(_.ValueType)}),
-                                required = new string[] { }
-                            }
-                        },
-                        required = new[] {"with"},
-                        not = new {required = new[] {"name"}}
-                    }
                 }
             };
+            if (args.Any())
+            {
+                action.Add("then", new
+                {
+                    properties = new
+                    {
+                        with = new
+                        {
+                            type = "object",
+                            properties = args.ToDictionary(_ => _.Name,
+                                _ => new {type = ExportUtils.ValueTypeToString(_)}),
+                            required = new string[] { }
+                        }
+                    },
+                    required = new[] {"with"},
+                    not = new {required = new[] {"name"}}
+                });
+            }
 
             return action;
         }

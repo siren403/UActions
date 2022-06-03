@@ -38,7 +38,7 @@ jobs:
         with:
           identifier: com.tinycell.appbuilder
           target-sdk: !iossdkversion DeviceSDK
-          ios-version: 15.4
+          ios-version: "15.4"
       - uses: build
         with:
           path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
@@ -47,7 +47,7 @@ jobs:
     steps:
       - name: injection
       - uses: get-version
-      - uses: log
+      - uses: print
         with:
           message: $(VERSION)
   debug-apk:

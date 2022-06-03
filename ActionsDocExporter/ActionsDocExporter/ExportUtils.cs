@@ -17,9 +17,9 @@ public static class ExportUtils
         return actionsAttr != null ? actionsAttr.Name : action.Name.PascalToKebabCase();
     }
 
-    public static string ValueTypeToString(Type type)
+    public static string ValueTypeToString(ActionArgumentInfo info)
     {
-        var str = type.Name switch
+        var str = info.ValueType.Name switch
         {
             "String" => "string",
             "Int32" => "number",
@@ -27,9 +27,14 @@ public static class ExportUtils
             _ => "object"
         };
 
-        if (type.IsArray)
+        if (info.ValueType.IsArray)
         {
             str = "array";
+        }
+
+        if (!string.IsNullOrEmpty(info.Tag))
+        {
+            str = "string";
         }
 
         return str;
