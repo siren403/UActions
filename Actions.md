@@ -54,7 +54,7 @@ with:
   path: <String>
   data: <Dictionary`2>
 ```
-player-settings
+[player-settings](Documents/Actions/player-settings.md)
 ---
 
 ```yaml
