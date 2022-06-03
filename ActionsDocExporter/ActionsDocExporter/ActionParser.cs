@@ -29,8 +29,7 @@ public class ActionParser
     {
         var markdown = new StringBuilder();
 
-        var actionsAttr = action.GetCustomAttribute<ActionAttribute>();
-        var actionName = actionsAttr != null ? actionsAttr.Name : action.Name.PascalToKebabCase();
+        var actionName = ExportUtils.GetActionName(action);
 
         string header;
         if (_basePath != null && _docsPath != null &&

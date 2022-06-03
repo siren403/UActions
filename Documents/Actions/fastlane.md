@@ -1,3 +1,3 @@
-Fast
+fastlane
 ===
 

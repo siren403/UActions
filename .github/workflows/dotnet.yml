@@ -19,7 +19,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: export Actions.md
-      run: dotnet run --project ./ActionsDocExporter/ActionsDocExporter -- --base-path $(pwd) --dest-path "Actions.md" --actions-docs-path "Documents/Actions"
+      run: dotnet run --project ./ActionsDocExporter/ActionsDocExporter -- doc --base-path $(pwd) --dest-path "Actions.md" --actions-docs-path "Documents/Actions"
+    - name: export workflow_schema.json
+      run: dotnet run --project ./ActionsDocExporter/ActionsDocExporter -- schema --path $(pwd)/Documents/workflow_schema.json
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: update Actions.md
