@@ -32,3 +32,12 @@ run build
 ```
     
 check [actions](./Actions.md)
+
+JsonSchema
+---
+
+use remote schema this url
+```
+https://raw.githubusercontent.com/qkrsogusl3/UActions/main/Documents/workflow_schema.json
+```
+
