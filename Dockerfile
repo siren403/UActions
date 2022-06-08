@@ -15,4 +15,5 @@ COPY $LICENSE_FILE_NAME root/$LICENSE_FILE_NAME
 RUN unity-editor -batchmode -manualLicenseFile root/$LICENSE_FILE_NAME -logfile; exit 0
 
 WORKDIR /mnt
-CMD unity-editor -batchmode -quit -nographics -projectPath $(pwd) -buildTarget $BUILD_TARGET -executeMethod UActions.Bootstrap.Run -job $JOB_NAME -logfile - | grep 'Build Finished'
+CMD unity-editor -batchmode -quit -nographics -projectPath $(pwd) -buildTarget $BUILD_TARGET -executeMethod UActions.Bootstrap.Run -job $JOB_NAME -logfile -
+# | grep 'Build Finished'
