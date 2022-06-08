@@ -42,31 +42,6 @@ jobs:
       - uses: build
         with:
           path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
-  injection:
-    platform: android
-    steps:
-      - name: injection
-      - uses: get-version
-      - uses: print
-        with:
-          message: $(VERSION)
-  debug-apk:
-    platform: android
-    steps:
-      - uses: player-settings
-        with:
-          company-name: $(COMPANY)_2
-          product-name: $(PRODUCT_NAME)
-          preset: Assets/PlayerSettings
-      - uses: player-settings-android
-        with:
-          package-name: com.$(COMPANY).$(PRODUCT_NAME)
-          architectures: !architectures
-            - "ARMv7"
-            - "ARM64"
-      - uses: build
-        with:
-          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
   build-sign-apk:
     platform: android
     steps:
@@ -114,12 +89,9 @@ jobs:
       - uses: print
         with:
           message: complete!
-  export-xcode:
-    platform: ios
+  env-test:
+    platform: android
     steps:
-      - uses: player-settings-ios
+      - uses: print
         with:
-          target-sdk: !iossdkversion SimulatorSDK
-      - uses: build
-        with:
-          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
+          message: $(IN_ENV)
