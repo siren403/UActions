@@ -2,8 +2,8 @@
 services:
   unity-android:
     build:
+      context: .
       dockerfile: ./Dockerfile
-      context: ~/workspace/unity-manual-activation-with-docker
       args:
         UNITY_VERSION: 2021.2.12f1
         IMAGE_PLATFORM: android
