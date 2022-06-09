@@ -63,7 +63,7 @@ namespace UActions.Editor
             return Path.Combine(combinePaths).Replace("\\", "/");
         }
 
-        [MenuItem("UActions/Path")]
+        // [MenuItem("UActions/Path")]
         public static void GetPath()
         {
             Debug.Log(GetRootPath("com.qkrsogusl3.uactions"));

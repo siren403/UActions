@@ -18,7 +18,7 @@ namespace UActions.Editor
 
         public void OnFocus()
         {
-            Debug.Log("focus");
+            // Debug.Log("focus");
             var viewer = rootVisualElement.Q<WorkflowViewer>();
             if (viewer != null)
             {
