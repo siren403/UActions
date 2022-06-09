@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Editor
+namespace UActions.Editor
 {
     public class UActionsEditorWindow : EditorWindow
     {

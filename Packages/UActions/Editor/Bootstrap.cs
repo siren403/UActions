@@ -1,5 +1,4 @@
-﻿using Editor;
-using UActions.Editor;
+﻿using UActions.Editor;
 
 namespace UActions
 {
