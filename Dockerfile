@@ -8,13 +8,13 @@ FROM $BASE_IMAGE
 ARG BUILD_TARGET
 ENV BUILD_TARGET $BUILD_TARGET
 
-#ARG UNITY_LICENSE
+ARG UNITY_LICENSE
 ARG LICENSE_FILE_NAME
 
-#RUN echo $UNITY_LICENSE >> /root/unity-license.ulf
+RUN echo $UNITY_LICENSE >> root/env-unity-license.ulf
 COPY $LICENSE_FILE_NAME root/$LICENSE_FILE_NAME
 
-#RUN unity-editor -batchmode -manualLicenseFile /root/unity-license.ulf -logfile; exit 0
+#RUN unity-editor -batchmode -manualLicenseFile root/unity-license.ulf -logfile; exit 0
 RUN unity-editor -batchmode -manualLicenseFile root/$LICENSE_FILE_NAME -logfile; exit 0
 
 WORKDIR /mnt
