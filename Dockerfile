@@ -6,13 +6,16 @@ ARG BASE_IMAGE=unityci/editor:ubuntu-$UNITY_VERSION-$IMAGE_PLATFORM-$IMAGE_VERSI
 FROM $BASE_IMAGE
 
 ARG BUILD_TARGET
-ARG UNITY_LICENSE
-
 ENV BUILD_TARGET $BUILD_TARGET
 
-RUN echo $UNITY_LICENSE >> /root/unity-license.ulf
+#ARG UNITY_LICENSE
+ARG LICENSE_FILE_NAME
 
-RUN unity-editor -batchmode -manualLicenseFile /root/unity-license.ulf -logfile; exit 0
+#RUN echo $UNITY_LICENSE >> /root/unity-license.ulf
+COPY $LICENSE_FILE_NAME root/$LICENSE_FILE_NAME
+
+#RUN unity-editor -batchmode -manualLicenseFile /root/unity-license.ulf -logfile; exit 0
+RUN unity-editor -batchmode -manualLicenseFile root/$LICENSE_FILE_NAME -logfile; exit 0
 
 WORKDIR /mnt
 CMD unity-editor -batchmode -quit -nographics -projectPath $(pwd) -buildTarget $BUILD_TARGET -executeMethod UActions.Bootstrap.Run -job $JOB_NAME -logfile -
