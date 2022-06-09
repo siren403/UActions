@@ -9,7 +9,7 @@ services:
         IMAGE_PLATFORM: android
         BUILD_TARGET: android
         UNITY_LICENSE: ${UNITY_LICENSE}
-        LICENSE_FILE_NAME: unity-license.ulf
+        # LICENSE_FILE_NAME: unity-license.ulf
     image: unity-android
     volumes:
       - $PWD:/mnt
