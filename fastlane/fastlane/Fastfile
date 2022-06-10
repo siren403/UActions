@@ -20,7 +20,17 @@ require 'fastlane_core/ui/ui'
 
 UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
 
+
 platform :android do
+
+    before_all do |lane|
+        Dotenv.overload '../../.env'
+        environment = lane_context[SharedValues::ENVIRONMENT]
+        unless environment.nil?
+            puts "Load .env file of #{environment}"
+            Dotenv.overload '../../.env.' + environment
+        end
+    end
 
     lane :find do |options| 
         pattern = File.expand_path('../../Build', Dir.pwd)
