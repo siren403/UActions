@@ -8,6 +8,7 @@ namespace UActions.Editor
     public class Workflow
     {
         public Dictionary<string, string> env;
+        public Dictionary<string, string> def;
         public Dictionary<string, Step> steps;
         public Dictionary<string, Job> jobs;
     }

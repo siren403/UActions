@@ -22,15 +22,32 @@ UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
 
 platform :android do
 
+    lane :find do |options| 
+        pattern = File.expand_path('../../Build', Dir.pwd)
+        pdf_file_paths = Find.find(pattern).select { |p| /.*\.apk/ =~ p }
+        puts pdf_file_paths[0]
+    end
+    
     lane :deploy_dev do |options|
-        apk_path = build(job: options[:job])
+        job = nil
+        if options[:job] != nil
+            job = options[:job]
+        elsif ENV["job"] != nil
+            job = ENV["job"]
+        end
+        apk_path = build(job: job)
         upload_app_center(path: apk_path)
     end
 
     private_lane :build do |options|
         PROJECT_DIR = File.expand_path('../../', Dir.pwd)
         LOGFILE = "#{PROJECT_DIR}/Editor.log"
-        ARGS = "#{LOGFILE} -job #{options[:job]}"
+
+        ARGS = "#{LOGFILE}"
+
+        if options[:job] != nil
+            ARGS = "#{ARGS} -job #{options[:job]}"
+        end
 
         puts PROJECT_DIR
 
@@ -54,7 +71,6 @@ platform :android do
             release_notes: "upload #{Date.today.strftime("%Y%m%d")}"
         )
     end
-
 
     ################
     # lane :aab_to_appcenter do |options|
@@ -161,7 +177,6 @@ platform :ios do
 
         upload_app_center(path: ipa)
     end
-
 
     private_lane :build do |options|
 

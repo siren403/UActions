@@ -75,6 +75,17 @@ namespace UActions.Editor
                 }
             }
 
+            if (workflow.def != null)
+            {
+                foreach (var pair in workflow.def)
+                {
+                    if (!envs.ContainsKey(pair.Key))
+                    {
+                        envs[pair.Key] = pair.Value;
+                    }
+                }
+            }
+
             return new WorkflowRunner(workflow, argumentView, actionRunner);
         }
     }
