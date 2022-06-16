@@ -20,6 +20,18 @@ namespace UActions.Editor.Actions
             return value != null;
         }
 
+        public static bool TryGetFormat(this Dictionary<string, object> dictionary, string key, WorkflowContext context,
+            out string value)
+        {
+            value = default;
+            if (dictionary.TryGetIsValue(key, out value))
+            {
+                value = context.Format(value);
+            }
+
+            return value != default;
+        }
+
         public static T GetIsValue<T>(this Dictionary<string, object> dictionary, string key, T defaultValue = default)
         {
             if (dictionary.TryGetIsValue(key, out T value))

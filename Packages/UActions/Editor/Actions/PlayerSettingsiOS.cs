@@ -32,7 +32,7 @@ namespace UActions.Editor.Actions
 
         public void Execute(WorkflowContext context)
         {
-            if (_with.TryGetIsValue("identifier", out string identifier))
+            if (_with.TryGetFormat("identifier", context, out string identifier))
             {
                 PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, identifier);
             }
