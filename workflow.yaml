@@ -1,6 +1,8 @@
 env:
   COMPANY: qkrsogusl3
   PRODUCT_NAME: AppBuilder
+input:
+  Key: value
 steps:
   injection:
     uses: injection
@@ -11,6 +13,12 @@ steps:
         key: 333=-====Snd3d30_3433
         number: !!int 11111
 jobs:
+  input-test:
+    platform: android
+    steps:
+      - uses: print
+        with:
+          message: $(Key)
   build-apk:
     platform: android
     steps:

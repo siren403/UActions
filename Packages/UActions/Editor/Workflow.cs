@@ -8,7 +8,7 @@ namespace UActions.Editor
     public class Workflow
     {
         public Dictionary<string, string> env;
-        public Dictionary<string, string> def;
+        public Dictionary<string, string> input;
         public Dictionary<string, Step> steps;
         public Dictionary<string, Job> jobs;
     }
@@ -20,16 +20,6 @@ namespace UActions.Editor
         public string uses;
         public Dictionary<string, object> with;
     }
-
-    [Serializable]
-    public class AndroidKeystoreData
-    {
-        public string path;
-        public string passwd;
-        public string alias;
-        public string aliasPasswd;
-    }
-
 
     [Serializable]
     public class Job

@@ -75,9 +75,9 @@ namespace UActions.Editor
                 }
             }
 
-            if (workflow.def != null)
+            if (workflow.input != null)
             {
-                foreach (var pair in workflow.def)
+                foreach (var pair in workflow.input)
                 {
                     if (!envs.ContainsKey(pair.Key))
                     {
