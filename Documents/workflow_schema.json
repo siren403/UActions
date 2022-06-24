@@ -218,6 +218,9 @@
     "env": {
       "type": "object"
     },
+    "input": {
+      "type": "object"
+    },
     "groups": {
       "type": "object",
       "patternProperties": {
