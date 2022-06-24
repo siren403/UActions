@@ -3,15 +3,6 @@ env:
   PRODUCT_NAME: AppBuilder
 input:
   Key: value
-steps:
-  injection:
-    uses: injection
-    with:
-      path: Assets/InjectSample.asset
-      data:
-        url: "https://google.com"
-        key: 333=-====Snd3d30_3433
-        number: !!int 11111
 groups:
   first: 
     - print:
@@ -21,97 +12,6 @@ groups:
   second:
     - print: 
         message: s
-jobs:
-  input-test:
-    platform: android
-    steps:
-      - uses: print
-        with:
-          message: $(Key)
-  build-apk:
-    platform: android
-    steps:
-      - uses: player-settings
-        with:
-          company-name: $(COMPANY)
-          product-name: $(PRODUCT_NAME)
-      - uses: player-settings-android
-        with:
-          package-name: com.$(COMPANY).$(PRODUCT_NAME)
-          architectures: !architectures
-            - "ARMv7"
-            - "ARM64"
-      - uses: build
-        with:
-          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
-  export-ipa:
-    platform: ios
-    steps:
-      - uses: player-settings
-        with:
-          company-name: $(COMPANY)
-          product-name: $(PRODUCT_NAME)
-      - uses: player-settings-ios
-        with:
-          identifier: com.tinycell.appbuilder
-          target-sdk: !iossdkversion DeviceSDK
-          ios-version: "15.4"
-      - uses: build
-        with:
-          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
-  build-sign-apk:
-    platform: android
-    steps:
-      - uses: player-settings
-        with:
-          company-name: $(COMPANY)
-          product-name: $(PRODUCT_NAME)
-          preset: Assets/PlayerSettings
-      - uses: player-settings-android
-        with:
-          package-name: com.$(COMPANY).$(PRODUCT_NAME)
-          architectures: !architectures
-            - "ARMv7"
-            - "ARM64"
-          keystore: !keystore
-            path: $(KEYSTORE_PATH)
-            passwd: $(KEYSTORE_PASSWD)
-            alias: $(KEYSTORE_ALIAS)
-            alias-passwd: $(KEYSTORE_ALIAS_PASSWD)
-          increment-version-code: true
-      - uses: build
-        with:
-          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
-  run-command:
-    platform: android
-    steps:
-      - uses: command
-        with:
-          args: "echo start"
-      - uses: command
-        with:
-          args: "pwd"
-  with-fastlane:
-    platform: android
-    log-file: $(PROJECT_PATH)/workflow.log
-    steps:
-      - uses: print
-        with:
-          message: $(PROJECT_PATH)\fastlane
-      - uses: fastlane
-        with:
-          platform: android
-          lane: custom_lane
-          directory: $(PROJECT_PATH)/fastlane
-      - uses: print
-        with:
-          message: complete!
-  env-test:
-    platform: android
-    steps:
-      - uses: print
-        with:
-          message: $(IN_ENV)
 works:
   first:
     platform: android

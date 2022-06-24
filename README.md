@@ -29,43 +29,6 @@ env: # const values
   COMPANY: company
 input: # default values
   PRODUCT_NAME: product
-# deprecate
-steps: # action definitions
-  # <name>:
-  #   uses: <action-name>
-  #   with:
-  #     <key>: <value>
-  injection:
-    uses: injection
-    with:
-      path: Assets/InjectSample.asset
-      data:
-        url: "https://google.com"
-        key: 333=-====Snd3d30_3433
-        number: !!int 11111
-# deprecate
-jobs:
-  build-apk: # <name>
-    platform: android # ex) android || ios
-    steps: # actions array
-      - uses: print
-        with:
-          message: build apk start
-      - name: injection # defined action
-      - uses: player-settings
-        with:
-          company-name: $(COMPANY) # using env value
-          product-name: $(PRODUCT_NAME)
-          preset: Assets/PlayerSettings
-      - uses: player-settings-android
-        with:
-          package-name: com.$(COMPANY).$(PRODUCT_NAME)
-          architectures: !architectures
-            - "ARMv7"
-            - "ARM64"
-      - uses: build
-        with:
-          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
 groups:
   first:
     - print:

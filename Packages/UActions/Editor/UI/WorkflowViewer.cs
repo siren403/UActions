@@ -20,20 +20,6 @@ namespace UActions.Editor.UI
         {
             var workflow = Bootstrap.LoadWorkflow();
 
-
-            var jobsContainer = this.Q(className: "jobs-container");
-            jobsContainer.Clear();
-
-            foreach (var pair in workflow.jobs)
-            {
-                var job = new Job()
-                {
-                    Name = pair.Key
-                };
-                job.Clicked += () => Bootstrap.Run(pair.Key);
-                jobsContainer.Add(job);
-            }
-
             var worksContainer = this.Q(className: "works-container");
             worksContainer.Clear();
 
@@ -41,12 +27,14 @@ namespace UActions.Editor.UI
 
             foreach (var pair in workflow.works)
             {
-                var job = new Job()
+                var btn = new Button(() =>
                 {
-                    Name = pair.Key
+                    Bootstrap.RunWork(pair.Key);
+                })
+                {
+                    text = pair.Key
                 };
-                job.Clicked += () => Bootstrap.RunWork(pair.Key);
-                worksContainer.Add(job);
+                worksContainer.Add(btn);
             }
         }
 

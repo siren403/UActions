@@ -61,16 +61,6 @@ namespace UActions.Editor
                 return;
             }
 
-            var jobName = _argumentView.JobName;
-            if (!string.IsNullOrWhiteSpace(jobName))
-            {
-                if (!_workflow.jobs.TryGetValue(jobName, out var job))
-                    throw new Exception($"Not Found Job: {jobName}");
-
-                RunJob(jobName, job);
-                return;
-            }
-
             throw new Exception("not processed runner");
         }
 
@@ -126,72 +116,5 @@ namespace UActions.Editor
             }
         }
 
-
-        private void RunJob(string jobName, Job job)
-        {
-            var buildTarget = EditorUserBuildSettings.activeBuildTarget;
-            var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
-
-            if (!PlatformNameToTargets.TryGetValue(job.platform, out var targets))
-            {
-                throw new Exception($"not found platform: {job.platform}");
-            }
-
-            if (Application.isBatchMode && (buildTarget != targets.Target))
-            {
-                throw new Exception($"{jobName} is {job.platform} platform");
-            }
-
-            // if (!Application.isBatchMode)
-            // {
-            //     buildTarget = targets.Target;
-            //     buildTargetGroup = targets.TargetGroup;
-            //
-            //     //switch platform
-            //     var isSuccess = EditorUserBuildSettings.SwitchActiveBuildTarget(buildTargetGroup, buildTarget);
-            //     if (!isSuccess) throw new Exception($"[{nameof(UActions)}] SwitchPlatform Failed!");
-            // }
-
-            _argumentView.Platform = job.platform;
-            _argumentView.BuildTarget = buildTarget.ToString();
-            _argumentView.BuildTargetGroup = buildTargetGroup.ToString();
-            _argumentView.ProjectPath = Directory.GetCurrentDirectory();
-
-            using WorkflowContext context = new WorkflowContext(_argumentView, targets, job.logFile);
-
-            if (job.steps != null)
-            {
-                foreach (var step in job.steps)
-                {
-                    var hasName = !string.IsNullOrEmpty(step.name);
-                    Step defined = null;
-                    var hasDefined = hasName && _workflow.steps.TryGetValue(step.name, out defined);
-
-                    var hasUses = !string.IsNullOrEmpty(step.uses);
-
-
-                    if (hasName && hasUses)
-                    {
-                        Debug.LogWarning(
-                            $"[{step.name ?? step.uses}] If step has both name and uses, name takes precedence");
-                    }
-
-                    if (hasName && hasDefined)
-                    {
-                        _actionRunner.Run(context, defined.uses, defined.with);
-                    }
-                    else if (hasUses)
-                    {
-                        _actionRunner.Run(context, step.uses, step.with);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("step is name or uses required");
-                    }
-                }
-            }
-
-            context.Dispose();
-        }
     }
 }
