@@ -23,6 +23,15 @@ namespace UActions
             runner.Run();
         }
 
+        public static void RunWork(string workName)
+        {
+            var runner = new WorkflowRunnerBuilder()
+                .LoadEnvironmentVariables()
+                .SetWorkName(workName)
+                .Build();
+            runner.Run();
+        }
+
         public static Workflow LoadWorkflow()
         {
             var runner = new WorkflowRunnerBuilder()

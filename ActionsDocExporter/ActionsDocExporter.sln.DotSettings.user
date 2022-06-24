@@ -4,6 +4,7 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=44583e97_002D55c0_002D45cf_002Daf05_002D44bcdd3f889f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="NoConstructorActionTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::29040D0B-5A3C-4F9E-B4A2-848257029CB8::net6.0::ActionsDocExporter.Test.ActionRunnerTests.NoConstructorActionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::29040D0B-5A3C-4F9E-B4A2-848257029CB8::net6.0::ActionsDocExporter.Test.RunWorkTests.RunTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

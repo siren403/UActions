@@ -6,6 +6,7 @@ namespace UActions.Editor
     public class WorkflowArgumentView
     {
         private const string KeySelectedJob = "job";
+        private const string KeySelectedWork = "work";
         private const string KeyProjectPath = "PROJECT_PATH";
         private const string KeyPlatform = "PLATFORM";
         private const string KeyBuildTarget = "BUILD_TARGET";
@@ -20,8 +21,14 @@ namespace UActions.Editor
 
         public string JobName
         {
-            get => GetArgument(KeySelectedJob);
+            get => GetArgument(KeySelectedJob, string.Empty);
             set => _args[KeySelectedJob] = value;
+        }
+
+        public string WorkName
+        {
+            get => GetArgument(KeySelectedWork, string.Empty);
+            set => _args[KeySelectedWork] = value;
         }
 
         public string ProjectPath
@@ -49,14 +56,21 @@ namespace UActions.Editor
         }
 
 
-        private string GetArgument(string key)
+        private string GetArgument(string key, string defaultValue = null)
         {
             if (_args.TryGetValue(key, out var value))
             {
                 return value;
             }
 
-            throw new Exception($"Not Found Argument: {key}");
+            if (defaultValue == null)
+            {
+                throw new Exception($"Not Found Argument: {key}");
+            }
+            else
+            {
+                return defaultValue;
+            }
         }
 
         public string Format(string format)

@@ -1,1 +1,0 @@
-﻿> run scripts from project root

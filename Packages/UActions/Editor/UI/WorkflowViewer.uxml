@@ -7,5 +7,9 @@
         xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
 >
     <engine:Style src="./WorkflowViewer.uss"/>
-    <engine:VisualElement class="workflow-container"/>
+    <engine:Label text="jobs" class="unity-base-field"/>
+    <engine:VisualElement class="jobs-container"/>
+
+    <engine:Label text="works" class="unity-base-field"/>
+    <engine:VisualElement class="works-container"/>
 </engine:UXML>

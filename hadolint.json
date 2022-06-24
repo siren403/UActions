@@ -503,10 +503,38 @@
         "a1": {
             "patternProperties": {
                 "": {
-                    "type": "object",
                     "properties": {
-                        "uses": {
-                            "$ref": "#/definitions/action-names"
+                        "steps": {
+                            "type": "array",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "player-settings": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "company-name": {"type": "string"},
+                                                    "product-name": {"type": "string"}
+                                                }
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "build": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "path": {"type": "string"}
+                                                }
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    }
+                                ]
+                            }
                         }
                     }
                 }

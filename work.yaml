@@ -1,4 +1,12 @@
-﻿action:
+﻿a1: 
+  first:
+    steps:
+      - player-settings: 
+          product-name: tes
+          company-name: test
+      - build: 
+          path: tes
+action:
   foo: "bar"
   bar: 2
 a:

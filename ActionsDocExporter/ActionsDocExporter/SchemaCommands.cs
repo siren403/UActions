@@ -34,10 +34,66 @@ public class SchemaCommands : ConsoleAppBase
 
         var actions = new Actions("#/definitions", actionNames);
 
-        schema.Add("properties", CreateProperties(new[]
+        var platforms = new[]
         {
             "android", "ios"
-        }, actions));
+        };
+        var properties = CreateProperties(platforms, actions);
+        schema.Add("properties", properties);
+
+        #region Works
+
+        properties["works"] = new
+        {
+            type = "object",
+            patternProperties = new Dictionary<string, object>()
+            {
+                {
+                    "", new
+                    {
+                        properties = new
+                        {
+                            platform = new Dictionary<string, object>()
+                            {
+                                {"type", "string"},
+                                {
+                                    "enum", platforms
+                                }
+                            },
+                            steps = new
+                            {
+                                type = "array",
+                                items = new
+                                {
+                                    anyOf = types.Select(_ =>
+                                    {
+                                        var args = ExportUtils.GetArguments(_);
+                                        return new
+                                        {
+                                            type = "object",
+                                            properties = new Dictionary<string, object>()
+                                            {
+                                                {
+                                                    ExportUtils.GetActionName(_), new
+                                                    {
+                                                        type = "object",
+                                                        properties = args.ToDictionary(_ => _.Name,
+                                                            _ => new {type = ExportUtils.ValueTypeToString(_)})
+                                                    }
+                                                }
+                                            }
+                                        };
+                                    }).ToArray()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        #endregion
+
 
         var schemaJson = JsonSerializer.Serialize(schema, new JsonSerializerOptions()
         {

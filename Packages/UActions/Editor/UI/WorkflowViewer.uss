@@ -1,6 +1,6 @@
 ﻿.job {
-    border-width: 1px;
-    border-color: cadetblue;
+    /*border-width: 1px;*/
+    /*border-color: cadetblue;*/
     margin: 2px;
     flex-direction: row;
 }

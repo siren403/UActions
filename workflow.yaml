@@ -103,3 +103,22 @@ jobs:
       - uses: print
         with:
           message: $(IN_ENV)
+works:
+  first:
+    platform: android
+    steps:
+      - print:
+          message: work test
+  build-apk:
+    platform: android
+    steps:
+      - player-settings:
+          company-name: $(COMPANY)
+          product-name: $(PRODUCT_NAME)
+      - player-settings-android:
+          package-name: com.$(COMPANY).$(PRODUCT_NAME)
+          architectures: !architectures
+            - "ARMv7"
+            - "ARM64"
+      - build:
+          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)

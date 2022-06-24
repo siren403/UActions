@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -12,6 +13,9 @@ namespace UActions.Editor
         private string _filePath = "workflow.yaml";
         private bool _enableLoadEnv;
         private string _jobName;
+        private string _workName;
+        private Dictionary<string, Type> _actions;
+        private Workflow _workflow;
 
         public WorkflowRunnerBuilder LoadEnvironmentVariables()
         {
@@ -36,6 +40,24 @@ namespace UActions.Editor
             return this;
         }
 
+        public WorkflowRunnerBuilder SetWorkName(string workName)
+        {
+            _workName = workName;
+            return this;
+        }
+
+        public WorkflowRunnerBuilder SetActions(Dictionary<string, Type> actions)
+        {
+            _actions = actions;
+            return this;
+        }
+
+        public WorkflowRunnerBuilder SetWorkflow(Workflow workflow)
+        {
+            _workflow = workflow;
+            return this;
+        }
+
         public WorkflowRunner Build()
         {
             Dictionary<string, string> envs = null;
@@ -54,7 +76,16 @@ namespace UActions.Editor
                 argumentView.JobName = _jobName;
             }
 
-            var actionRunner = new WorkflowActionRunner();
+            if (!string.IsNullOrEmpty(_workName))
+            {
+                argumentView.WorkName = _workName;
+            }
+
+            WorkflowActionRunner actionRunner = null;
+            if (_actions == null || !_actions.Any())
+                actionRunner = new WorkflowActionRunner();
+            else
+                actionRunner = new WorkflowActionRunner(_actions);
 
             var deserializerBuilder = new DeserializerBuilder()
                 .WithNamingConvention(HyphenatedNamingConvention.Instance);
@@ -65,25 +96,35 @@ namespace UActions.Editor
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), _filePath);
             using var reader = new StreamReader(path);
-            var workflow = deserializer.Deserialize<Workflow>(reader.ReadToEnd());
 
-            if (workflow.env != null)
-            {
-                foreach (var pair in workflow.env)
-                {
-                    envs[pair.Key] = pair.Value;
-                }
-            }
+            Workflow workflow = null;
 
-            if (workflow.input != null)
+            if (_workflow == null)
             {
-                foreach (var pair in workflow.input)
+                workflow = deserializer.Deserialize<Workflow>(reader.ReadToEnd());
+
+                if (workflow.env != null)
                 {
-                    if (!envs.ContainsKey(pair.Key))
+                    foreach (var pair in workflow.env)
                     {
                         envs[pair.Key] = pair.Value;
                     }
                 }
+
+                if (workflow.input != null)
+                {
+                    foreach (var pair in workflow.input)
+                    {
+                        if (!envs.ContainsKey(pair.Key))
+                        {
+                            envs[pair.Key] = pair.Value;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                workflow = _workflow;
             }
 
             return new WorkflowRunner(workflow, argumentView, actionRunner);

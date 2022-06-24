@@ -9,8 +9,9 @@ namespace UActions.Editor
 {
     public readonly struct BuildTargets
     {
-        public static readonly BuildTargets All = new(TargetPlatform.All, BuildTarget.NoTarget, BuildTargetGroup.Unknown);
-        
+        public static readonly BuildTargets All = new(TargetPlatform.All, BuildTarget.NoTarget,
+            BuildTargetGroup.Unknown);
+
         public readonly TargetPlatform TargetPlatform;
         public readonly BuildTarget Target;
         public readonly BuildTargetGroup TargetGroup;
@@ -38,6 +39,7 @@ namespace UActions.Editor
         private readonly Workflow _workflow;
 
         public Workflow Workflow => _workflow;
+        public WorkflowArgumentView View => _argumentView;
 
         public WorkflowRunner(Workflow workflow, WorkflowArgumentView argumentView,
             WorkflowActionRunner actionRunner)
@@ -49,12 +51,70 @@ namespace UActions.Editor
 
         public void Run()
         {
-            var jobName = _argumentView.JobName;
-            if (!_workflow.jobs.TryGetValue(jobName, out var job))
+            var workName = _argumentView.WorkName;
+            if (!string.IsNullOrWhiteSpace(workName))
             {
-                throw new Exception($"Not Found Job: {jobName}");
+                if (!_workflow.works.TryGetValue(workName, out var work))
+                    throw new Exception($"Not Found Work: {workName}");
+
+                RunWork(workName, work);
+                return;
             }
 
+            var jobName = _argumentView.JobName;
+            if (!string.IsNullOrWhiteSpace(jobName))
+            {
+                if (!_workflow.jobs.TryGetValue(jobName, out var job))
+                    throw new Exception($"Not Found Job: {jobName}");
+
+                RunJob(jobName, job);
+                return;
+            }
+
+            throw new Exception("not processed runner");
+        }
+
+        private void RunWork(string workName, Work work)
+        {
+            var buildTarget = EditorUserBuildSettings.activeBuildTarget;
+            var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
+
+            if (!PlatformNameToTargets.TryGetValue(work.platform, out var targets))
+            {
+                throw new Exception($"not found platform: {work.platform}");
+            }
+
+            if (Application.isBatchMode && (buildTarget != targets.Target))
+            {
+                throw new Exception($"{workName} is {work.platform} platform");
+            }
+
+            _argumentView.Platform = work.platform;
+            _argumentView.BuildTarget = buildTarget.ToString();
+            _argumentView.BuildTargetGroup = buildTargetGroup.ToString();
+            _argumentView.ProjectPath = Directory.GetCurrentDirectory();
+
+            using WorkflowContext context = new WorkflowContext(_argumentView, targets);
+
+            if (work.steps == null)
+            {
+                throw new Exception($"Not defined steps from ${workName}");
+            }
+
+            foreach (var step in work.steps)
+            {
+                var firstStep = step.First();
+
+                var actionName = firstStep.Key;
+                var withData = firstStep.Value;
+
+                _actionRunner.Run(context, actionName, withData);
+            }
+        }
+
+
+        private void RunJob(string jobName, Job job)
+        {
             var buildTarget = EditorUserBuildSettings.activeBuildTarget;
             var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
 
