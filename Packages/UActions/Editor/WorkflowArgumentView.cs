@@ -5,7 +5,6 @@ namespace UActions.Editor
 {
     public class WorkflowArgumentView
     {
-        private const string KeySelectedJob = "job";
         private const string KeySelectedWork = "work";
         private const string KeyProjectPath = "PROJECT_PATH";
         private const string KeyPlatform = "PLATFORM";
@@ -18,12 +17,6 @@ namespace UActions.Editor
         }
 
         private readonly Dictionary<string, string> _args;
-
-        public string JobName
-        {
-            get => GetArgument(KeySelectedJob, string.Empty);
-            set => _args[KeySelectedJob] = value;
-        }
 
         public string WorkName
         {

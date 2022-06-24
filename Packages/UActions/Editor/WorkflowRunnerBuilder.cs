@@ -12,7 +12,6 @@ namespace UActions.Editor
     {
         private string _filePath = "workflow.yaml";
         private bool _enableLoadEnv;
-        private string _jobName;
         private string _workName;
         private Dictionary<string, Type> _actions;
         private Workflow _workflow;
@@ -31,12 +30,6 @@ namespace UActions.Editor
             }
 
             _filePath = filePath;
-            return this;
-        }
-
-        public WorkflowRunnerBuilder SetJobName(string jobName)
-        {
-            _jobName = jobName;
             return this;
         }
 
@@ -71,11 +64,6 @@ namespace UActions.Editor
             }
 
             var argumentView = new WorkflowArgumentView(envs);
-            if (!string.IsNullOrEmpty(_jobName))
-            {
-                argumentView.JobName = _jobName;
-            }
-
             if (!string.IsNullOrEmpty(_workName))
             {
                 argumentView.WorkName = _workName;

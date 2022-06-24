@@ -14,16 +14,7 @@ namespace UActions
             runner.Run();
         }
 
-        public static void Run(string jobName)
-        {
-            var runner = new WorkflowRunnerBuilder()
-                .LoadEnvironmentVariables()
-                .SetJobName(jobName)
-                .Build();
-            runner.Run();
-        }
-
-        public static void RunWork(string workName)
+        public static void Run(string workName)
         {
             var runner = new WorkflowRunnerBuilder()
                 .LoadEnvironmentVariables()
@@ -40,11 +31,5 @@ namespace UActions
             return runner.Workflow;
         }
 
-        public static void ExportActionsManifest()
-        {
-            var runner = new WorkflowRunnerBuilder()
-                .LoadEnvironmentVariables()
-                .Build();
-        }
     }
 }

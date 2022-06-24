@@ -29,7 +29,7 @@ namespace UActions.Editor.UI
             {
                 var btn = new Button(() =>
                 {
-                    Bootstrap.RunWork(pair.Key);
+                    Bootstrap.Run(pair.Key);
                 })
                 {
                     text = pair.Key
