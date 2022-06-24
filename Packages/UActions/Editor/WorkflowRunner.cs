@@ -103,12 +103,26 @@ namespace UActions.Editor
 
             foreach (var step in work.steps)
             {
-                var firstStep = step.First();
-
-                var actionName = firstStep.Key;
-                var withData = firstStep.Value;
-
-                _actionRunner.Run(context, actionName, withData);
+                if (step is string groupName && _workflow.groups.TryGetValue(groupName, out var groups))
+                {
+                    foreach (var group in groups)
+                    {
+                        var firstAction = group.First();
+                        var actionName = firstAction.Key;
+                        var withData = firstAction.Value;
+                        _actionRunner.Run(context, actionName, withData);
+                    }
+                }
+                else if (step is Dictionary<object, object> action)
+                {
+                    var firstAction = action.First();
+                    if (firstAction.Value is Dictionary<object, object> data)
+                    {
+                        string actionName = firstAction.Key.ToString();
+                        var withData = data.ToDictionary(_ => _.Key.ToString(), _ => _.Value);
+                        _actionRunner.Run(context, actionName, withData);
+                    }
+                }
             }
         }
 

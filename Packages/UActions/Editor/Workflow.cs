@@ -11,6 +11,8 @@ namespace UActions.Editor
         public Dictionary<string, string> input;
         public Dictionary<string, Step> steps;
         public Dictionary<string, Job> jobs;
+
+        public Dictionary<string, Dictionary<string, Dictionary<string, object>>[]> groups;
         public Dictionary<string, Work> works;
     }
 
@@ -34,6 +36,7 @@ namespace UActions.Editor
     public class Work
     {
         public string platform;
-        public Dictionary<string, Dictionary<string, object>>[] steps;
+        // public Dictionary<string, Dictionary<string, object>>[] steps;
+        public object[] steps;
     }
 }

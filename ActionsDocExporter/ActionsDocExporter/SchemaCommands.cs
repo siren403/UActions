@@ -30,7 +30,8 @@ public class SchemaCommands : ConsoleAppBase
             {"description", ""},
             {"type", "object"},
         };
-        schema.Add("definitions", CreateDefinitions(types, out var actionNames));
+        var definitions = CreateDefinitions(types, out var actionNames);
+        schema.Add("definitions", definitions);
 
         var actions = new Actions("#/definitions", actionNames);
 
@@ -43,6 +44,48 @@ public class SchemaCommands : ConsoleAppBase
 
         #region Works
 
+        definitions.Add("work-actions", new
+        {
+            type = "array",
+            items = new
+            {
+                anyOf = new object[] {new {type = "string"}}.Concat(
+                    types.Select(_ =>
+                    {
+                        var args = ExportUtils.GetArguments(_);
+                        return new
+                        {
+                            type = "object",
+                            properties = new Dictionary<string, object>()
+                            {
+                                {
+                                    ExportUtils.GetActionName(_), new
+                                    {
+                                        type = "object",
+                                        properties = args.ToDictionary(arg => arg.Name,
+                                            arg => new {type = ExportUtils.ValueTypeToString(arg)})
+                                    }
+                                }
+                            }
+                        };
+                    })
+                )
+            }
+        });
+
+        properties["groups"] = new
+        {
+            type = "object",
+            patternProperties = new Dictionary<string, object>()
+            {
+                {
+                    "", new Dictionary<string, string>()
+                    {
+                        {"$ref", "#/definitions/work-actions"}
+                    }
+                }
+            }
+        };
         properties["works"] = new
         {
             type = "object",
@@ -60,31 +103,9 @@ public class SchemaCommands : ConsoleAppBase
                                     "enum", platforms
                                 }
                             },
-                            steps = new
+                            steps = new Dictionary<string, string>()
                             {
-                                type = "array",
-                                items = new
-                                {
-                                    anyOf = types.Select(_ =>
-                                    {
-                                        var args = ExportUtils.GetArguments(_);
-                                        return new
-                                        {
-                                            type = "object",
-                                            properties = new Dictionary<string, object>()
-                                            {
-                                                {
-                                                    ExportUtils.GetActionName(_), new
-                                                    {
-                                                        type = "object",
-                                                        properties = args.ToDictionary(_ => _.Name,
-                                                            _ => new {type = ExportUtils.ValueTypeToString(_)})
-                                                    }
-                                                }
-                                            }
-                                        };
-                                    }).ToArray()
-                                }
+                                {"$ref", "#/definitions/work-actions"}
                             }
                         }
                     }

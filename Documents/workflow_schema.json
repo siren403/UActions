@@ -481,6 +481,216 @@
           ]
         }
       }
+    },
+    "work-actions": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "auto-increment-version-code": {
+                "type": "object",
+                "properties": {
+                  "a": {
+                    "type": "number"
+                  },
+                  "b": {
+                    "type": "string"
+                  },
+                  "c": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "build": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "command": {
+                "type": "object",
+                "properties": {
+                  "args": {
+                    "type": "string"
+                  },
+                  "working-directory": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "fastlane": {
+                "type": "object",
+                "properties": {
+                  "platform": {
+                    "type": "string"
+                  },
+                  "lane": {
+                    "type": "string"
+                  },
+                  "directory": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "get-version": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "injection": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "player-settings": {
+                "type": "object",
+                "properties": {
+                  "company-name": {
+                    "type": "string"
+                  },
+                  "product-name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "preset": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "player-settings-android": {
+                "type": "object",
+                "properties": {
+                  "package-name": {
+                    "type": "string"
+                  },
+                  "architectures": {
+                    "type": "string"
+                  },
+                  "keystore": {
+                    "type": "string"
+                  },
+                  "increment-version-code": {
+                    "type": "boolean"
+                  },
+                  "optimized-frame-pacing": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "player-settings-ios": {
+                "type": "object",
+                "properties": {
+                  "identifier": {
+                    "type": "string"
+                  },
+                  "increment-version-code": {
+                    "type": "boolean"
+                  },
+                  "target-sdk": {
+                    "type": "string"
+                  },
+                  "ios-version": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "print": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "process": {
+                "type": "object",
+                "properties": {
+                  "file-name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "semantic-versioning": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
     }
   },
   "properties": {
@@ -592,6 +802,14 @@
         }
       }
     },
+    "groups": {
+      "type": "object",
+      "patternProperties": {
+        "": {
+          "$ref": "#/definitions/work-actions"
+        }
+      }
+    },
     "works": {
       "type": "object",
       "patternProperties": {
@@ -605,211 +823,7 @@
               ]
             },
             "steps": {
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "object",
-                    "properties": {
-                      "auto-increment-version-code": {
-                        "type": "object",
-                        "properties": {
-                          "a": {
-                            "type": "number"
-                          },
-                          "b": {
-                            "type": "string"
-                          },
-                          "c": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "build": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "command": {
-                        "type": "object",
-                        "properties": {
-                          "args": {
-                            "type": "string"
-                          },
-                          "working-directory": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "fastlane": {
-                        "type": "object",
-                        "properties": {
-                          "platform": {
-                            "type": "string"
-                          },
-                          "lane": {
-                            "type": "string"
-                          },
-                          "directory": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "get-version": {
-                        "type": "object",
-                        "properties": {}
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "injection": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "string"
-                          },
-                          "data": {
-                            "type": "object"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "player-settings": {
-                        "type": "object",
-                        "properties": {
-                          "company-name": {
-                            "type": "string"
-                          },
-                          "product-name": {
-                            "type": "string"
-                          },
-                          "version": {
-                            "type": "string"
-                          },
-                          "preset": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "player-settings-android": {
-                        "type": "object",
-                        "properties": {
-                          "package-name": {
-                            "type": "string"
-                          },
-                          "architectures": {
-                            "type": "string"
-                          },
-                          "keystore": {
-                            "type": "string"
-                          },
-                          "increment-version-code": {
-                            "type": "boolean"
-                          },
-                          "optimized-frame-pacing": {
-                            "type": "boolean"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "player-settings-ios": {
-                        "type": "object",
-                        "properties": {
-                          "identifier": {
-                            "type": "string"
-                          },
-                          "increment-version-code": {
-                            "type": "boolean"
-                          },
-                          "target-sdk": {
-                            "type": "string"
-                          },
-                          "ios-version": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "print": {
-                        "type": "object",
-                        "properties": {
-                          "message": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "process": {
-                        "type": "object",
-                        "properties": {
-                          "file-name": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "semantic-versioning": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "object"
-                          }
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
+              "$ref": "#/definitions/work-actions"
             }
           }
         }

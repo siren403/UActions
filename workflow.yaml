@@ -12,6 +12,15 @@ steps:
         url: "https://google.com"
         key: 333=-====Snd3d30_3433
         number: !!int 11111
+groups:
+  first: 
+    - print:
+        message: first-1
+    - print: 
+        message: first-2
+  second:
+    - print: 
+        message: s
 jobs:
   input-test:
     platform: android
@@ -109,6 +118,12 @@ works:
     steps:
       - print:
           message: work test
+  group-test:
+    platform: android
+    steps:
+      - first
+      - print: 
+          message: second
   build-apk:
     platform: android
     steps:

@@ -35,7 +35,7 @@ namespace Tests.Editor
                             "first", new Work()
                             {
                                 platform = "android",
-                                steps = new[]
+                                steps = new object[]
                                 {
                                     new Dictionary<string, Dictionary<string, object>>()
                                     {
@@ -51,6 +51,41 @@ namespace Tests.Editor
             runner.Run();
 
             Assert.AreEqual("success", runner.View[nameof(SuccessAction).PascalToKebabCase()]);
+        }
+        
+        [Test]
+        public void GroupsTests()
+        {
+            // var runner = new WorkflowRunnerBuilder()
+            //     .SetWorkName("first")
+            //     .SetActions(new Dictionary<string, Type>()
+            //     {
+            //         {nameof(SuccessAction).PascalToKebabCase(), typeof(SuccessAction)}
+            //     })
+            //     .SetWorkflow(new Workflow()
+            //     {
+            //         works = new Dictionary<string, Work>()
+            //         {
+            //             {
+            //                 "first", new Work()
+            //                 {
+            //                     platform = "android",
+            //                     steps = new object[]
+            //                     {
+            //                         new Dictionary<string, Dictionary<string, object>>()
+            //                         {
+            //                             {nameof(SuccessAction).PascalToKebabCase(), new Dictionary<string, object>()}
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     })
+            //     .Build();
+            //
+            // runner.Run();
+            //
+            // Assert.AreEqual("success", runner.View[nameof(SuccessAction).PascalToKebabCase()]);
         }
     }
 }

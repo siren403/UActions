@@ -25,9 +25,11 @@ create [workflow.yaml](./workflow.yaml) file.
 
 > basic hierarchy
 ```yaml
-env: # using values in workflows. <KEY>: <value>
+env: # const values 
   COMPANY: company
+input: # default values
   PRODUCT_NAME: product
+# deprecate
 steps: # action definitions
   # <name>:
   #   uses: <action-name>
@@ -41,6 +43,7 @@ steps: # action definitions
         url: "https://google.com"
         key: 333=-====Snd3d30_3433
         number: !!int 11111
+# deprecate
 jobs:
   build-apk: # <name>
     platform: android # ex) android || ios
@@ -62,6 +65,29 @@ jobs:
             - "ARM64"
       - uses: build
         with:
+          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
+groups:
+  first:
+    - print:
+        message: first-1
+    - print:
+        message: first-2
+  second:
+    - print:
+        message: s
+works:
+  build-apk:
+    platform: android
+    steps:
+      - player-settings:
+          company-name: $(COMPANY)
+          product-name: $(PRODUCT_NAME)
+      - player-settings-android:
+          package-name: com.$(COMPANY).$(PRODUCT_NAME)
+          architectures: !architectures
+            - "ARMv7"
+            - "ARM64"
+      - build:
           path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
 ```
 
