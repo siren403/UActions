@@ -72,6 +72,7 @@ public class SchemaCommands : ConsoleAppBase
         var properties = new Dictionary<string, object>()
         {
             {"env", new {type = "object"}},
+            {"input", new {type = "object"}},
             {
                 "groups", new
                 {
