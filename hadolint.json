@@ -1,25 +1,53 @@
 {
-    "$schema": "https://json-schema.org/draft-07/schema",
-    "title": "JSON Schema for Hadolint, a Dockerfile linter tool",
-    "description": "Dockerfile linter, validate inline bash, written in Haskell",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "",
     "type": "object",
-    "additionalProperties": false,
-    "required": [
-        "jobs"
-    ],
     "definitions": {
         "action-names": {
             "type": "string",
             "oneOf": [
                 {
+                    "const": "auto-increment-version-code"
+                },
+                {"const": "a"},
+                {"const": "b"},
+                {"const": "c"},
+                {
                     "const": "build"
                 },
                 {
+                    "const": "command"
+                },
+                {
+                    "const": "fastlane"
+                },
+                {
+                    "const": "get-version"
+                },
+                {
+                    "const": "injection"
+                },
+                {
                     "const": "player-settings"
+                },
+                {
+                    "const": "player-settings-android"
+                },
+                {
+                    "const": "player-settings-ios"
+                },
+                {
+                    "const": "print"
+                },
+                {
+                    "const": "process"
+                },
+                {
+                    "const": "semantic-versioning"
                 }
             ]
         },
-        "build-step": {
+        "action-def": {
             "type": "object",
             "properties": {
                 "name": {
@@ -31,7 +59,50 @@
                 "with": {
                     "type": "object"
                 }
+            }
+        },
+        "auto-increment-version-code": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "auto-increment-version-code"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
             },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "a": {
+                                "type": "number"
+                            },
+                            "b": {
+                                "type": "string"
+                            },
+                            "c": {
+                                "type": "number"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "build": {
+            "$ref": "#/definitions/action-def",
             "if": {
                 "properties": {
                     "uses": {
@@ -51,32 +122,148 @@
                                 "type": "string"
                             }
                         },
-                        "required": [
-                            "path"
-                        ]
+                        "required": []
                     }
                 },
                 "required": [
                     "with"
                 ],
                 "not": {
-                    "required": ["name"]
+                    "required": [
+                        "name"
+                    ]
                 }
             }
         },
-        "player-settings-step": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
+        "command": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "command"
+                    }
                 },
-                "uses": {
-                    "type": "string"
-                },
-                "with": {
-                    "type": "object"
-                }
+                "required": [
+                    "uses"
+                ]
             },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "args": {
+                                "type": "string"
+                            },
+                            "working-directory": {
+                                "type": "string"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "fastlane": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "fastlane"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "platform": {
+                                "type": "string"
+                            },
+                            "lane": {
+                                "type": "string"
+                            },
+                            "directory": {
+                                "type": "string"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "get-version": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "get-version"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
+            }
+        },
+        "injection": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "injection"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "type": "string"
+                            },
+                            "data": {
+                                "type": "object"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "player-settings": {
+            "$ref": "#/definitions/action-def",
             "if": {
                 "properties": {
                     "uses": {
@@ -93,19 +280,20 @@
                         "type": "object",
                         "properties": {
                             "company-name": {
-                                "type": "string"
+                                "type": "number"
                             },
                             "product-name": {
                                 "type": "string"
                             },
                             "version": {
                                 "type": "string"
+                            },
+                            "preset": {
+                                "type": "string"
                             }
                         },
                         "required": [
-                            "company-name",
-                            "product-name",
-                            "version"
+                            "company-name"
                         ]
                     }
                 },
@@ -113,166 +301,413 @@
                     "with"
                 ],
                 "not": {
-                    "required": ["name"]
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "player-settings-android": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "player-settings-android"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "package-name": {
+                                "type": "string"
+                            },
+                            "architectures": {
+                                "type": "string"
+                            },
+                            "keystore": {
+                                "type": "string"
+                            },
+                            "increment-version-code": {
+                                "type": "boolean"
+                            },
+                            "optimized-frame-pacing": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "player-settings-ios": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "player-settings-ios"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "identifier": {
+                                "type": "string"
+                            },
+                            "increment-version-code": {
+                                "type": "boolean"
+                            },
+                            "target-sdk": {
+                                "type": "string"
+                            },
+                            "ios-version": {
+                                "type": "string"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "print": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "print"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "message": {
+                                "type": "string"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "process": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "process"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "file-name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "semantic-versioning": {
+            "$ref": "#/definitions/action-def",
+            "if": {
+                "properties": {
+                    "uses": {
+                        "const": "semantic-versioning"
+                    }
+                },
+                "required": [
+                    "uses"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "with": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "object"
+                            }
+                        },
+                        "required": []
+                    }
+                },
+                "required": [
+                    "with"
+                ],
+                "not": {
+                    "required": [
+                        "name"
+                    ]
                 }
             }
         }
     },
     "properties": {
-        "action": {
-            "type": "object",
-            "properties": {
-                "foo": {
-                    "type": "string"
-                }
-            },
-            "if": {
-                "properties": {
-                    "foo": {
-                        "const": "bar"
-                    }
-                },
-                "required": [
-                    "foo"
-                ]
-            },
-            "then": {
-                "properties": {
-                    "bar": {
-                        "type": "number"
-                    }
-                },
-                "required": [
-                    "bar"
-                ]
-            }
-        },
-        "exclusive": {
-            "type": "object",
-            "not": {
-                "anyOf": [
-                    {
-                        "required": [
-                            "baz",
-                            "buzz"
-                        ]
-                    },
-                    {
-                        "required": [
-                            "buzz",
-                            "fizz"
-                        ]
-                    },
-                    {
-                        "required": [
-                            "fizz",
-                            "baz"
-                        ]
-                    }
-                ]
-            },
-            "anyOf": [
-                {
-                    "required": [
-                        "foo"
-                    ]
-                },
-                {
-                    "required": [
-                        "baz"
-                    ]
-                },
-                {
-                    "required": [
-                        "buzz"
-                    ]
-                },
-                {
-                    "required": [
-                        "fizz"
-                    ]
-                }
-            ]
-        },
-        "env": {
-            "type": "object",
-            "description": "runtime environment"
-        },
-        "steps": {
+        "a1": {
             "patternProperties": {
                 "": {
-                    "allOf": [
+                    "type": "object",
+                    "properties": {
+                        "uses": {
+                            "$ref": "#/definitions/action-names"
+                        }
+                    }
+                }
+            }
+        },
+        "tes": {
+            "type": "object",
+            "patternProperties": {
+                "": {
+                    "anyOf": [
                         {
-                            "$ref": "#/definitions/build-step"
+                            "type": "object",
+                            "properties": {
+                                "uses": {"type": "string"}
+                            },
+                            "if": {
+                                "properties": {
+                                    "uses": {"const": "a"}
+                                }
+                            },
+                            "then": {
+                                "required": ["with"],
+                                "properties": {
+                                    "with": {
+                                        "type": "object",
+                                        "properties": {
+                                            "w1": {"type": "string"}
+                                        }
+                                    }
+                                }
+                            },
+                            "else": false
                         },
                         {
-                            "$ref": "#/definitions/player-settings-step"
+                            "type": "object",
+                            "properties": {
+                                "uses": {"type": "string"}
+                            },
+                            "if": {
+                                "properties": {
+                                    "uses": {"const": "b"}
+                                }
+                            },
+                            "then": {
+                                "required": ["with"],
+                                "properties": {
+                                    "with": {
+                                        "type": "object",
+                                        "properties": {
+                                            "w2": {"type": "string"}
+                                        }
+                                    }
+                                }
+                            },
+                            "else": false
                         }
                     ]
                 }
             }
         },
-        "dynamic": {
-            "type": "object",
+        "a": {
             "properties": {
-                "uses": {
+                "key1": {
                     "type": "string"
                 },
-                "with": {
-                    "type": "object",
+                "key2": {
+                    "type": "string"
+                }
+            },
+            "required": ["key1"],
+            "allOf": [
+                {
                     "if": {
+                        "required": ["key2"],
                         "properties": {
-                            "uses": {
-                                "const": "build"
+                            "key1": {
+                                "const": "value1"
+                            },
+                            "key2": {
+                                "const": "value2"
                             }
                         }
                     },
                     "then": {
+                        "required": ["key3", "with"],
                         "properties": {
-                            "path": {
+                            "key3": {
                                 "type": "string"
+                            },
+                            "with": {
+                                "type": "object",
+                                "required": ["key1"],
+                                "properties": {
+                                    "key1": {"type": "string"}
+                                }
                             }
+                        }
+                    },
+                    "else": {
+                        "not": {
+                            "required": ["key3"]
                         },
-                        "required": [
-                            "path"
-                        ]
+                        "properties": {
+                            "with": {
+                                "not": {
+                                    "required": ["key2"]
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        },
-        "p": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
                 },
-                "age": {
-                    "type": "number"
-                }
-            },
-            "if": {
-                "properties": {
-                    "name": {
-                        "const": "final"
+                {
+                    "if": {
+                        "required": ["key2"],
+                        "properties": {
+                            "key1": {
+                                "const": "value1"
+                            },
+                            "key2": {
+                                "const": "value2-1"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": ["key4", "with"],
+                        "properties": {
+                            "key4": {
+                                "type": "string"
+                            },
+                            "with": {
+                                "type": "object",
+                                "required": ["key2"],
+                                "properties": {
+                                    "key2": {"type": "string"}
+                                }
+                            }
+                        }
+                    },
+                    "else": {
+                        "not": {
+                            "required": ["key4"]
+                        },
+                        "properties": {
+                            "with": {
+                                "not": {
+                                    "required": ["key1"]
+                                }
+                            }
+                        }
                     }
                 }
-            },
-            "then": {
-                "properties": {
-                    "age": {
-                        "const": 23
-                    }
-                }
-            }
+            ]
         },
-        "pat": {
+        "env": {
+            "type": "object"
+        },
+        "steps": {
             "type": "object",
             "patternProperties": {
-                "^S_": {
-                    "type": "string"
-                },
-                "^I_": {
-                    "type": "integer"
+                "": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/auto-increment-version-code"
+                        },
+                        {
+                            "$ref": "#/definitions/build"
+                        },
+                        {
+                            "$ref": "#/definitions/a"
+                        },
+                        {
+                            "$ref": "#/definitions/command"
+                        },
+                        {
+                            "$ref": "#/definitions/fastlane"
+                        },
+                        {
+                            "$ref": "#/definitions/get-version"
+                        },
+                        {
+                            "$ref": "#/definitions/injection"
+                        },
+                        {
+                            "$ref": "#/definitions/player-settings"
+                        },
+                        {
+                            "$ref": "#/definitions/player-settings-android"
+                        },
+                        {
+                            "$ref": "#/definitions/player-settings-ios"
+                        },
+                        {
+                            "$ref": "#/definitions/print"
+                        },
+                        {
+                            "$ref": "#/definitions/process"
+                        },
+                        {
+                            "$ref": "#/definitions/semantic-versioning"
+                        }
+                    ]
                 }
             }
         },
@@ -284,24 +719,50 @@
                     "properties": {
                         "platform": {
                             "type": "string",
-                            "oneOf": [
-                                {
-                                    "const": "android"
-                                },
-                                {
-                                    "const": "ios"
-                                }
+                            "enum": [
+                                "android",
+                                "ios"
                             ]
                         },
                         "steps": {
                             "type": "array",
                             "items": {
-                                "oneOf": [
+                                "anyOf": [
                                     {
-                                        "$ref": "#/definitions/build-step"
+                                        "$ref": "#/definitions/auto-increment-version-code"
                                     },
                                     {
-                                        "$ref": "#/definitions/player-settings-step"
+                                        "$ref": "#/definitions/build"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/command"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/fastlane"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/get-version"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/injection"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/player-settings"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/player-settings-android"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/player-settings-ios"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/print"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/process"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/semantic-versioning"
                                     }
                                 ]
                             }
@@ -309,49 +770,6 @@
                     }
                 }
             }
-        },
-        "ignored": {
-            "type": "array",
-            "description": "A list of rules to be ignored",
-            "items": {
-                "type": "string",
-                "oneOf": [
-                    {
-                        "const": "DL3000",
-                        "description": "Use absolute WORKDIR."
-                    },
-                    {
-                        "const": "DL3001",
-                        "description": "For some bash commands it makes no sense running them in a Docker container like ssh, vim, shutdown, service, ps, free, top, kill, mount, ifconfig."
-                    },
-                    {
-                        "const": "DL3002",
-                        "description": "Last user should not be root."
-                    },
-                    {
-                        "const": "DL3003",
-                        "description": "Use WORKDIR to switch to a directory."
-                    },
-                    {
-                        "const": "DL3004",
-                        "description": "Do not use sudo as it leads to unpredictable behavior. Use a tool like gosu to enforce root."
-                    },
-                    {
-                        "const": "DL3005",
-                        "description": "Do not use apt-get upgrade or dist-upgrade."
-                    }
-                ],
-                "title": "Rule"
-            }
-        },
-        "trustedRegistries": {
-            "type": "array",
-            "description": "A list of trusted registries. Ex: docker.io",
-            "items": {
-                "type": "string"
-            }
         }
-    },
-    "dependencies": {
     }
 }

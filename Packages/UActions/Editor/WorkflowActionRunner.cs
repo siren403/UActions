@@ -2,17 +2,54 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UActions.Editor.Actions;
-using UnityEngine;
 using YamlDotNet.Serialization;
 
 namespace UActions.Editor
 {
+    public interface ILogger
+    {
+        void Log(string message);
+        void LogWarning(string message);
+        void LogException(Exception e);
+    }
+
+    public class Logger : ILogger
+    {
+        public void Log(string message)
+        {
+#if UNITY_EDITOR
+            UnityEngine.Debug.Log(message);
+#else
+            Console.WriteLine(message);
+#endif
+        }
+
+        public void LogWarning(string message)
+        {
+#if UNITY_EDITOR
+            UnityEngine.Debug.LogWarning(message);
+#else
+            Console.WriteLine(message);
+#endif
+        }
+
+        public void LogException(Exception e)
+        {
+#if UNITY_EDITOR
+            UnityEngine.Debug.LogException(e);
+#else
+            Console.WriteLine(e);
+#endif
+        }
+    }
+
     public class WorkflowActionRunner
     {
         private const string AssemblyName = "UActions.Editor";
         private readonly Dictionary<string, Type> _actionTypes;
         private readonly Type[] _registrations;
+
+        public ILogger Logger { set; private get; }
 
         public WorkflowActionRunner()
         {
@@ -36,6 +73,12 @@ namespace UActions.Editor
                 .ToArray();
         }
 
+        public WorkflowActionRunner(Dictionary<string, Type> actions)
+        {
+            _actionTypes = actions;
+            _registrations = Array.Empty<Type>();
+        }
+
         public void Registration(DeserializerBuilder builder)
         {
             foreach (var type in _registrations)
@@ -45,7 +88,7 @@ namespace UActions.Editor
             }
         }
 
-        public void Run(WorkflowContext context, string name, Dictionary<string, object> with)
+        public void Run(WorkflowContext context, string name, Dictionary<string, object> with = null)
         {
             if (string.IsNullOrEmpty(name)) return;
             if (!_actionTypes.TryGetValue(name, out var type)) return;
@@ -60,14 +103,14 @@ namespace UActions.Editor
                 var withTypes = with?.Select(_ => _.Value.GetType()).ToArray() ?? Array.Empty<Type>();
 
                 var parameters = new List<object>();
-                ConstructorInfo matchedConstructor = null;
+                ConstructorInfo? matchedConstructor = null;
                 var withDictionaryType = typeof(Dictionary<string, object>);
                 foreach (var constructorInfo in constructors)
                 {
                     var parameterInfos = constructorInfo.GetParameters();
                     parameters.Clear();
 
-                    if (with == null && !parameterInfos.Any())
+                    if ((with == null || !with.Any()) && !parameterInfos.Any())
                     {
                         matchedConstructor = constructorInfo;
                         break;
@@ -76,7 +119,7 @@ namespace UActions.Editor
                     if (parameterInfos.Length == 1 &&
                         parameterInfos[0].ParameterType == withDictionaryType)
                     {
-                        parameters.Add(with);
+                        parameters.Add(with!);
                     }
                     else
                     {
@@ -90,7 +133,7 @@ namespace UActions.Editor
                             {
                                 parameters.Add(withValues[i]);
                             }
-                            else if (with.TryGetValue(infoName, out var value))
+                            else if (with!.TryGetValue(infoName, out var value))
                             {
                                 parameters.Add(value);
                             }
@@ -106,21 +149,22 @@ namespace UActions.Editor
 
                 if (matchedConstructor?.Invoke(parameters.ToArray()) is IAction instance)
                 {
-                    if ((instance.Targets & context.CurrentTargets.TargetPlatform) > 0)
+                    if (instance.Targets == TargetPlatform.All ||
+                        (instance.Targets & context.CurrentTargets.TargetPlatform) > 0)
                     {
-                        Debug.Log($"[{nameof(UActions)}] run action - {name}");
+                        Logger?.Log($"[{nameof(UActions)}] run action - {name}");
                         instance.Execute(context);
                     }
                     else
                     {
-                        Debug.LogWarning($"[Action] {name} is not support {context.CurrentTargets}");
+                        Logger?.LogWarning($"[Action] {name} is not support {context.CurrentTargets}");
                     }
                 }
             }
             catch (Exception e)
             {
                 // Debug.Log($"[{name}] failed! find constructor");
-                Debug.Log(e);
+                Logger?.LogException(e);
                 throw;
             }
         }

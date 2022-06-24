@@ -1,6 +1,16 @@
 ﻿action:
   foo: "bar"
   bar: 2
+a:
+  key1: value1
+  key2: value2s
+tes: 
+  first:
+    uses: a
+    with: 
+  second: 
+    uses: b
+    with: 
 env:
   TEST: |-
     estset
@@ -15,9 +25,11 @@ steps:
   player-settings:
     uses: player-settings
     with:
-      company-name: s
-      product-name: s
-      version: s
+      company-name: 0
+  test:
+    uses: a
+    with:
+      
 dynamic:
   uses: builds
 pat:

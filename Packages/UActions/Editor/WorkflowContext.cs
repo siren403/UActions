@@ -22,6 +22,12 @@ namespace UActions.Editor
             }
         }
 
+        public WorkflowContext(WorkflowArgumentView argumentView)
+        {
+            _argumentView = argumentView;
+            CurrentTargets = new BuildTargets();
+        }
+
         public string Format(string format) => _argumentView.Format(format);
 
         public void SetEnv(string key, string value)

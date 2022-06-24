@@ -9,6 +9,8 @@ namespace UActions.Editor
 {
     public readonly struct BuildTargets
     {
+        public static readonly BuildTargets All = new(TargetPlatform.All, BuildTarget.NoTarget, BuildTargetGroup.Unknown);
+        
         public readonly TargetPlatform TargetPlatform;
         public readonly BuildTarget Target;
         public readonly BuildTargetGroup TargetGroup;

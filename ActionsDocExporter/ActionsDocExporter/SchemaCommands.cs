@@ -7,14 +7,14 @@ public class SchemaCommands : ConsoleAppBase
 {
     class Actions
     {
-        public Dictionary<string, string>[] allOf { get; }
+        public Dictionary<string, string>[] anyOf { get; }
 
         public Actions(string path, string[] actionsNames)
         {
-            allOf = new Dictionary<string, string>[actionsNames.Length];
+            anyOf = new Dictionary<string, string>[actionsNames.Length];
             for (int i = 0; i < actionsNames.Length; i++)
             {
-                allOf[i] = new() {{"$ref", $"{path}/{actionsNames[i]}"}};
+                anyOf[i] = new() {{"$ref", $"{path}/{actionsNames[i]}"}};
             }
         }
     }
@@ -110,8 +110,7 @@ public class SchemaCommands : ConsoleAppBase
                         {
                             type = "object",
                             properties = args.ToDictionary(_ => _.Name,
-                                _ => new {type = ExportUtils.ValueTypeToString(_)}),
-                            required = new string[] { }
+                                _ => new {type = ExportUtils.ValueTypeToString(_)})
                         }
                     },
                     required = new[] {"with"},

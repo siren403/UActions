@@ -84,8 +84,7 @@
               "c": {
                 "type": "number"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -118,8 +117,7 @@
               "path": {
                 "type": "string"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -155,8 +153,7 @@
               "working-directory": {
                 "type": "string"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -195,8 +192,7 @@
               "directory": {
                 "type": "string"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -245,8 +241,7 @@
               "data": {
                 "type": "object"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -288,8 +283,7 @@
               "preset": {
                 "type": "string"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -334,8 +328,7 @@
               "optimized-frame-pacing": {
                 "type": "boolean"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -377,8 +370,7 @@
               "ios-version": {
                 "type": "string"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -411,8 +403,7 @@
               "message": {
                 "type": "string"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -445,8 +436,7 @@
               "file-name": {
                 "type": "string"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -479,8 +469,7 @@
               "type": {
                 "type": "object"
               }
-            },
-            "required": []
+            }
           }
         },
         "required": [
@@ -502,7 +491,7 @@
       "type": "object",
       "patternProperties": {
         "": {
-          "allOf": [
+          "anyOf": [
             {
               "$ref": "#/definitions/auto-increment-version-code"
             },
@@ -559,7 +548,7 @@
             "steps": {
               "type": "array",
               "items": {
-                "allOf": [
+                "anyOf": [
                   {
                     "$ref": "#/definitions/auto-increment-version-code"
                   },

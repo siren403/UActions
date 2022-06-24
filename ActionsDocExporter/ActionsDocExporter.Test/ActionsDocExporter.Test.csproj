@@ -24,4 +24,10 @@
       <ProjectReference Include="..\ActionsDocExporter\ActionsDocExporter.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="UnityEditor">
+        <HintPath>..\dll\Unity2021.2.12f1\UnityEditor.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
