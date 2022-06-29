@@ -75,9 +75,13 @@ namespace UActions.Editor
             else
                 actionRunner = new WorkflowActionRunner(_actions);
 
+#if UNITY_2021_2_OR_NEWER
             var deserializerBuilder = new DeserializerBuilder()
                 .WithNamingConvention(HyphenatedNamingConvention.Instance);
-
+#else
+            var deserializerBuilder = new DeserializerBuilder()
+                .WithNamingConvention(new HyphenatedNamingConvention());
+#endif
             actionRunner.Registration(deserializerBuilder);
 
             var deserializer = deserializerBuilder.Build();
