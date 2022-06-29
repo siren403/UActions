@@ -13,8 +13,13 @@ namespace UActions.Editor.Actions
         {
             public void Register(DeserializerBuilder builder)
             {
+#if UNITY_2021_2_OR_NEWER
                 builder.WithTagMapping(new TagName("!architectures"), typeof(AndroidArchitecture[]));
                 builder.WithTagMapping(new TagName("!keystore"), typeof(Keystore));
+#else
+                builder.WithTagMapping("!architectures", typeof(AndroidArchitecture[]));
+                builder.WithTagMapping("!keystore", typeof(Keystore));
+#endif
             }
         }
 

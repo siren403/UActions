@@ -103,7 +103,7 @@ namespace UActions.Editor
                 var withTypes = with?.Select(_ => _.Value.GetType()).ToArray() ?? Array.Empty<Type>();
 
                 var parameters = new List<object>();
-                ConstructorInfo? matchedConstructor = null;
+                ConstructorInfo matchedConstructor = null;
                 var withDictionaryType = typeof(Dictionary<string, object>);
                 foreach (var constructorInfo in constructors)
                 {

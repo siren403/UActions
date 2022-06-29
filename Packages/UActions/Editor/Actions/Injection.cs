@@ -34,7 +34,11 @@ namespace UActions.Editor.Actions
             asset.Inject(_data);
 
             EditorUtility.SetDirty(asset);
+#if UNITY_2021_2_OR_NEWER
             AssetDatabase.SaveAssetIfDirty(asset);
+#else
+            AssetDatabase.SaveAssets();
+#endif
         }
     }
 }
