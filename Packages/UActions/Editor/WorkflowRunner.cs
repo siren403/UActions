@@ -31,21 +31,13 @@ namespace UActions.Editor
 
     public class WorkflowRunner
     {
-#if UNITY_2021_2_OR_NEWER
-        private static readonly Dictionary<string, BuildTargets>
-            PlatformNameToTargets = new()
-            {
-                {"android", new BuildTargets(TargetPlatform.Android, BuildTarget.Android, BuildTargetGroup.Android)},
-                {"ios", new BuildTargets(TargetPlatform.iOS, BuildTarget.iOS, BuildTargetGroup.iOS)},
-            };
-#else
         private static readonly Dictionary<string, BuildTargets>
             PlatformNameToTargets = new Dictionary<string, BuildTargets>()
             {
                 {"android", new BuildTargets(TargetPlatform.Android, BuildTarget.Android, BuildTargetGroup.Android)},
                 {"ios", new BuildTargets(TargetPlatform.iOS, BuildTarget.iOS, BuildTargetGroup.iOS)},
             };
-#endif
+
         private readonly WorkflowArgumentView _argumentView;
         private readonly WorkflowActionRunner _actionRunner;
         private readonly Workflow _workflow;
@@ -81,9 +73,14 @@ namespace UActions.Editor
             var buildTarget = EditorUserBuildSettings.activeBuildTarget;
             var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
 
-            if (!PlatformNameToTargets.TryGetValue(work.platform, out var targets))
+            if (string.IsNullOrEmpty(work.platform) ||
+                !PlatformNameToTargets.TryGetValue(work.platform, out var targets))
             {
-                throw new Exception($"not found platform: {work.platform}");
+                var currentTarget = PlatformNameToTargets.First(pair =>
+                    pair.Value.Target == EditorUserBuildSettings.activeBuildTarget);
+                work.platform = currentTarget.Key;
+                targets = currentTarget.Value;
+                // throw new Exception($"not found platform: {work.platform}");
             }
 
             if (Application.isBatchMode && (buildTarget != targets.Target))

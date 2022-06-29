@@ -266,6 +266,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "jp.cysharp.randomfixturekit": {
+      "version": "https://github.com/Cysharp/RandomFixtureKit.git?path=src/RandomFixtureKit.Unity/Assets/Scripts/RandomFixtureKit",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f07f2079c6c5546f27eff61f4c0764c0030f5c6b"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

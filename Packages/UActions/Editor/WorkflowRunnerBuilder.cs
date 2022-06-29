@@ -8,9 +8,14 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace UActions.Editor
 {
+    public class Map : Dictionary<object, object>
+    {
+    }
+
     public class WorkflowRunnerBuilder
     {
         private string _filePath = "workflow.yaml";
+        private string _workflowText;
         private bool _enableLoadEnv;
         private string _workName;
         private Dictionary<string, Type> _actions;
@@ -33,6 +38,17 @@ namespace UActions.Editor
             return this;
         }
 
+        public WorkflowRunnerBuilder SetWorkflowText(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                throw new NullReferenceException(nameof(text));
+            }
+
+            _workflowText = text;
+            return this;
+        }
+
         public WorkflowRunnerBuilder SetWorkName(string workName)
         {
             _workName = workName;
@@ -49,6 +65,30 @@ namespace UActions.Editor
         {
             _workflow = workflow;
             return this;
+        }
+
+        private string ReadWorkflowText()
+        {
+            string input = _workflowText;
+            if (string.IsNullOrEmpty(input))
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), _filePath);
+#if UNITY_2021_2_OR_NEWER
+                using var reader = new StreamReader(path);
+                input = reader.ReadToEnd();
+#else
+                var reader = new StreamReader(path);
+                input = reader.ReadToEnd();
+                reader.Dispose();
+#endif
+            }
+
+            if (string.IsNullOrEmpty(input))
+            {
+                throw new Exception("workflow is empty");
+            }
+
+            return input;
         }
 
         public WorkflowRunner Build()
@@ -86,17 +126,12 @@ namespace UActions.Editor
 
             var deserializer = deserializerBuilder.Build();
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _filePath);
-#if UNITY_2021_2_OR_NEWER
-            using var reader = new StreamReader(path);
-#else
-            var reader = new StreamReader(path);
-#endif
+
             Workflow workflow = null;
 
             if (_workflow == null)
             {
-                workflow = deserializer.Deserialize<Workflow>(reader.ReadToEnd());
+                workflow = deserializer.Deserialize<Workflow>(ReadWorkflowText());
 
                 if (workflow.env != null)
                 {
@@ -122,11 +157,97 @@ namespace UActions.Editor
                 workflow = _workflow;
             }
 
-#if !UNITY_2021_2_OR_NEWER
-            reader.Dispose();
-#endif
 
             return new WorkflowRunner(workflow, argumentView, actionRunner);
+        }
+
+
+        public class FluentBuilder
+        {
+            private readonly WorkflowRunnerBuilder _builder;
+            private readonly Workflow _workflow;
+            private Work _currentWork;
+            private List<object> _currentSteps;
+            private Dictionary<string, Type> _actions;
+
+            public FluentBuilder()
+            {
+                _builder = new WorkflowRunnerBuilder();
+                _workflow = new Workflow();
+                _actions = new Dictionary<string, Type>();
+            }
+
+            public FluentBuilder Work(string name)
+            {
+                if (_workflow.works == null)
+                {
+                    _workflow.works = new Dictionary<string, Work>();
+                }
+
+                _currentWork = new Work();
+                _workflow.works[name] = _currentWork;
+                return this;
+            }
+
+            public FluentBuilder Step(string action, Dictionary<object, object> data)
+            {
+                if (_currentWork == null)
+                {
+                    throw new Exception("require work");
+                }
+
+                if (_currentWork.steps == null)
+                {
+                    _currentSteps = new List<object>();
+                    _currentWork.steps = _currentSteps;
+                }
+
+                _currentSteps.Add(new Dictionary<object, object>()
+                {
+                    {action, data}
+                });
+
+                return this;
+            }
+
+            public FluentBuilder Step(string groupKey)
+            {
+                if (_currentWork == null)
+                {
+                    throw new Exception("require work");
+                }
+
+                if (_currentWork.steps == null)
+                {
+                    _currentSteps = new List<object>();
+                    _currentWork.steps = _currentSteps;
+                }
+
+                _currentSteps.Add(groupKey);
+
+                return this;
+            }
+
+            public FluentBuilder Action<T>() where T : IAction
+            {
+                var actionType = typeof(T);
+                _actions.Add(actionType.Name.PascalToKebabCase(), actionType);
+                return this;
+            }
+
+
+            public WorkflowRunner Build(string work)
+            {
+                _builder.SetActions(_actions);
+                _builder.SetWorkflow(_workflow);
+                _builder.SetWorkName(work);
+                return _builder.Build();
+            }
+        }
+
+        public static FluentBuilder Fluent()
+        {
+            return new FluentBuilder();
         }
     }
 }

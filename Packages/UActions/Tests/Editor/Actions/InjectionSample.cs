@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Injectable/Sample", fileName = nameof(InjectionSample))]
 public class InjectionSample : InjectableObject<InjectionSample>
 {
-    [SerializeField] private string url;
-    [SerializeField] private string key;
-    [SerializeField] private int number;
+    public string url;
+    public string key;
+    public int number;
 }
