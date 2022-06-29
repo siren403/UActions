@@ -9,8 +9,11 @@ namespace UActions.Editor
 {
     public static class DotEnv
     {
+#if UNITY_2021_2_OR_NEWER
         private static readonly Dictionary<string, string> Variables = new();
-
+#else
+        private static readonly Dictionary<string, string> Variables = new Dictionary<string, string>();
+#endif
         public static void Load()
         {
             Variables.Clear();

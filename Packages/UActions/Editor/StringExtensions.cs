@@ -14,8 +14,13 @@ namespace UActions.Editor
 #endif
         public static string Format(this string format, IReadOnlyDictionary<string, string> dictionary)
         {
+#if UNITY_2021_2_OR_NEWER
             return CurlyBracketsPattern.Replace(format,
                 match => dictionary.TryGetValue(match.Value[2..^1], out var value) ? value : match.Value);
+#else
+            return CurlyBracketsPattern.Replace(format,
+                match => dictionary.TryGetValue(match.Value.Substring(2, match.Value.Length - 3), out var value) ? value : match.Value);
+#endif
         }
 
         public static string PascalToKebabCase(this string value)

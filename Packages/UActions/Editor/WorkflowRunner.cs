@@ -9,9 +9,13 @@ namespace UActions.Editor
 {
     public readonly struct BuildTargets
     {
+#if UNITY_2021_2_OR_NEWER
         public static readonly BuildTargets All = new(TargetPlatform.All, BuildTarget.NoTarget,
             BuildTargetGroup.Unknown);
-
+#else
+        public static readonly BuildTargets All =
+            new BuildTargets(TargetPlatform.All, BuildTarget.NoTarget, BuildTargetGroup.Unknown);
+#endif
         public readonly TargetPlatform TargetPlatform;
         public readonly BuildTarget Target;
         public readonly BuildTargetGroup TargetGroup;
@@ -27,13 +31,21 @@ namespace UActions.Editor
 
     public class WorkflowRunner
     {
+#if UNITY_2021_2_OR_NEWER
         private static readonly Dictionary<string, BuildTargets>
             PlatformNameToTargets = new()
             {
                 {"android", new BuildTargets(TargetPlatform.Android, BuildTarget.Android, BuildTargetGroup.Android)},
                 {"ios", new BuildTargets(TargetPlatform.iOS, BuildTarget.iOS, BuildTargetGroup.iOS)},
             };
-
+#else
+        private static readonly Dictionary<string, BuildTargets>
+            PlatformNameToTargets = new Dictionary<string, BuildTargets>()
+            {
+                {"android", new BuildTargets(TargetPlatform.Android, BuildTarget.Android, BuildTargetGroup.Android)},
+                {"ios", new BuildTargets(TargetPlatform.iOS, BuildTarget.iOS, BuildTargetGroup.iOS)},
+            };
+#endif
         private readonly WorkflowArgumentView _argumentView;
         private readonly WorkflowActionRunner _actionRunner;
         private readonly Workflow _workflow;
@@ -83,9 +95,11 @@ namespace UActions.Editor
             _argumentView.BuildTarget = buildTarget.ToString();
             _argumentView.BuildTargetGroup = buildTargetGroup.ToString();
             _argumentView.ProjectPath = Directory.GetCurrentDirectory();
-
+#if UNITY_2021_2_OR_NEWER
             using WorkflowContext context = new WorkflowContext(_argumentView, targets);
-
+#else
+            WorkflowContext context = new WorkflowContext(_argumentView, targets);
+#endif
             if (work.steps == null)
             {
                 throw new Exception($"Not defined steps from ${workName}");
@@ -114,7 +128,9 @@ namespace UActions.Editor
                     }
                 }
             }
+#if !UNITY_2021_2_OR_NEWER
+            context.Dispose();
+#endif
         }
-
     }
 }
