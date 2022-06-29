@@ -6,8 +6,5 @@
     "description": "Unity Settings Support",
     "keywords": [],
     "license": "MIT",
-    "category": "Scripting",
-    "dependencies": {
-        "com.qkrsogusl3.yamldotnet-upm": "0.0.1"
-    }
+    "category": "Scripting"
 }
