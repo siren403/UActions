@@ -7,14 +7,17 @@ namespace UActions.Editor
     {
         // \{(.*?)\} -> {value}
         // (?<=\{).*?(?=\}) -> value : require positive lookbehind to regex engine
+#if UNITY_2021_2_OR_NEWER
         private static readonly Regex CurlyBracketsPattern = new(@"\$\((.*?)\)", RegexOptions.Multiline);
-
+#else
+        private static readonly Regex CurlyBracketsPattern = new Regex(@"\$\((.*?)\)", RegexOptions.Multiline);
+#endif
         public static string Format(this string format, IReadOnlyDictionary<string, string> dictionary)
         {
             return CurlyBracketsPattern.Replace(format,
                 match => dictionary.TryGetValue(match.Value[2..^1], out var value) ? value : match.Value);
         }
-        
+
         public static string PascalToKebabCase(this string value)
         {
             if (string.IsNullOrEmpty(value))

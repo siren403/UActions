@@ -33,12 +33,23 @@ namespace UActions.Editor.Actions
 
         private string ValidatePath(string path, BuildTarget target)
         {
+#if UNITY_2021_2_OR_NEWER
             return target switch
             {
                 BuildTarget.Android => Path.ChangeExtension(path,
                     EditorUserBuildSettings.buildAppBundle ? ".aab" : ".apk"),
                 _ => path
             };
+#else
+            switch (target)
+            {
+                case BuildTarget.Android:
+                    return Path.ChangeExtension(path,
+                        EditorUserBuildSettings.buildAppBundle ? ".aab" : ".apk");
+                default:
+                    return path;
+            }
+#endif
         }
 
         private string[] GetEnableEditorScenes()

@@ -33,6 +33,7 @@ namespace UActions.Editor
 
         public static string GetRootPath(string packageName)
         {
+#if UNITY_2021_2_OR_NEWER
             _packages ??= AssetDatabase.FindAssets("t:TextAsset package", new[] {"Packages"})
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Where(_ => Path.GetFileName(_) == "package.json")
@@ -40,7 +41,18 @@ namespace UActions.Editor
                 .Select(_ => (path: Path.GetDirectoryName(_.path),
                     info: JsonUtility.FromJson<PackageDefinition>(_.asset.text)))
                 .ToDictionary(_ => _.info.name, _ => _);
-
+#else
+            if (_packages == null)
+            {
+                _packages = AssetDatabase.FindAssets("t:TextAsset package", new[] {"Packages"})
+                    .Select(AssetDatabase.GUIDToAssetPath)
+                    .Where(_ => Path.GetFileName(_) == "package.json")
+                    .Select(_ => (path: _, asset: AssetDatabase.LoadAssetAtPath<TextAsset>(_)))
+                    .Select(_ => (path: Path.GetDirectoryName(_.path),
+                        info: JsonUtility.FromJson<PackageDefinition>(_.asset.text)))
+                    .ToDictionary(_ => _.info.name, _ => _);
+            }
+#endif
             if (_packages.TryGetValue(packageName, out var package))
             {
                 return package.path.Replace("\\", "/");
@@ -69,7 +81,7 @@ namespace UActions.Editor
             Debug.Log(GetRootPath("com.qkrsogusl3.uactions"));
             Debug.Log(Combine("com.qkrsogusl3.uactions", "Editor", "UI"));
         }
-        
+
         // this.Q<Button>(className: "btn").clicked += () =>
         // {
         //     var path = AssetDatabase

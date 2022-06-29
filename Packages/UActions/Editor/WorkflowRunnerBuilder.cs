@@ -83,8 +83,11 @@ namespace UActions.Editor
             var deserializer = deserializerBuilder.Build();
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), _filePath);
+#if UNITY_2021_2_OR_NEWER
             using var reader = new StreamReader(path);
-
+#else
+            var reader = new StreamReader(path);
+#endif
             Workflow workflow = null;
 
             if (_workflow == null)
@@ -114,6 +117,10 @@ namespace UActions.Editor
             {
                 workflow = _workflow;
             }
+
+#if !UNITY_2021_2_OR_NEWER
+            reader.Dispose();
+#endif
 
             return new WorkflowRunner(workflow, argumentView, actionRunner);
         }

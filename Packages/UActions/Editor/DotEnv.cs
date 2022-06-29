@@ -60,9 +60,11 @@ namespace UActions.Editor
             {
                 throw new FileNotFoundException(path);
             }
-
+#if UNITY_2021_2_OR_NEWER
             using var reader = new StreamReader(path);
-
+#else
+            var reader = new StreamReader(path);
+#endif
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
@@ -75,6 +77,10 @@ namespace UActions.Editor
 
                 Add(dictionary, entry[0], entry[1], isOverwrite);
             }
+
+#if !UNITY_2021_2_OR_NEWER
+            reader.Dispose();
+#endif
         }
 
         private static void ReadEnvironmentVariables(Dictionary<string, string> dictionary, bool isOverwrite = true)
@@ -110,9 +116,11 @@ namespace UActions.Editor
         public class FluentBuilder
         {
             private bool _isOverwrite = true;
-
+#if UNITY_2021_2_OR_NEWER
             private readonly Dictionary<string, string> _runtimeScopeEnvs = new();
-
+#else
+            private readonly Dictionary<string, string> _runtimeScopeEnvs = new Dictionary<string, string>();
+#endif
             public FluentBuilder()
             {
                 Variables.Clear();

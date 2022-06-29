@@ -21,15 +21,20 @@ namespace UActions.Editor.Actions
         public void Execute(WorkflowContext context)
         {
             if (Application.isBatchMode) return;
-            
+
             var startInfo = new ProcessStartInfo("powershell.exe")
             {
                 WorkingDirectory = context.Format(_directory),
                 Arguments = $"fastlane {_platform} {_lane}",
             };
-
+#if UNITY_2021_2_OR_NEWER
             using var process = Proc.Start(startInfo);
             process?.WaitForExit();
+#else
+            var process = Proc.Start(startInfo);
+            process?.WaitForExit();
+            process?.Dispose();
+#endif
         }
     }
 }

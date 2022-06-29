@@ -119,7 +119,11 @@ namespace UActions.Editor
                     if (parameterInfos.Length == 1 &&
                         parameterInfos[0].ParameterType == withDictionaryType)
                     {
+#if UNITY_2021_2_OR_NEWER
                         parameters.Add(with!);
+#else
+                        parameters.Add(with);
+#endif
                     }
                     else
                     {
@@ -133,7 +137,11 @@ namespace UActions.Editor
                             {
                                 parameters.Add(withValues[i]);
                             }
+#if UNITY_2021_2_OR_NEWER
                             else if (with!.TryGetValue(infoName, out var value))
+#else
+                            else if (with.TryGetValue(infoName, out var value))
+#endif
                             {
                                 parameters.Add(value);
                             }
