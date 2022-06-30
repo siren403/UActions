@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UActions.Editor;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Tests.Editor
+namespace UActions.Tests.Editor
 {
     public class SuccessAction : IAction
     {
@@ -35,7 +35,7 @@ namespace Tests.Editor
                             "first", new Work()
                             {
                                 platform = "android",
-                                steps = new object[]
+                                steps = new List<object>
                                 {
                                     new Dictionary<string, Dictionary<string, object>>()
                                     {

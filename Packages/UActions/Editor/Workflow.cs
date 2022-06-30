@@ -17,6 +17,6 @@ namespace UActions.Editor
     public class Work
     {
         public string platform;
-        public object[] steps;
+        public List<object> steps;
     }
 }

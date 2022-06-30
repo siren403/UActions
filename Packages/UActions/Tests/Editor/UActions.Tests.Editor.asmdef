@@ -1,11 +1,17 @@
 {
-    "name": "Tests.Runtime",
+    "name": "UActions.Tests.Editor",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "YamlDotNet",
+        "UActions.Editor",
+        "RandomFixtureKit",
+        "UActions.Runtime"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
