@@ -10,6 +10,7 @@ namespace UActions.Editor
 {
     public class Map : Dictionary<object, object>
     {
+        public static Map Empty = new Map();
     }
 
     public class WorkflowRunnerBuilder

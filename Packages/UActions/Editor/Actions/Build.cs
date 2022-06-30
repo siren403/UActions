@@ -28,7 +28,11 @@ namespace UActions.Editor.Actions
             };
 
             var report = BuildPipeline.BuildPlayer(options);
-            ActionHelper.OpenFolder(report.summary.outputPath);
+            if (!Application.isBatchMode)
+            {
+                ActionHelper.OpenFolder(report.summary.outputPath);
+            }
+
         }
 
         private string ValidatePath(string path, BuildTarget target)

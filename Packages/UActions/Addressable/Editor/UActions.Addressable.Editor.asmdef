@@ -1,0 +1,25 @@
+{
+    "name": "UActions.Addressable.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:671d0311f1a324d4093886c779cb4e74",
+        "GUID:69448af7b92c7f342b298e06a37122aa"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.addressables",
+            "expression": "",
+            "define": "ADDRESSABLE"
+        }
+    ],
+    "noEngineReferences": false
+}

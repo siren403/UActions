@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.qkrsogusl3.yamldotnet-upm": "https://github.com/qkrsogusl3/YamlDotNet-UPM.git?path=YamlDotNet.Unity/Packages/YamlDotNet#upm",
+    "com.unity.addressables": "1.19.19",
     "com.unity.collab-proxy": "1.15.12",
     "com.unity.feature.2d": "1.0.0",
     "com.unity.ide.rider": "3.0.12",

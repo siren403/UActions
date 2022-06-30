@@ -54,7 +54,8 @@ namespace UActions.Editor
         public WorkflowActionRunner()
         {
             _actionTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(_ => _.GetName().Name == AssemblyName)
+                .Where(_ => _.GetName().Name == AssemblyName ||
+                            _.GetReferencedAssemblies().Select(r => r.Name).Contains(AssemblyName))
                 .SelectMany(_ => { return _.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IAction))); })
                 .ToDictionary(_ =>
                 {
