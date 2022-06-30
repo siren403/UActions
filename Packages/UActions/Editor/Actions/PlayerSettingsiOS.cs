@@ -53,6 +53,10 @@ namespace UActions.Editor.Actions
             {
                 PlayerSettings.iOS.targetOSVersionString = version;
             }
+
+#if UNITY_2019
+            PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, (int) AppleMobileArchitecture.ARM64);
+#endif
         }
     }
 }
