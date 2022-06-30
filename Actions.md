@@ -54,6 +54,14 @@ with:
   path: <String>
   data: <Dictionary`2>
 ```
+ios-resolver
+---
+
+```yaml
+uses: ios-resolver
+with:
+  use-shell-pods: <Boolean>
+```
 [player-settings](Documents/Actions/player-settings.md)
 ---
 
