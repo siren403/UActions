@@ -22,21 +22,32 @@ namespace UActions.Editor
             var workflow = Bootstrap.LoadWorkflow();
         }
 
-#if UNITY_2021_2_OR_NEWER
-        public void OnFocus()
+        private string _work;
+
+        private void OnGUI()
         {
-            // Debug.Log("focus");
-            var viewer = rootVisualElement.Q<WorkflowViewer>();
-            if (viewer != null)
+            _work = EditorGUILayout.TextField("Work", _work);
+            if (GUILayout.Button("Run"))
             {
-                viewer.Reload();
+                Bootstrap.Run(_work);
             }
         }
 
-        private void CreateGUI()
-        {
-            rootVisualElement.Add(new WorkflowViewer());
-        }
-#endif
+        // #if UNITY_2021_2_OR_NEWER
+//         public void OnFocus()
+//         {
+//             // Debug.Log("focus");
+//             var viewer = rootVisualElement.Q<WorkflowViewer>();
+//             if (viewer != null)
+//             {
+//                 viewer.Reload();
+//             }
+//         }
+//
+//         private void CreateGUI()
+//         {
+//             rootVisualElement.Add(new WorkflowViewer());
+//         }
+// #endif
     }
 }
