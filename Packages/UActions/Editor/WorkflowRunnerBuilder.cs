@@ -237,11 +237,17 @@ namespace UActions.Editor
             }
 
 
-            public WorkflowRunner Build(string work)
+            public WorkflowRunner Build(string work = null)
             {
                 _builder.SetActions(_actions);
                 _builder.SetWorkflow(_workflow);
+                if (string.IsNullOrEmpty(work))
+                {
+                    work = _workflow.works.First().Key;
+                }
+
                 _builder.SetWorkName(work);
+
                 return _builder.Build();
             }
         }

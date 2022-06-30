@@ -21,38 +21,17 @@ namespace UActions.Tests.Editor
         [Test]
         public void RunWorkTestsSimplePasses()
         {
-            var runner = new WorkflowRunnerBuilder()
-                .SetWorkName("first")
-                .SetActions(new Dictionary<string, Type>()
-                {
-                    {nameof(SuccessAction).PascalToKebabCase(), typeof(SuccessAction)}
-                })
-                .SetWorkflow(new Workflow()
-                {
-                    works = new Dictionary<string, Work>()
-                    {
-                        {
-                            "first", new Work()
-                            {
-                                platform = "android",
-                                steps = new List<object>
-                                {
-                                    new Dictionary<string, Dictionary<string, object>>()
-                                    {
-                                        {nameof(SuccessAction).PascalToKebabCase(), new Dictionary<string, object>()}
-                                    }
-                                }
-                            }
-                        }
-                    }
-                })
+            var runner = WorkflowRunnerBuilder.Fluent()
+                .Action<SuccessAction>()
+                .Work("first")
+                .Step("success-action", Map.Empty)
                 .Build();
 
             runner.Run();
 
             Assert.AreEqual("success", runner.View[nameof(SuccessAction).PascalToKebabCase()]);
         }
-        
+
         [Test]
         public void GroupsTests()
         {
