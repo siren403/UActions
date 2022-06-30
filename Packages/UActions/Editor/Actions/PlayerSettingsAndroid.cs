@@ -76,6 +76,10 @@ namespace UActions.Editor.Actions
             else
             {
                 PlayerSettings.Android.useCustomKeystore = false;
+                PlayerSettings.Android.keystoreName = string.Empty;
+                PlayerSettings.Android.keystorePass = string.Empty;
+                PlayerSettings.Android.keyaliasName = string.Empty;
+                PlayerSettings.Android.keyaliasPass = string.Empty;
             }
 
             if (_with.Is("increment-version-code"))

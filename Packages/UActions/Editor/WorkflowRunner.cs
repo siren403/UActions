@@ -119,8 +119,14 @@ namespace UActions.Editor
                 }
                 else if (step is Dictionary<object, object> action)
                 {
+                    // TODO: empty data handling
                     var firstAction = action.First();
-                    if (firstAction.Value is Dictionary<object, object> data)
+                    var actionValue = firstAction.Value;
+                    if (actionValue == null)
+                    {
+                        actionValue = new Dictionary<object, object>();
+                    }
+                    if (actionValue is Dictionary<object, object> data)
                     {
                         string actionName = firstAction.Key.ToString();
                         var withData = data.ToDictionary(_ => _.Key.ToString(), _ => _.Value);

@@ -16,6 +16,13 @@ namespace UActions.Editor
             window.Show();
         }
 
+        [MenuItem("UActions/Validate")]
+        private static void Validate()
+        {
+            var workflow = Bootstrap.LoadWorkflow();
+        }
+
+#if UNITY_2021_2_OR_NEWER
         public void OnFocus()
         {
             // Debug.Log("focus");
@@ -30,5 +37,6 @@ namespace UActions.Editor
         {
             rootVisualElement.Add(new WorkflowViewer());
         }
+#endif
     }
 }

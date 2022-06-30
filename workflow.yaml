@@ -18,6 +18,7 @@ works:
     steps:
       - print:
           message: work test
+      - player-settings-android:
   group-test:
     platform: android
     steps:
