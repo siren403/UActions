@@ -63,6 +63,30 @@ namespace UActions.Editor.Actions
             return defaultValue;
         }
 
+        public static bool TryIs(this Dictionary<string, object> dictionary, string key, out bool value)
+        {
+            if (dictionary.TryGetValue(key, out var obj) && obj is string str)
+            {
+                if (Regex.IsMatch(str, "^(true|y|yes|on)$", RegexOptions.IgnoreCase))
+                {
+                    value = true;
+                }
+                else if (Regex.IsMatch(str, "^(false|n|no|off)$", RegexOptions.IgnoreCase))
+                {
+                    value = false;
+                }
+                else
+                {
+                    throw new FormatException($"The value \"{obj}\" is not a valid YAML Boolean");
+                }
+
+                return true;
+            }
+            
+            value = false;
+            return false;
+        }
+
         public static void OpenFolder(string path)
         {
             if (!Application.isBatchMode)

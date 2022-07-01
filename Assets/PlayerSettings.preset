@@ -754,7 +754,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: iOSTargetOSVersionString
-    value: 11.0
+    value: 12.0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: tvOSSdkVersion
@@ -2955,3 +2955,5 @@ Preset:
   m_ExcludedProperties:
   - bundleVersion
   - AndroidBundleVersionCode
+  - scriptingDefineSymbols
+  - additionalCompilerArguments

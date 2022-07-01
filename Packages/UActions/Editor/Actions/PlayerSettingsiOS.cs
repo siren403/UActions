@@ -53,6 +53,11 @@ namespace UActions.Editor.Actions
             {
                 PlayerSettings.iOS.targetOSVersionString = version;
             }
+            else
+            {
+                // arm64 supported version
+                PlayerSettings.iOS.targetOSVersionString = "12.0";
+            }
 
 #if UNITY_2019
             PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, (int) AppleMobileArchitecture.ARM64);

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine;
 
 namespace UActions.Editor.Actions
 {
@@ -18,7 +21,32 @@ namespace UActions.Editor.Actions
         public void Execute(WorkflowContext context)
         {
 #if IOS_RESOLVER
-            Google.IOSResolver.PodToolExecutionViaShellEnabled = _with.Is("use-shell-pods");
+
+            var settingsType = typeof(Google.IOSResolverSettingsDialog)
+                .GetNestedType("Settings", BindingFlags.NonPublic);
+
+            var constructor = settingsType.GetConstructor(
+                BindingFlags.Instance | BindingFlags.NonPublic,
+                null,
+                CallingConventions.Standard,
+                Type.EmptyTypes,
+                null
+            );
+            var settings = constructor?.Invoke(null);
+
+            if (_with.TryIs("use-shell-pod", out bool useShellPod))
+            {
+                var podToolExecutionViaShellEnabled = settingsType
+                    .GetField(
+                        "podToolExecutionViaShellEnabled",
+                        BindingFlags.Instance | BindingFlags.NonPublic
+                    );
+                podToolExecutionViaShellEnabled?.SetValue(settings, useShellPod);
+                Debug.Log($"{nameof(iOSResolver)} - {podToolExecutionViaShellEnabled} : {useShellPod}");
+            }
+
+            var save = settingsType.GetMethod("Save", BindingFlags.Instance | BindingFlags.NonPublic);
+            save?.Invoke(settings, null);
 #endif
         }
     }

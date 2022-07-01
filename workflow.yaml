@@ -14,11 +14,16 @@ groups:
         message: s
 works:
   first:
-    platform: android
+    platform: ios
     steps:
-      - print:
-          message: work test
-      - player-settings-android:
+      - player-settings:
+          company-name: $(COMPANY)
+          product-name: $(PRODUCT_NAME)
+          preset: Assets/PlayerSettings.preset
+      - ios-resolver:
+          use-shell-pod: false
+      - build:
+          path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
   group-test:
     platform: android
     steps:
