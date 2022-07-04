@@ -153,7 +153,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.UnityLane
+    Android: com.qkrsogusl3.AppBuilder
     iPhone: com.qkrsogusl3.AppBuilder
   buildNumber:
     Standalone: 0
@@ -723,6 +723,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
+    Android: IOS_RESOLVER
     iPhone: IOS_RESOLVER
   additionalCompilerArguments: {}
   platformArchitecture: {}

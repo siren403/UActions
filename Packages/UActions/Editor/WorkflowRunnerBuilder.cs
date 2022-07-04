@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UActions.Editor.Extensions;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -232,7 +233,7 @@ namespace UActions.Editor
             public FluentBuilder Action<T>() where T : IAction
             {
                 var actionType = typeof(T);
-                _actions.Add(actionType.Name.PascalToKebabCase(), actionType);
+                _actions.Add(actionType.GetActionName(), actionType);
                 return this;
             }
 

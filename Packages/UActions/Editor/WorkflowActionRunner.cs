@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UActions.Editor.Extensions;
 using YamlDotNet.Serialization;
 
 namespace UActions.Editor
@@ -57,16 +58,7 @@ namespace UActions.Editor
                 .Where(_ => _.GetName().Name == AssemblyName ||
                             _.GetReferencedAssemblies().Select(r => r.Name).Contains(AssemblyName))
                 .SelectMany(_ => { return _.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IAction))); })
-                .ToDictionary(_ =>
-                {
-                    var attribute = _.GetCustomAttribute<ActionAttribute>();
-                    if (attribute != null)
-                    {
-                        return attribute.Name;
-                    }
-
-                    return _.Name.PascalToKebabCase();
-                });
+                .ToDictionary(_ => _.GetActionName());
 
             _registrations = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(_ => _.GetName().Name == AssemblyName)

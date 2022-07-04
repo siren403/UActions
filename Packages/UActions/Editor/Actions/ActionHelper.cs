@@ -65,8 +65,9 @@ namespace UActions.Editor.Actions
 
         public static bool TryIs(this Dictionary<string, object> dictionary, string key, out bool value)
         {
-            if (dictionary.TryGetValue(key, out var obj) && obj is string str)
+            if (dictionary.TryGetValue(key, out var obj))
             {
+                var str = obj.ToString();
                 if (Regex.IsMatch(str, "^(true|y|yes|on)$", RegexOptions.IgnoreCase))
                 {
                     value = true;
