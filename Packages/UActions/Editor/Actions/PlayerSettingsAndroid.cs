@@ -87,7 +87,9 @@ namespace UActions.Editor.Actions
                 PlayerSettings.Android.bundleVersionCode++;
             }
 
+#if UNITY_2019_4_OR_NEWER
             PlayerSettings.Android.optimizedFramePacing = _with.Is("optimized-frame-pacing");
+#endif
         }
     }
 }
