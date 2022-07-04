@@ -108,7 +108,10 @@
               "ios-resolver": {
                 "type": "object",
                 "properties": {
-                  "use-shell-pods": {
+                  "use-shell-pod": {
+                    "type": "boolean"
+                  },
+                  "link-frameworks-statically": {
                     "type": "boolean"
                   }
                 }

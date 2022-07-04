@@ -60,7 +60,8 @@ ios-resolver
 ```yaml
 uses: ios-resolver
 with:
-  use-shell-pods: <Boolean>
+  use-shell-pod: <Boolean>
+  link-frameworks-statically: <Boolean>
 ```
 [player-settings](Documents/Actions/player-settings.md)
 ---
