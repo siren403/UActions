@@ -6,6 +6,7 @@ namespace UActions.Editor
     public class WorkflowArgumentView
     {
         private const string KeySelectedWork = "work";
+        private const string KeyWorkflowUrl = "url";
         private const string KeyProjectPath = "PROJECT_PATH";
         private const string KeyPlatform = "PLATFORM";
         private const string KeyBuildTarget = "BUILD_TARGET";
@@ -48,6 +49,7 @@ namespace UActions.Editor
             set => _args[KeyBuildTargetGroup] = value;
         }
 
+        public string WorkflowUrl => GetArgument(KeyWorkflowUrl, string.Empty);
 
         private string GetArgument(string key, string defaultValue = null)
         {

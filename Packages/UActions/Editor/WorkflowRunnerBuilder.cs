@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UActions.Editor.Extensions;
 using UnityEngine;
+using UnityEngine.Networking;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -22,8 +23,9 @@ namespace UActions.Editor
         private string _workName;
         private Dictionary<string, Type> _actions;
         private Workflow _workflow;
+        private bool _fromUrl = false;
 
-        public WorkflowRunnerBuilder LoadEnvironmentVariables()
+        public WorkflowRunnerBuilder LoadEnvFile()
         {
             _enableLoadEnv = true;
             return this;
@@ -69,8 +71,14 @@ namespace UActions.Editor
             return this;
         }
 
-        private string ReadWorkflowText()
+        private string ReadWorkflowText(WorkflowArgumentView args)
         {
+            var workflowUrl = args.WorkflowUrl;
+            if (_fromUrl && !string.IsNullOrEmpty(workflowUrl))
+            {
+                
+            }
+            
             string input = _workflowText;
             if (string.IsNullOrEmpty(input))
             {
@@ -93,19 +101,18 @@ namespace UActions.Editor
             return input;
         }
 
+        public WorkflowRunnerBuilder RequestFromUrl()
+        {
+            _fromUrl = true;
+            return this;
+        }
+
         public WorkflowRunner Build()
         {
-            Dictionary<string, string> envs = null;
-            if (_enableLoadEnv)
-            {
-                envs = DotEnv.Fluent().Copy();
-            }
-            else
-            {
-                envs = new Dictionary<string, string>();
-            }
+            Dictionary<string, string> env = null;
+            env = _enableLoadEnv ? DotEnv.Fluent().Copy() : new Dictionary<string, string>();
 
-            var argumentView = new WorkflowArgumentView(envs);
+            var argumentView = new WorkflowArgumentView(env);
             if (!string.IsNullOrEmpty(_workName))
             {
                 argumentView.WorkName = _workName;
@@ -133,13 +140,13 @@ namespace UActions.Editor
 
             if (_workflow == null)
             {
-                workflow = deserializer.Deserialize<Workflow>(ReadWorkflowText());
+                workflow = deserializer.Deserialize<Workflow>(ReadWorkflowText(argumentView));
 
                 if (workflow.env != null)
                 {
                     foreach (var pair in workflow.env)
                     {
-                        envs[pair.Key] = pair.Value;
+                        env[pair.Key] = pair.Value;
                     }
                 }
 
@@ -147,9 +154,9 @@ namespace UActions.Editor
                 {
                     foreach (var pair in workflow.input)
                     {
-                        if (!envs.ContainsKey(pair.Key))
+                        if (!env.ContainsKey(pair.Key))
                         {
-                            envs[pair.Key] = pair.Value;
+                            env[pair.Key] = pair.Value;
                         }
                     }
                 }
