@@ -9,7 +9,7 @@ namespace UActions.Editor.Actions
         public TargetPlatform Targets => TargetPlatform.All;
 
         [Output(KeyOutput)]
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             context.SetEnv(KeyOutput, PlayerSettings.bundleVersion);
             Debug.Log($"[{nameof(GetVersion)} - Output] $({KeyOutput})");

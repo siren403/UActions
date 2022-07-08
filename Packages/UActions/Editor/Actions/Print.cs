@@ -12,7 +12,7 @@ namespace UActions.Editor.Actions
             _message = message;
         }
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             Debug.Log(context.Format(_message));
         }

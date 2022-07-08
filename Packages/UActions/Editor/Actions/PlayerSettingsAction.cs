@@ -46,7 +46,7 @@ namespace UActions.Editor.Actions
             }
         }
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             ApplyPreset(_preset);
 

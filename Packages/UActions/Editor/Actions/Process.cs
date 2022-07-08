@@ -13,7 +13,7 @@ namespace UActions.Editor.Actions
             _fileName = fileName;
         }
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             var startInfo = new ProcessStartInfo()
             {

@@ -18,7 +18,7 @@ namespace UActions.Editor.Actions
             _data = data;
         }
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             if (string.IsNullOrEmpty(_path))
             {

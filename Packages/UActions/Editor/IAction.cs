@@ -5,7 +5,12 @@ namespace UActions.Editor
     public interface IAction
     {
         TargetPlatform Targets { get; }
-        void Execute(WorkflowContext context);
+        void Execute(IWorkflowContext context);
+    }
+
+    public interface IValidatable
+    {
+        void Validate(IWorkflowContext context);
     }
 
     public interface IRegistration

@@ -18,7 +18,7 @@ namespace UActions.Editor.Actions
         }
 
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             Debug.Log($"{_a}, {_b}, {_c}");
         }

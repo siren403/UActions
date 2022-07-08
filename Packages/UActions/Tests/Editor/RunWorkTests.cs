@@ -12,7 +12,7 @@ namespace UActions.Tests.Editor
     {
         public TargetPlatform Targets => TargetPlatform.All;
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             context.SetEnv(nameof(SuccessAction).PascalToKebabCase(), "success");
         }
@@ -46,7 +46,7 @@ namespace UActions.Tests.Editor
                 _withData = withData;
             }
 
-            public void Execute(WorkflowContext context)
+            public void Execute(IWorkflowContext context)
             {
                 context.SetEnv(typeof(WithDataAction).GetActionName(), _withData.Is("input").ToString());
             }

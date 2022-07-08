@@ -20,7 +20,7 @@ namespace UActions.Editor.Actions
             return value != null;
         }
 
-        public static bool TryGetFormat(this Dictionary<string, object> dictionary, string key, WorkflowContext context,
+        public static bool TryGetFormat(this Dictionary<string, object> dictionary, string key, IWorkflowContext context,
             out string value)
         {
             value = default;

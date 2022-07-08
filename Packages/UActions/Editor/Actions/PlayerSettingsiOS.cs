@@ -34,7 +34,7 @@ namespace UActions.Editor.Actions
             _with = with;
         }
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             if (_with.TryGetFormat("identifier", context, out string identifier))
             {

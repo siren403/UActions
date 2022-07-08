@@ -1,30 +1,40 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 namespace UActions.Editor.Actions
 {
-    public class Build : IAction
+    public class Build : IAction, IValidatable
     {
         public TargetPlatform Targets => TargetPlatform.All;
 
-        private readonly string _path;
+        // private readonly string _path;
+        //
+        // public Build(string path)
+        // {
+        //     _path = path;
+        // }
 
-        public Build(string path)
+        public void Validate(IWorkflowContext context)
         {
-            _path = path;
+            if (!context.With.TryGetFormat("path", out var path))
+            {
+                throw new Exception($"not found path");
+            }
         }
 
-
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
+            var path = context.With.GetFormat("path");
+            
             var options = new BuildPlayerOptions
             {
                 scenes = GetEnableEditorScenes(),
                 target = context.CurrentTargets.Target,
                 targetGroup = context.CurrentTargets.TargetGroup,
-                locationPathName = ValidatePath(context.Format(_path), context.CurrentTargets.Target),
+                locationPathName = ValidatePath(path, context.CurrentTargets.Target),
             };
             
             var report = BuildPipeline.BuildPlayer(options);
@@ -63,5 +73,7 @@ namespace UActions.Editor.Actions
                 .Select(scene => scene.path)
                 .ToArray();
         }
+
+ 
     }
 }

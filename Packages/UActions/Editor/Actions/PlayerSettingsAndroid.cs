@@ -47,7 +47,7 @@ namespace UActions.Editor.Actions
         }
 
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             if (_with.TryGetIsValue("package-name", out string packageName))
             {

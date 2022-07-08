@@ -83,6 +83,8 @@ namespace UActions.Editor
 
         public void Run(WorkflowContext context, string name, Dictionary<string, object> with = null)
         {
+            context.WithData = with;
+
             if (string.IsNullOrEmpty(name)) return;
             if (!_actionTypes.TryGetValue(name, out var type)) return;
 

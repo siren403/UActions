@@ -12,7 +12,7 @@ namespace UActions.Addressable.Editor
     {
         public TargetPlatform Targets => TargetPlatform.All;
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
 #if ADDRESSABLE
             var builder = AddressableAssetSettingsDefaultObject.Settings.ActivePlayerDataBuilder;

@@ -1,16 +1,72 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using UActions.Editor.Actions;
 using UnityEngine;
 
 namespace UActions.Editor
 {
-    public class WorkflowContext : IDisposable
+    public interface IWith
+    {
+        bool Is(string key, bool defaultValue = false);
+        bool TryGetFormat(string key, out string value);
+        string GetFormat(string key, string defaultValue = null);
+    }
+
+    public class WithDictionaryData : IWith
+    {
+        private readonly IWorkflowContext _context;
+        public Dictionary<string, object> Data { get; set; }
+
+        public WithDictionaryData(IWorkflowContext context)
+        {
+            _context = context;
+        }
+
+        public bool Is(string key, bool defaultValue = false) => Data.Is(key, defaultValue);
+        public bool TryGetFormat(string key, out string value) => Data.TryGetFormat(key, _context, out value);
+
+        public string GetFormat(string key, string defaultValue = null)
+        {
+            return Data.GetIsValue(key, defaultValue);
+        }
+    }
+
+    public interface IEnv
+    {
+        string this[string key] { get; set; }
+    }
+
+    public interface IWorkflowContext
+    {
+        string Format(string format);
+        BuildTargets CurrentTargets { get; }
+        void Log(string log);
+        void SetEnv(string key, string value);
+
+        IWith With { get; }
+        IEnv Env { get; }
+
+        // ILogger Logger { get; }
+    }
+
+    public class WorkflowContext : IWorkflowContext, IDisposable
     {
         private readonly WorkflowArgumentView _argumentView;
 
         public BuildTargets CurrentTargets { get; }
 
         private readonly StreamWriter _logWriter;
+
+        private readonly WithDictionaryData _with;
+
+        public Dictionary<string, object> WithData
+        {
+            set => _with.Data = value;
+        }
+
+        public IWith With => _with;
+        public IEnv Env { get; }
 
         public WorkflowContext(WorkflowArgumentView argumentView, BuildTargets currentTargets, string logPath = null)
         {
@@ -20,6 +76,8 @@ namespace UActions.Editor
             {
                 _logWriter = new StreamWriter(argumentView.Format(logPath));
             }
+
+            _with = new WithDictionaryData(this);
         }
 
         public WorkflowContext(WorkflowArgumentView argumentView)

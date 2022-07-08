@@ -18,7 +18,7 @@ namespace UActions.Editor.Actions
             _directory = directory;
         }
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             if (Application.isBatchMode) return;
 

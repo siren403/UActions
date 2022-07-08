@@ -18,7 +18,7 @@ namespace UActions.Editor.Actions
             _workingDirectory = workingDirectory;
         }
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             var shell = string.Empty;
 #if UNITY_EDITOR_WIN

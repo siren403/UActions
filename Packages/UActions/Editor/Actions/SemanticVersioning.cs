@@ -19,7 +19,7 @@
             _type = type;
         }
 
-        public void Execute(WorkflowContext context)
+        public void Execute(IWorkflowContext context)
         {
             
         }

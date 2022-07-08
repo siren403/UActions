@@ -252,6 +252,12 @@ namespace UActions.Editor
                 return this;
             }
 
+            public FluentBuilder Step<T>(Dictionary<object, object> data) where T : IAction
+            {
+                Step(typeof(T).GetActionName(), data);
+                return this;
+            }
+
             public FluentBuilder Step(string groupKey)
             {
                 if (_currentWork == null)
