@@ -83,9 +83,16 @@ namespace UActions.Editor
                 // throw new Exception($"not found platform: {work.platform}");
             }
 
-            if (Application.isBatchMode && (buildTarget != targets.Target))
+            if (buildTarget != targets.Target)
             {
-                throw new Exception($"{workName} is {work.platform} platform");
+                if (Application.isBatchMode)
+                {
+                    throw new Exception($"{workName} is {work.platform} platform");
+                }
+                else
+                {
+                    throw new Exception($"switch platform ({targets.Target}) and retry run work");
+                }
             }
 
             _argumentView.Platform = work.platform;
@@ -123,6 +130,7 @@ namespace UActions.Editor
                     {
                         actionValue = new Dictionary<object, object>();
                     }
+
                     if (actionValue is Dictionary<object, object> data)
                     {
                         string actionName = firstAction.Key.ToString();

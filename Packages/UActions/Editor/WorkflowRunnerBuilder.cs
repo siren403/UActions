@@ -179,7 +179,7 @@ namespace UActions.Editor
                 _actions = new Dictionary<string, Type>();
             }
 
-            public FluentBuilder Work(string name)
+            public FluentBuilder Work(string name = "work")
             {
                 if (_workflow.works == null)
                 {

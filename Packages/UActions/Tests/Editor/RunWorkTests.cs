@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using UActions.Editor;
+using UActions.Editor.Actions;
+using UActions.Editor.Extensions;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace UActions.Tests.Editor
@@ -32,39 +34,39 @@ namespace UActions.Tests.Editor
             Assert.AreEqual("success", runner.View[nameof(SuccessAction).PascalToKebabCase()]);
         }
 
-        [Test]
-        public void GroupsTests()
+
+        public class WithDataAction : IAction
         {
-            // var runner = new WorkflowRunnerBuilder()
-            //     .SetWorkName("first")
-            //     .SetActions(new Dictionary<string, Type>()
-            //     {
-            //         {nameof(SuccessAction).PascalToKebabCase(), typeof(SuccessAction)}
-            //     })
-            //     .SetWorkflow(new Workflow()
-            //     {
-            //         works = new Dictionary<string, Work>()
-            //         {
-            //             {
-            //                 "first", new Work()
-            //                 {
-            //                     platform = "android",
-            //                     steps = new object[]
-            //                     {
-            //                         new Dictionary<string, Dictionary<string, object>>()
-            //                         {
-            //                             {nameof(SuccessAction).PascalToKebabCase(), new Dictionary<string, object>()}
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     })
-            //     .Build();
-            //
-            // runner.Run();
-            //
-            // Assert.AreEqual("success", runner.View[nameof(SuccessAction).PascalToKebabCase()]);
+            public TargetPlatform Targets => TargetPlatform.All;
+
+            private readonly WithData _withData;
+
+            public WithDataAction(WithData withData)
+            {
+                _withData = withData;
+            }
+
+            public void Execute(WorkflowContext context)
+            {
+                context.SetEnv(typeof(WithDataAction).GetActionName(), _withData.Is("input").ToString());
+            }
+        }
+
+        [Test]
+        public void WithDataTests()
+        {
+            var runner = WorkflowRunnerBuilder.Fluent()
+                .Action<WithDataAction>()
+                .Work()
+                .Step(typeof(WithDataAction).GetActionName(), new Map()
+                {
+                    {"input", true}
+                })
+                .Build();
+
+            runner.Run();
+
+            Assert.AreEqual("true", runner.View[typeof(WithDataAction).GetActionName()]);
         }
     }
 }

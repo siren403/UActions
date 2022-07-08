@@ -97,7 +97,6 @@ namespace UActions.Editor
 
                 var parameters = new List<object>();
                 ConstructorInfo matchedConstructor = null;
-                var withDictionaryType = typeof(Dictionary<string, object>);
                 foreach (var constructorInfo in constructors)
                 {
                     var parameterInfos = constructorInfo.GetParameters();
@@ -110,7 +109,11 @@ namespace UActions.Editor
                     }
 
                     if (parameterInfos.Length == 1 &&
-                        parameterInfos[0].ParameterType == withDictionaryType)
+                        (
+                            parameterInfos[0].ParameterType == typeof(Dictionary<string, object>) ||
+                            parameterInfos[0].ParameterType == typeof(WithData)
+                        )
+                       )
                     {
 #if UNITY_2021_2_OR_NEWER
                         parameters.Add(with!);

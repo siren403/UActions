@@ -26,7 +26,7 @@ namespace UActions.Editor.Actions
                 targetGroup = context.CurrentTargets.TargetGroup,
                 locationPathName = ValidatePath(context.Format(_path), context.CurrentTargets.Target),
             };
-
+            
             var report = BuildPipeline.BuildPlayer(options);
             if (!Application.isBatchMode)
             {
