@@ -9,15 +9,24 @@ namespace UActions
         public static void Run()
         {
             var runner = new WorkflowRunnerBuilder()
-                .LoadEnvironmentVariables()
+                .LoadEnvFile()
                 .Build();
             runner.Run();
+        }
+
+        public static void Url()
+        {
+            new WorkflowRunnerBuilder()
+                .LoadEnvFile()
+                .RequestFromUrl()
+                .Build()
+                .Run();
         }
 
         public static void Run(string workName)
         {
             var runner = new WorkflowRunnerBuilder()
-                .LoadEnvironmentVariables()
+                .LoadEnvFile()
                 .SetWorkName(workName)
                 .Build();
             runner.Run();
@@ -26,10 +35,9 @@ namespace UActions
         public static Workflow LoadWorkflow()
         {
             var runner = new WorkflowRunnerBuilder()
-                .LoadEnvironmentVariables()
+                .LoadEnvFile()
                 .Build();
             return runner.Workflow;
         }
-
     }
 }
