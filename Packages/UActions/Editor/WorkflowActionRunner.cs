@@ -108,12 +108,7 @@ namespace UActions.Editor
                         break;
                     }
 
-                    if (parameterInfos.Length == 1 &&
-                        (
-                            parameterInfos[0].ParameterType == typeof(Dictionary<string, object>) ||
-                            parameterInfos[0].ParameterType == typeof(WithData)
-                        )
-                       )
+                    if (parameterInfos.Length == 1 &&parameterInfos[0].ParameterType == typeof(Dictionary<string, object>))
                     {
 #if UNITY_2021_2_OR_NEWER
                         parameters.Add(with!);

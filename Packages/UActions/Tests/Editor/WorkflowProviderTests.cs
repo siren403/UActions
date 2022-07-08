@@ -24,7 +24,11 @@ namespace UActions.Tests.Editor
                 workflow = reader.ReadToEnd();
             }
 
+            var runner = new WorkflowRunnerBuilder()
+                .SetWorkflowText(workflow)
+                .Build();
             // TODO: runner validate
+            Debug.Log(workflow);
         }
     }
 }

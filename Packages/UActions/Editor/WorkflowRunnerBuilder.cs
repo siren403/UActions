@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using UActions.Editor.Extensions;
 using UnityEngine;
 using UnityEngine.Networking;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using Random = UnityEngine.Random;
 
 namespace UActions.Editor
 {
@@ -24,6 +27,7 @@ namespace UActions.Editor
         private Dictionary<string, Type> _actions;
         private Workflow _workflow;
         private bool _fromUrl = false;
+        private string _workflowUrl;
 
         public WorkflowRunnerBuilder LoadEnvFile()
         {
@@ -71,15 +75,38 @@ namespace UActions.Editor
             return this;
         }
 
+
+        private string GetWorkflowTextFromUrl(string url)
+        {
+            var request = WebRequest.CreateHttp($"{url}?t={Random.value}");
+            request.Method = "GET";
+            HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+
+            var workflow = string.Empty;
+            using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
         private string ReadWorkflowText(WorkflowArgumentView args)
         {
-            var workflowUrl = args.WorkflowUrl;
-            if (_fromUrl && !string.IsNullOrEmpty(workflowUrl))
+            string input = string.Empty;
+            var workflowUrl = string.IsNullOrEmpty(_workflowUrl) ? args.WorkflowUrl : _workflowUrl;
+            if (!string.IsNullOrEmpty(workflowUrl))
             {
-                
+                input = GetWorkflowTextFromUrl(workflowUrl);
+                if (Application.isEditor)
+                {
+                    Debug.Log(workflowUrl);
+                    Debug.Log(input);
+                }
             }
-            
-            string input = _workflowText;
+            else
+            {
+                input = _workflowText;
+            }
+
             if (string.IsNullOrEmpty(input))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), _filePath);
@@ -104,6 +131,12 @@ namespace UActions.Editor
         public WorkflowRunnerBuilder RequestFromUrl()
         {
             _fromUrl = true;
+            return this;
+        }
+
+        public WorkflowRunnerBuilder RequestFromUrl(string url)
+        {
+            _workflowUrl = url;
             return this;
         }
 

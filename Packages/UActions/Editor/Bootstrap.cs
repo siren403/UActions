@@ -32,6 +32,16 @@ namespace UActions
             runner.Run();
         }
 
+        public static void Url(string url, string workName)
+        {
+            new WorkflowRunnerBuilder()
+                .LoadEnvFile()
+                .RequestFromUrl(url)
+                .SetWorkName(workName)
+                .Build()
+                .Run();
+        }
+
         public static Workflow LoadWorkflow()
         {
             var runner = new WorkflowRunnerBuilder()

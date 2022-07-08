@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace UActions.Editor.Actions
 {
+    [Obsolete]
     [Action("ios-resolver")]
     public class iOSResolver : IAction
     {

@@ -22,6 +22,16 @@ namespace UActions.Editor
             var workflow = Bootstrap.LoadWorkflow();
         }
 
+
+        [MenuItem("UActions/FromUrl")]
+        private static void FromUrl()
+        {
+            Bootstrap.Url(
+                "https://gist.githubusercontent.com/qkrsogusl3/430a80902687a43d8026568530b32852/raw/workflow.yaml",
+                "from-url"
+            );
+        }
+
         private string _work;
 
         private void OnGUI()

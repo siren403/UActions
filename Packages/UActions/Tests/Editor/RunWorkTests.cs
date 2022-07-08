@@ -39,9 +39,9 @@ namespace UActions.Tests.Editor
         {
             public TargetPlatform Targets => TargetPlatform.All;
 
-            private readonly WithData _withData;
+            private readonly Dictionary<string,object> _withData;
 
-            public WithDataAction(WithData withData)
+            public WithDataAction(Dictionary<string,object> withData)
             {
                 _withData = withData;
             }
@@ -60,13 +60,13 @@ namespace UActions.Tests.Editor
                 .Work()
                 .Step(typeof(WithDataAction).GetActionName(), new Map()
                 {
-                    {"input", true}
+                    {"input", "true"}
                 })
                 .Build();
 
             runner.Run();
 
-            Assert.AreEqual("true", runner.View[typeof(WithDataAction).GetActionName()]);
+            Assert.AreEqual("True", runner.View[typeof(WithDataAction).GetActionName()]);
         }
     }
 }
