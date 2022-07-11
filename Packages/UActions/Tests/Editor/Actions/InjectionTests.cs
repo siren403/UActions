@@ -11,7 +11,7 @@ using UnityEngine.TestTools;
 
 namespace UActions.Tests.Editor.Actions
 {
-    public class InjectionTests
+    public class InjectionTests : ActionsTestsBase<Injection>
     {
         [Test]
         public void ExecuteTest()
@@ -23,31 +23,24 @@ namespace UActions.Tests.Editor.Actions
                 "InjectSample.asset"
             );
             var (url, key, number) = FixtureFactory.Create<(string, string, int)>();
-            var runner = WorkflowRunnerBuilder.Fluent()
-                .Action<Injection>()
-                .Work("inject")
-                .Step("injection", new Map()
-                {
-                    {"path", assetPath},
-                    {
-                        "data", new Map()
-                        {
-                            {"url", url},
-                            {"key", key},
-                            {"number", $"!!int {number}"},
-                        }
-                    }
-                })
-                .Build("inject");
 
-            runner.Run();
+            Run(new Dictionary<object, object>()
+            {
+                {"path", assetPath},
+                {"data", new Map()
+                {
+                    {"url", url},
+                    {"key", key},
+                    {"number", number},
+                }}
+            });
 
             AssetDatabase.Refresh();
             var asset = AssetDatabase.LoadAssetAtPath<InjectionSample>(assetPath);
 
-            // Assert.AreEqual(url, asset.url);
-            // Assert.AreEqual(key, asset.key);
-            // Assert.AreEqual(number, asset.number);
+            Assert.AreEqual(url, asset.url);
+            Assert.AreEqual(key, asset.key);
+            Assert.AreEqual(number, asset.number);
         }
     }
 }

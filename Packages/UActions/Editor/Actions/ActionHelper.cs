@@ -20,7 +20,8 @@ namespace UActions.Editor.Actions
             return value != null;
         }
 
-        public static bool TryGetFormat(this Dictionary<string, object> dictionary, string key, IWorkflowContext context,
+        public static bool TryGetFormat(this Dictionary<string, object> dictionary, string key,
+            IWorkflowContext context,
             out string value)
         {
             value = default;
@@ -44,19 +45,26 @@ namespace UActions.Editor.Actions
 
         public static bool Is(this Dictionary<string, object> dictionary, string key, bool defaultValue = false)
         {
-            if (dictionary.TryGetValue(key, out var value) && value is string str)
+            if (dictionary.TryGetValue(key, out var value))
             {
-                if (Regex.IsMatch(str, "^(true|y|yes|on)$", RegexOptions.IgnoreCase))
+                if (value is string str)
                 {
-                    return true;
-                }
-                else if (Regex.IsMatch(str, "^(false|n|no|off)$", RegexOptions.IgnoreCase))
-                {
-                    return false;
-                }
-                else
-                {
+                    if (Regex.IsMatch(str, "^(true|y|yes|on)$", RegexOptions.IgnoreCase))
+                    {
+                        return true;
+                    }
+
+                    if (Regex.IsMatch(str, "^(false|n|no|off)$", RegexOptions.IgnoreCase))
+                    {
+                        return false;
+                    }
+
                     throw new FormatException($"The value \"{value}\" is not a valid YAML Boolean");
+                }
+
+                if (value is bool boolean)
+                {
+                    return boolean;
                 }
             }
 
@@ -83,7 +91,7 @@ namespace UActions.Editor.Actions
 
                 return true;
             }
-            
+
             value = false;
             return false;
         }

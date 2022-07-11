@@ -28,6 +28,7 @@ namespace UActions.Editor
         private Workflow _workflow;
         private bool _fromUrl = false;
         private string _workflowUrl;
+        private readonly Dictionary<string, string> _env = new Dictionary<string, string>();
 
         public WorkflowRunnerBuilder LoadEnvFile()
         {
@@ -144,6 +145,11 @@ namespace UActions.Editor
         {
             Dictionary<string, string> env = null;
             env = _enableLoadEnv ? DotEnv.Fluent().Copy() : new Dictionary<string, string>();
+
+            foreach (var pair in _env)
+            {
+                env.Add(pair.Key, pair.Value);
+            }
 
             var argumentView = new WorkflowArgumentView(env);
             if (!string.IsNullOrEmpty(_workName))
@@ -283,6 +289,11 @@ namespace UActions.Editor
                 return this;
             }
 
+            public FluentBuilder Env(string key, string value)
+            {
+                _builder._env[key] = value;
+                return this;
+            }
 
             public WorkflowRunner Build(string work = null)
             {

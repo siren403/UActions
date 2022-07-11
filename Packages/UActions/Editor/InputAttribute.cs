@@ -2,7 +2,7 @@
 
 namespace UActions.Editor
 {
-    [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class InputAttribute : Attribute
     {
         public string Name { get; }

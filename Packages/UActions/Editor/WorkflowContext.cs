@@ -11,6 +11,8 @@ namespace UActions.Editor
         bool Is(string key, bool defaultValue = false);
         bool TryGetFormat(string key, out string value);
         string GetFormat(string key, string defaultValue = null);
+        bool TryGetValue<T>(string key, out T value);
+        T GetValue<T>(string key, T defaultValue = default);
     }
 
     public class WithDictionaryData : IWith
@@ -25,6 +27,8 @@ namespace UActions.Editor
 
         public bool Is(string key, bool defaultValue = false) => Data.Is(key, defaultValue);
         public bool TryGetFormat(string key, out string value) => Data.TryGetFormat(key, _context, out value);
+        public bool TryGetValue<T>(string key, out T value) => Data.TryGetIsValue(key, out value);
+        public T GetValue<T>(string key, T defaultValue = default) => Data.GetIsValue(key, defaultValue);
 
         public string GetFormat(string key, string defaultValue = null)
         {
@@ -35,6 +39,7 @@ namespace UActions.Editor
     public interface IEnv
     {
         string this[string key] { get; set; }
+        string Get(string key, string defaultValue = default);
     }
 
     public interface IWorkflowContext
@@ -59,14 +64,13 @@ namespace UActions.Editor
         private readonly StreamWriter _logWriter;
 
         private readonly WithDictionaryData _with;
-
         public Dictionary<string, object> WithData
         {
             set => _with.Data = value;
         }
-
+        
         public IWith With => _with;
-        public IEnv Env { get; }
+        public IEnv Env => _argumentView;
 
         public WorkflowContext(WorkflowArgumentView argumentView, BuildTargets currentTargets, string logPath = null)
         {
@@ -84,6 +88,7 @@ namespace UActions.Editor
         {
             _argumentView = argumentView;
             CurrentTargets = new BuildTargets();
+            _with = new WithDictionaryData(this);
         }
 
         public string Format(string format) => _argumentView.Format(format);

@@ -3,7 +3,7 @@ using YamlDotNet.Core;
 
 namespace UActions.Editor
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class OutputAttribute : Attribute
     {
         public string Key { get; }

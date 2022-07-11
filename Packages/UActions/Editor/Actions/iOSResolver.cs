@@ -13,8 +13,8 @@ namespace UActions.Editor.Actions
 
         private readonly Dictionary<string, object> _with;
 
-        [Input("use-shell-pod", type: typeof(bool))]
-        [Input("link-frameworks-statically", type: typeof(bool))]
+        // [Input("use-shell-pod", type: typeof(bool))]
+        // [Input("link-frameworks-statically", type: typeof(bool))]
         public iOSResolver(Dictionary<string, object> with)
         {
             _with = with;

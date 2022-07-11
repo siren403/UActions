@@ -6,27 +6,13 @@ using Object = UnityEngine.Object;
 namespace UActions.Editor.Actions
 {
     [Action("player-settings")]
+    [Input("preset")]
+    [Input("company-name")]
+    [Input("product-name")]
+    [Input("version")]
     public class PlayerSettingsAction : IAction
     {
         public TargetPlatform Targets => TargetPlatform.All;
-
-        private readonly string _companyName;
-        private readonly string _productName;
-        private readonly string _version;
-        private readonly string _preset;
-
-        public PlayerSettingsAction(
-            string companyName,
-            string productName,
-            string version = null,
-            string preset = null
-        )
-        {
-            _companyName = companyName;
-            _productName = productName;
-            _version = version;
-            _preset = preset;
-        }
 
         private void ApplyPreset(string path)
         {
@@ -48,13 +34,24 @@ namespace UActions.Editor.Actions
 
         public void Execute(IWorkflowContext context)
         {
-            ApplyPreset(_preset);
-
-            PlayerSettings.companyName = context.Format(_companyName);
-            PlayerSettings.productName = context.Format(_productName);
-            if (!string.IsNullOrEmpty(_version))
+            if (context.With.TryGetValue("preset", out string preset))
             {
-                PlayerSettings.bundleVersion = _version;
+                ApplyPreset(preset);
+            }
+
+            if (context.With.TryGetFormat("company-name", out string companyName))
+            {
+                PlayerSettings.companyName = context.Format(companyName);
+            }
+
+            if (context.With.TryGetFormat("product-name", out string productName))
+            {
+                PlayerSettings.productName = context.Format(productName);
+            }
+
+            if (context.With.TryGetFormat("version", out string version))
+            {
+                PlayerSettings.bundleVersion = version;
             }
         }
     }

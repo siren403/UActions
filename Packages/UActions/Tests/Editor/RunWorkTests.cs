@@ -39,16 +39,9 @@ namespace UActions.Tests.Editor
         {
             public TargetPlatform Targets => TargetPlatform.All;
 
-            private readonly Dictionary<string,object> _withData;
-
-            public WithDataAction(Dictionary<string,object> withData)
-            {
-                _withData = withData;
-            }
-
             public void Execute(IWorkflowContext context)
             {
-                context.SetEnv(typeof(WithDataAction).GetActionName(), _withData.Is("input").ToString());
+                context.Env[typeof(WithDataAction).GetActionName()] = context.With.Is("input").ToString();
             }
         }
 

@@ -7,6 +7,11 @@ using YamlDotNet.Serialization;
 
 namespace UActions.Editor.Actions
 {
+    [Input("package-name", isOptional: true)]
+    [Input("architectures", true, typeof(AndroidArchitecture[]), isOptional: true)]
+    [Input("keystore", true, typeof(Keystore), isOptional: true)]
+    [Input("increment-version-code", type: typeof(bool), isOptional: true)]
+    [Input("optimized-frame-pacing", type: typeof(bool), isOptional: true)]
     public class PlayerSettingsAndroid : IAction
     {
         public class Registration : IRegistration
@@ -34,27 +39,14 @@ namespace UActions.Editor.Actions
 
         public TargetPlatform Targets => TargetPlatform.Android;
 
-        private readonly Dictionary<string, object> _with;
-
-        [Input("package-name", isOptional: true)]
-        [Input("architectures", true, typeof(AndroidArchitecture[]), isOptional: true)]
-        [Input("keystore", true, typeof(Keystore), isOptional: true)]
-        [Input("increment-version-code", type: typeof(bool), isOptional: true)]
-        [Input("optimized-frame-pacing", type: typeof(bool), isOptional: true)]
-        public PlayerSettingsAndroid(Dictionary<string, object> with)
-        {
-            _with = with;
-        }
-
-
         public void Execute(IWorkflowContext context)
         {
-            if (_with.TryGetIsValue("package-name", out string packageName))
+            if (context.With.TryGetFormat("package-name", out string packageName))
             {
-                PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, context.Format(packageName));
+                PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, packageName);
             }
 
-            if (_with.TryGetIsValue("architectures", out AndroidArchitecture[] architectures))
+            if (context.With.TryGetValue("architectures", out AndroidArchitecture[] architectures))
             {
                 if (architectures.Contains(AndroidArchitecture.ARM64))
                 {
@@ -65,7 +57,7 @@ namespace UActions.Editor.Actions
                     .Aggregate((acc, current) => acc | current);
             }
 
-            if (_with.TryGetIsValue("keystore", out Keystore keystore))
+            if (context.With.TryGetValue("keystore", out Keystore keystore))
             {
                 PlayerSettings.Android.useCustomKeystore = true;
                 PlayerSettings.Android.keystoreName = context.Format(keystore.path);
@@ -82,13 +74,13 @@ namespace UActions.Editor.Actions
                 PlayerSettings.Android.keyaliasPass = string.Empty;
             }
 
-            if (_with.Is("increment-version-code"))
+            if (context.With.Is("increment-version-code"))
             {
                 PlayerSettings.Android.bundleVersionCode++;
             }
 
 #if UNITY_2019_4_OR_NEWER
-            PlayerSettings.Android.optimizedFramePacing = _with.Is("optimized-frame-pacing");
+            PlayerSettings.Android.optimizedFramePacing = context.With.Is("optimized-frame-pacing");
 #endif
         }
     }

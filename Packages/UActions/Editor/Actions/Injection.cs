@@ -6,32 +6,28 @@ using UnityEditor;
 
 namespace UActions.Editor.Actions
 {
+    [Input("path")]
+    [Input("data")]
     public class Injection : IAction
     {
-        private readonly string _path;
-        private readonly Dictionary<object, object> _data;
         public TargetPlatform Targets => TargetPlatform.All;
-
-        public Injection(string path, Dictionary<object, object> data)
-        {
-            _path = path;
-            _data = data;
-        }
 
         public void Execute(IWorkflowContext context)
         {
-            if (string.IsNullOrEmpty(_path))
+            if (!context.With.TryGetFormat("path", out var path))
             {
                 throw new Exception($"{nameof(Injection)} empty path");
             }
 
-            var asset = AssetDatabase.LoadAssetAtPath<InjectableObjectBase>(_path);
+            var asset = AssetDatabase.LoadAssetAtPath<InjectableObjectBase>(path);
             if (asset == null)
             {
-                throw new FileNotFoundException(_path);
+                throw new FileNotFoundException(path);
             }
 
-            asset.Inject(_data);
+            var data = context.With.GetValue<Dictionary<object, object>>("data");
+
+            asset.Inject(data);
 
             EditorUtility.SetDirty(asset);
 #if UNITY_2021_2_OR_NEWER

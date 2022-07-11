@@ -6,28 +6,14 @@ using UnityEngine;
 
 namespace UActions.Editor.Actions
 {
-    public class Build : IAction, IValidatable
+    [Input("path")]
+    public class Build : IAction
     {
         public TargetPlatform Targets => TargetPlatform.All;
 
-        // private readonly string _path;
-        //
-        // public Build(string path)
-        // {
-        //     _path = path;
-        // }
-
-        public void Validate(IWorkflowContext context)
-        {
-            if (!context.With.TryGetFormat("path", out var path))
-            {
-                throw new Exception($"not found path");
-            }
-        }
-
         public void Execute(IWorkflowContext context)
         {
-            var path = context.With.GetFormat("path");
+            if (!context.With.TryGetFormat("path", out var path)) return;
             
             var options = new BuildPlayerOptions
             {

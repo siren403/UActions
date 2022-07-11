@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UActions.Editor
 {
-    public class WorkflowArgumentView
+    public class WorkflowArgumentView : IEnv
     {
         private const string KeySelectedWork = "work";
         private const string KeyWorkflowUrl = "url";
@@ -77,6 +77,16 @@ namespace UActions.Editor
         {
             get => _args[key];
             set => _args.Add(key, value);
+        }
+
+        public string Get(string key, string defaultValue = default)
+        {
+            if (_args.TryGetValue(key, out string value))
+            {
+                return value;
+            }
+
+            return defaultValue;
         }
     }
 }
