@@ -28,6 +28,10 @@ namespace UActions.Editor.Actions
             if (dictionary.TryGetIsValue(key, out value))
             {
                 value = context.Format(value);
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return false;
+                }
             }
 
             return value != default;
