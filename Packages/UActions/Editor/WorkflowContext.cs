@@ -29,11 +29,7 @@ namespace UActions.Editor
         public bool TryGetFormat(string key, out string value) => Data.TryGetFormat(key, _context, out value);
         public bool TryGetValue<T>(string key, out T value) => Data.TryGetIsValue(key, out value);
         public T GetValue<T>(string key, T defaultValue = default) => Data.GetIsValue(key, defaultValue);
-
-        public string GetFormat(string key, string defaultValue = null)
-        {
-            return Data.GetIsValue(key, defaultValue);
-        }
+        public string GetFormat(string key, string defaultValue = null) => Data.GetFormat(key, _context, defaultValue);
     }
 
     public interface IEnv
@@ -64,11 +60,12 @@ namespace UActions.Editor
         private readonly StreamWriter _logWriter;
 
         private readonly WithDictionaryData _with;
+
         public Dictionary<string, object> WithData
         {
             set => _with.Data = value;
         }
-        
+
         public IWith With => _with;
         public IEnv Env => _argumentView;
 
