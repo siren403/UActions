@@ -30,8 +30,13 @@ namespace UActions.Editor.Actions
                 value = context.Format(value);
                 if (string.IsNullOrWhiteSpace(value))
                 {
+                    Console.WriteLine($"{key} is empty");
                     return false;
                 }
+            }
+            else
+            {
+                Console.WriteLine($"not found {key}");
             }
 
             return value != default;

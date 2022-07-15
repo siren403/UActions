@@ -13,8 +13,14 @@ namespace UActions.Editor.Actions
 
         public void Execute(IWorkflowContext context)
         {
-            if (!context.With.TryGetFormat("path", out var path)) return;
-            
+            if (!context.With.TryGetFormat("path", out var path))
+            {
+                Console.WriteLine("not found build path");
+                return;
+            }
+
+            Console.WriteLine($"build path: {path}");
+
             var options = new BuildPlayerOptions
             {
                 scenes = GetEnableEditorScenes(),
@@ -22,13 +28,12 @@ namespace UActions.Editor.Actions
                 targetGroup = context.CurrentTargets.TargetGroup,
                 locationPathName = ValidatePath(path, context.CurrentTargets.Target),
             };
-            
+
             var report = BuildPipeline.BuildPlayer(options);
             if (!Application.isBatchMode)
             {
                 ActionHelper.OpenFolder(report.summary.outputPath);
             }
-
         }
 
         private string ValidatePath(string path, BuildTarget target)
@@ -59,7 +64,5 @@ namespace UActions.Editor.Actions
                 .Select(scene => scene.path)
                 .ToArray();
         }
-
- 
     }
 }
