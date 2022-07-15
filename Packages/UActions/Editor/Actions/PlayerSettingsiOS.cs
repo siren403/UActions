@@ -31,7 +31,12 @@ namespace UActions.Editor.Actions
         {
             if (context.With.TryGetFormat("identifier", out string identifier))
             {
+                Console.WriteLine($"set app identifier: {identifier}");
                 PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, identifier);
+            }
+            else
+            {
+                throw new Exception("require app identifier");
             }
 
             if (context.With.Is("increment-version-code"))
