@@ -60,7 +60,7 @@ namespace UActions.Editor
             {
                 if (!_workflow.works.TryGetValue(workName, out var work))
                     throw new Exception($"Not Found Work: {workName}");
-                Console.WriteLine($"--- UActions workflow: {workName}");
+                Console.WriteLine($"--- unity: workflow: {workName}");
                 RunWork(workName, work);
                 Console.WriteLine($"--- unity: workflow end");
                 return;
