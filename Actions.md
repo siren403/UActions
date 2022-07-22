@@ -13,8 +13,6 @@ with:
 
 ```yaml
 uses: build
-with:
-  path: <String>
 ```
 command
 ---
@@ -41,18 +39,11 @@ get-version
 ```yaml
 uses: get-version
 ```
-
-```
-$(VERSION)
-```
 injection
 ---
 
 ```yaml
 uses: injection
-with:
-  path: <String>
-  data: <Dictionary`2>
 ```
 ios-resolver
 ---
@@ -60,54 +51,31 @@ ios-resolver
 ```yaml
 uses: ios-resolver
 with:
-  use-shell-pod: <Boolean>
-  link-frameworks-statically: <Boolean>
+  with: <Dictionary`2>
 ```
 [player-settings](Documents/Actions/player-settings.md)
 ---
 
 ```yaml
 uses: player-settings
-with:
-  company-name: <String>
-  product-name: <String>
-  version: <String?>
-  preset: <String?>
 ```
 player-settings-android
 ---
 
 ```yaml
 uses: player-settings-android
-with:
-  package-name: <String?>
-  architectures: !architectures <AndroidArchitecture[]?>
-  keystore: !keystore
-    path: <path>
-    passwd: <passwd>
-    alias: <alias>
-    aliasPasswd: <aliasPasswd>
-  increment-version-code: <Boolean?>
-  optimized-frame-pacing: <Boolean?>
 ```
 player-settings-ios
 ---
 
 ```yaml
 uses: player-settings-ios
-with:
-  identifier: <String?>
-  increment-version-code: <Boolean?>
-  target-sdk: !iossdkversion <iOSSdkVersion?>
-  ios-version: <String?>
 ```
 print
 ---
 
 ```yaml
 uses: print
-with:
-  message: <String>
 ```
 process
 ---
@@ -124,4 +92,16 @@ semantic-versioning
 uses: semantic-versioning
 with:
   type: <VersionType>
+```
+pbx-project
+---
+
+```yaml
+uses: pbx-project
+```
+android-log
+---
+
+```yaml
+uses: android-log
 ```
