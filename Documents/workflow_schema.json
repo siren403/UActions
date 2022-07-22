@@ -34,11 +34,7 @@
             "properties": {
               "build": {
                 "type": "object",
-                "properties": {
-                  "path": {
-                    "type": "string"
-                  }
-                }
+                "properties": {}
               }
             }
           },
@@ -91,14 +87,7 @@
             "properties": {
               "injection": {
                 "type": "object",
-                "properties": {
-                  "path": {
-                    "type": "string"
-                  },
-                  "data": {
-                    "type": "object"
-                  }
-                }
+                "properties": {}
               }
             }
           },
@@ -108,11 +97,8 @@
               "ios-resolver": {
                 "type": "object",
                 "properties": {
-                  "use-shell-pod": {
-                    "type": "boolean"
-                  },
-                  "link-frameworks-statically": {
-                    "type": "boolean"
+                  "with": {
+                    "type": "object"
                   }
                 }
               }
@@ -123,20 +109,7 @@
             "properties": {
               "player-settings": {
                 "type": "object",
-                "properties": {
-                  "company-name": {
-                    "type": "string"
-                  },
-                  "product-name": {
-                    "type": "string"
-                  },
-                  "version": {
-                    "type": "string"
-                  },
-                  "preset": {
-                    "type": "string"
-                  }
-                }
+                "properties": {}
               }
             }
           },
@@ -145,23 +118,7 @@
             "properties": {
               "player-settings-android": {
                 "type": "object",
-                "properties": {
-                  "package-name": {
-                    "type": "string"
-                  },
-                  "architectures": {
-                    "type": "string"
-                  },
-                  "keystore": {
-                    "type": "string"
-                  },
-                  "increment-version-code": {
-                    "type": "boolean"
-                  },
-                  "optimized-frame-pacing": {
-                    "type": "boolean"
-                  }
-                }
+                "properties": {}
               }
             }
           },
@@ -170,20 +127,7 @@
             "properties": {
               "player-settings-ios": {
                 "type": "object",
-                "properties": {
-                  "identifier": {
-                    "type": "string"
-                  },
-                  "increment-version-code": {
-                    "type": "boolean"
-                  },
-                  "target-sdk": {
-                    "type": "string"
-                  },
-                  "ios-version": {
-                    "type": "string"
-                  }
-                }
+                "properties": {}
               }
             }
           },
@@ -192,11 +136,7 @@
             "properties": {
               "print": {
                 "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string"
-                  }
-                }
+                "properties": {}
               }
             }
           },
@@ -223,6 +163,24 @@
                     "type": "object"
                   }
                 }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "pbx-project": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "android-log": {
+                "type": "object",
+                "properties": {}
               }
             }
           }
