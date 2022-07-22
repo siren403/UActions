@@ -20,13 +20,24 @@ namespace UActions.Editor.Actions
             }
 
             Console.WriteLine($"build path: {path}");
+            var buildPath = ValidatePath(path, context.CurrentTargets.Target);
+
+            var additional = BuildOptions.None;
+
+            if (context.With.Is("xcode-append") &&
+                BuildPipeline.BuildCanBeAppended(context.CurrentTargets.Target, buildPath) == CanAppendBuild.Yes)
+            {
+                // xcode append
+                additional |= BuildOptions.AcceptExternalModificationsToPlayer;
+            }
 
             var options = new BuildPlayerOptions
             {
                 scenes = GetEnableEditorScenes(),
                 target = context.CurrentTargets.Target,
                 targetGroup = context.CurrentTargets.TargetGroup,
-                locationPathName = ValidatePath(path, context.CurrentTargets.Target),
+                locationPathName = buildPath,
+                options = additional,
             };
 
             var report = BuildPipeline.BuildPlayer(options);

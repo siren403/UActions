@@ -23,6 +23,7 @@ namespace UActions.Tests.Editor.Actions
             PlayerSettings.iOS.buildNumber = init;
             Run(new Dictionary<object, object>()
             {
+                {"identifier", "com.ua.sample"},
                 {"increment-version-code", isEnable}
             });
             if (isEnable)
@@ -39,6 +40,7 @@ namespace UActions.Tests.Editor.Actions
         {
             Run(new Dictionary<object, object>()
             {
+                {"identifier", "com.ua.sample"},
                 {"target-sdk", target}
             });
         }
@@ -49,6 +51,7 @@ namespace UActions.Tests.Editor.Actions
         {
             Run(new Dictionary<object, object>()
             {
+                {"identifier", "com.ua.sample"},
                 {"ios-version", version}
             });
         }

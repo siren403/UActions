@@ -13,17 +13,16 @@ groups:
     - print: 
         message: s
 works:
-  first:
+  xcode:
     platform: ios
     steps:
       - player-settings:
           company-name: $(COMPANY)
           product-name: $(PRODUCT_NAME)
           preset: Assets/PlayerSettings.preset
-      - ios-resolver:
-          use-shell-pod: false
       - build:
           path: $(PROJECT_PATH)/Build/$(PLATFORM)/$(PRODUCT_NAME)
+          xcode-append: true
   group-test:
     platform: android
     steps:
