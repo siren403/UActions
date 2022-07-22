@@ -24,9 +24,14 @@ namespace UActions.Editor.Actions
 
             var additional = BuildOptions.None;
 
+#if UNITY_2019_4_OR_NEWER
             if (context.With.Is("xcode-append") &&
                 BuildPipeline.BuildCanBeAppended(context.CurrentTargets.Target, buildPath) == CanAppendBuild.Yes)
             {
+#else
+            if(context.With.Is("xcode-append"))
+            {
+#endif
                 // xcode append
                 additional |= BuildOptions.AcceptExternalModificationsToPlayer;
             }
