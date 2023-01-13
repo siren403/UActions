@@ -2,6 +2,7 @@
 
 namespace UActions.Editor.Actions
 {
+    [Obsolete]
     public class AutoIncrementVersionCode : IAction
     {
         public TargetPlatform Targets => TargetPlatform.iOS | TargetPlatform.Android;

@@ -2,6 +2,7 @@
 
 namespace UActions.Editor.Actions.Android
 {
+    [Obsolete]
     public class AndroidLog : IAction
     {
         public TargetPlatform Targets => TargetPlatform.Android;

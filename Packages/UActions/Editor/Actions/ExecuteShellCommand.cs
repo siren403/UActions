@@ -5,6 +5,7 @@ using Debug = UnityEngine.Debug;
 
 namespace UActions.Editor.Actions
 {
+    [Obsolete]
     [Action("command")]
     public class ExecuteShellCommand : IAction
     {

@@ -4,6 +4,7 @@ using Proc = System.Diagnostics.Process;
 
 namespace UActions.Editor.Actions
 {
+    [Obsolete]
     public class Fastlane : IAction
     {
         private readonly string _platform;

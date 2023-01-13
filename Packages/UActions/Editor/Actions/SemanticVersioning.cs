@@ -1,5 +1,6 @@
 ﻿namespace UActions.Editor.Actions
 {
+    [Obsolete]
     public class SemanticVersioning : IAction
     {
         private readonly VersionType _type;
