@@ -1,107 +1,80 @@
-auto-increment-version-code
----
-
-```yaml
-uses: auto-increment-version-code
-with:
-  a: <Int32>
-  b: <String>
-  c: <Int32?10>
-```
 [build](Documents/Actions/build.md)
 ---
 
 ```yaml
 uses: build
-```
-command
----
-
-```yaml
-uses: command
 with:
-  args: <String>
-  working-directory: <String?>
+  path: <String>
 ```
-[fastlane](Documents/Actions/fastlane.md)
----
 
-```yaml
-uses: fastlane
-with:
-  platform: <String>
-  lane: <String>
-  directory: <String>
-```
 get-version
 ---
 
 ```yaml
 uses: get-version
 ```
+
+```
+$(VERSION)
+```
+
 injection
 ---
 
 ```yaml
 uses: injection
-```
-ios-resolver
----
-
-```yaml
-uses: ios-resolver
 with:
-  with: <Dictionary`2>
+  path: <String>
+  data: <String>
 ```
+
 [player-settings](Documents/Actions/player-settings.md)
 ---
 
 ```yaml
 uses: player-settings
+with:
+  preset: <String>
+  company-name: <String>
+  product-name: <String>
+  version: <String>
 ```
+
 player-settings-android
 ---
 
 ```yaml
 uses: player-settings-android
+with:
+  package-name: <String?>
+  architectures: !architectures <AndroidArchitecture[]?>
+  keystore: !keystore
+    path: <path>
+    passwd: <passwd>
+    alias: <alias>
+    aliasPasswd: <aliasPasswd>
+  increment-version-code: <Boolean?>
+  optimized-frame-pacing: <Boolean?>
 ```
+
 player-settings-ios
 ---
 
 ```yaml
 uses: player-settings-ios
+with:
+  identifier: <String?>
+  increment-version-code: <Boolean?>
+  target-sdk: !iossdkversion <iOSSdkVersion?>
+  ios-version: <String?>
 ```
+
 print
 ---
 
 ```yaml
 uses: print
-```
-process
----
-
-```yaml
-uses: process
 with:
-  file-name: <String>
+  message: <String>
 ```
-semantic-versioning
----
 
-```yaml
-uses: semantic-versioning
-with:
-  type: <VersionType>
-```
-pbx-project
----
-
-```yaml
-uses: pbx-project
-```
-android-log
----
-
-```yaml
-uses: android-log
-```
