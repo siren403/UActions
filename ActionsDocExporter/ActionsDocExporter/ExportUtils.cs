@@ -8,7 +8,10 @@ public static class ExportUtils
     public static Type[] GetActions()
     {
         var assem = AppDomain.CurrentDomain.GetAssemblies().First(_ => _.GetName().Name == "ActionsDocExporter");
-        return assem.GetTypes().Where(_ => _.GetInterface(nameof(IAction)) != null).ToArray();
+        return assem.GetTypes()
+            .Where(_ => _.GetInterface(nameof(IAction)) != null)
+            .Where(_ => _.GetCustomAttribute<ObsoleteAttribute>() == null)
+            .ToArray();
     }
 
     public static string GetActionName(Type action)
@@ -44,20 +47,26 @@ public static class ExportUtils
     {
         var argumentsMap = new Dictionary<string, ActionArgumentInfo>();
 
-        var constructors = action.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
-        foreach (var info in constructors)
+        var inputs = action.GetCustomAttributes<InputAttribute>();
+
+        foreach (var input in inputs)
         {
-            var inputs = info.GetCustomAttributes<InputAttribute>().ToArray();
-
-            var args = inputs.Any()
-                ? inputs.Select(_ => new ActionArgumentInfo(_)).ToArray()
-                : info.GetParameters().Select(_ => new ActionArgumentInfo(_)).ToArray();
-
-            foreach (var argumentInfo in args)
-            {
-                argumentsMap[argumentInfo.Name] = argumentInfo;
-            }
+            argumentsMap[input.Name] = new ActionArgumentInfo(input);
         }
+        // var constructors = action.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
+        // foreach (var info in constructors)
+        // {
+        //     var inputs = info.GetCustomAttributes<InputAttribute>().ToArray();
+        //
+        //     var args = inputs.Any()
+        //         ? inputs.Select(_ => new ActionArgumentInfo(_)).ToArray()
+        //         : info.GetParameters().Select(_ => new ActionArgumentInfo(_)).ToArray();
+        //
+        //     foreach (var argumentInfo in args)
+        //     {
+        //         argumentsMap[argumentInfo.Name] = argumentInfo;
+        //     }
+        // }
 
         return argumentsMap.Values.ToArray();
     }

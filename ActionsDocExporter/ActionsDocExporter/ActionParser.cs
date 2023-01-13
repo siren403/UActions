@@ -45,102 +45,162 @@ public class ActionParser
         markdown.AppendLine(header);
         markdown.AppendLine("---\n");
 
-        var constructors = action.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
+        var inputs = action.GetCustomAttributes<InputAttribute>().ToArray();
+        var codeBlock = new Dictionary<object, object>();
+        markdown.AppendLine("```yaml");
 
-        var root = new Dictionary<object, object>();
-        foreach (var info in constructors)
+        codeBlock.Add("uses", actionName);
+
+        var param = new Dictionary<object, object>();
+        foreach (var input in inputs)
         {
-            root.Clear();
-
-            markdown.AppendLine("```yaml");
-
-            root.Add("uses", actionName);
-
-            var inputs = info.GetCustomAttributes<InputAttribute>().ToArray();
-            if (inputs.Any())
+            if (string.IsNullOrEmpty(input.Tag) ||
+                input.Type.IsPrimitive ||
+                input.Type.IsArray ||
+                input.Type.IsEnum ||
+                input.Type == typeof(string))
             {
-                var param = new Dictionary<object, object>();
-                foreach (var input in inputs)
-                {
-                    if (string.IsNullOrEmpty(input.Tag) ||
-                        input.Type.IsPrimitive ||
-                        input.Type.IsArray ||
-                        input.Type.IsEnum ||
-                        input.Type == typeof(string))
-                    {
-                        param.Add(input.Name, $"<{input.Type.Name}{(input.IsOptional ? "?" : string.Empty)}>");
-                    }
-                    else
-                    {
-                        var tagParam = new Dictionary<string, string>();
-                        var tagFields = input.Type.GetFields(BindingFlags.Public | BindingFlags.Instance);
-                        foreach (var field in tagFields)
-                        {
-                            tagParam.Add(field.Name, $"<{field.Name}>");
-                        }
-
-                        param.Add(input.Name, tagParam);
-                    }
-                }
-
-                root.Add("with", param);
-
-                var yaml = _serializer.Serialize(root);
-                foreach (var input in inputs)
-                {
-                    if (string.IsNullOrEmpty(input.Tag)) continue;
-                    var name = input.Name.PascalToKebabCase();
-                    yaml = yaml.Replace($"{name}:", $"{name}: {input.Tag}");
-                }
-
-                markdown.Append(yaml);
+                param.Add(input.Name, $"<{input.Type.Name}{(input.IsOptional ? "?" : string.Empty)}>");
             }
             else
             {
-                var parameters = info.GetParameters();
-                if (parameters.Any())
+                var tagParam = new Dictionary<string, string>();
+                var tagFields = input.Type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+                foreach (var field in tagFields)
                 {
-                    var param = new Dictionary<object, object>();
-                    foreach (var parameter in parameters)
-                    {
-                        var typeName = parameter.ParameterType.Name;
-                        var optionalMark = parameter.IsOptional ? "?" : string.Empty;
-                        var optionalValue = parameter.IsOptional ? parameter.DefaultValue : string.Empty;
-
-                        param.Add(parameter.Name?.PascalToKebabCase(),
-                            $"<{typeName}{optionalMark}{optionalValue}>");
-                    }
-
-                    root.Add("with", param);
+                    tagParam.Add(field.Name, $"<{field.Name}>");
                 }
 
-                markdown.Append(_serializer.Serialize(root));
-            }
-
-
-            markdown.AppendLine("```");
-
-            var executeMethodInfo = action.GetMethod("Execute");
-            if (executeMethodInfo == null)
-            {
-                throw new Exception("not found Execute() method");
-            }
-
-            var outputAttrs = executeMethodInfo.GetCustomAttributes<OutputAttribute>().ToArray();
-            if (outputAttrs.Any())
-            {
-                markdown.AppendLine();
-                // markdown.AppendLine("Outputs");
-                markdown.AppendLine("```");
-
-                foreach (var output in outputAttrs)
-                {
-                    markdown.AppendLine($"$({output.Key})");
-                }
-
-                markdown.AppendLine("```");
+                param.Add(input.Name, tagParam);
             }
         }
+
+        if (param.Any())
+        {
+            codeBlock.Add("with", param);
+        }
+
+        var yaml = _serializer.Serialize(codeBlock);
+        foreach (var input in inputs)
+        {
+            if (string.IsNullOrEmpty(input.Tag)) continue;
+            var name = input.Name.PascalToKebabCase();
+            yaml = yaml.Replace($"{name}:", $"{name}: {input.Tag}");
+        }
+
+        markdown.Append(yaml);
+
+        markdown.AppendLine("```\n");
+
+
+        var outputs = action.GetCustomAttributes<OutputAttribute>().ToArray();
+        if (outputs.Any())
+        {
+            markdown.AppendLine("```");
+            
+            foreach (var output in outputs)
+            {
+                markdown.AppendLine($"$({output.Key})");
+            }
+
+            markdown.AppendLine("```\n");
+        }
+
+        // var constructors = action.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
+        // var root = new Dictionary<object, object>();
+        // foreach (var info in constructors)
+        // {
+        //     root.Clear();
+        //
+        //     markdown.AppendLine("```yaml");
+        //
+        //     root.Add("uses", actionName);
+        //
+        //     var inputs = info.GetCustomAttributes<InputAttribute>().ToArray();
+        //     if (inputs.Any())
+        //     {
+        //         var param = new Dictionary<object, object>();
+        //         foreach (var input in inputs)
+        //         {
+        //             if (string.IsNullOrEmpty(input.Tag) ||
+        //                 input.Type.IsPrimitive ||
+        //                 input.Type.IsArray ||
+        //                 input.Type.IsEnum ||
+        //                 input.Type == typeof(string))
+        //             {
+        //                 param.Add(input.Name, $"<{input.Type.Name}{(input.IsOptional ? "?" : string.Empty)}>");
+        //             }
+        //             else
+        //             {
+        //                 var tagParam = new Dictionary<string, string>();
+        //                 var tagFields = input.Type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+        //                 foreach (var field in tagFields)
+        //                 {
+        //                     tagParam.Add(field.Name, $"<{field.Name}>");
+        //                 }
+        //
+        //                 param.Add(input.Name, tagParam);
+        //             }
+        //         }
+        //
+        //         root.Add("with", param);
+        //
+        //         var yaml = _serializer.Serialize(root);
+        //         foreach (var input in inputs)
+        //         {
+        //             if (string.IsNullOrEmpty(input.Tag)) continue;
+        //             var name = input.Name.PascalToKebabCase();
+        //             yaml = yaml.Replace($"{name}:", $"{name}: {input.Tag}");
+        //         }
+        //
+        //         markdown.Append(yaml);
+        //     }
+        //     else
+        //     {
+        //         var parameters = info.GetParameters();
+        //         if (parameters.Any())
+        //         {
+        //             var param = new Dictionary<object, object>();
+        //             foreach (var parameter in parameters)
+        //             {
+        //                 var typeName = parameter.ParameterType.Name;
+        //                 var optionalMark = parameter.IsOptional ? "?" : string.Empty;
+        //                 var optionalValue = parameter.IsOptional ? parameter.DefaultValue : string.Empty;
+        //
+        //                 param.Add(parameter.Name?.PascalToKebabCase(),
+        //                     $"<{typeName}{optionalMark}{optionalValue}>");
+        //             }
+        //
+        //             root.Add("with", param);
+        //         }
+        //
+        //         markdown.Append(_serializer.Serialize(root));
+        //     }
+        //
+        //
+        //     markdown.AppendLine("```");
+        //
+        //     var executeMethodInfo = action.GetMethod("Execute");
+        //     if (executeMethodInfo == null)
+        //     {
+        //         throw new Exception("not found Execute() method");
+        //     }
+        //
+        //     var outputAttrs = executeMethodInfo.GetCustomAttributes<OutputAttribute>().ToArray();
+        //     if (outputAttrs.Any())
+        //     {
+        //         markdown.AppendLine();
+        //         // markdown.AppendLine("Outputs");
+        //         markdown.AppendLine("```");
+        //
+        //         foreach (var output in outputAttrs)
+        //         {
+        //             markdown.AppendLine($"$({output.Key})");
+        //         }
+        //
+        //         markdown.AppendLine("```");
+        //     }
+        // }
 
         return markdown.ToString();
     }

@@ -20,7 +20,7 @@ public class SchemaCommands : ConsoleAppBase
     }
 
     [Command("schema")]
-    public void CreateJsonSchema(string path)
+    public void CreateJsonSchema(string output)
     {
         var types = ExportUtils.GetActions();
 
@@ -124,7 +124,7 @@ public class SchemaCommands : ConsoleAppBase
             WriteIndented = true
         });
 
-        using var writer = new StreamWriter(path);
+        using var writer = new StreamWriter(output);
         writer.WriteLine(schemaJson);
         writer.Close();
     }

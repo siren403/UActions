@@ -6,7 +6,7 @@ public class NoConstructorAction : IAction
 {
     public TargetPlatform Targets => TargetPlatform.All;
 
-    public void Execute(WorkflowContext context)
+    public void Execute(IWorkflowContext context)
     {
         context.SetEnv("result", "success");
     }
