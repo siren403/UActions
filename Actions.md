@@ -55,6 +55,7 @@ with:
     aliasPasswd: <aliasPasswd>
   increment-version-code: <Boolean?>
   optimized-frame-pacing: <Boolean?>
+  app-bundle: <String>
 ```
 
 player-settings-ios
