@@ -80,10 +80,21 @@
                     "type": "string"
                   },
                   "architectures": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "None",
+                        "ARMv7",
+                        "ARM64",
+                        "X86",
+                        "X86_64",
+                        "All"
+                      ]
+                    }
                   },
                   "keystore": {
-                    "type": "string"
+                    "type": "object"
                   },
                   "increment-version-code": {
                     "type": "boolean"
@@ -111,7 +122,7 @@
                     "type": "boolean"
                   },
                   "target-sdk": {
-                    "type": "string"
+                    "type": "object"
                   },
                   "ios-version": {
                     "type": "string"
