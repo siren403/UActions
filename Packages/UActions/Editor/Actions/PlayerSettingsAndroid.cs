@@ -12,7 +12,7 @@ namespace UActions.Editor.Actions
     [Input("keystore", true, typeof(Keystore), isOptional: true)]
     [Input("increment-version-code", type: typeof(bool), isOptional: true)]
     [Input("optimized-frame-pacing", type: typeof(bool), isOptional: true)]
-    [Input(KeyAppBundle)]
+    [Input(KeyAppBundle, type: typeof(bool))]
     public class PlayerSettingsAndroid : IAction
     {
         private const string KeyAppBundle = "app-bundle";
