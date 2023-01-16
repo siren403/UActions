@@ -12,8 +12,11 @@ namespace UActions.Editor.Actions
     [Input("keystore", true, typeof(Keystore), isOptional: true)]
     [Input("increment-version-code", type: typeof(bool), isOptional: true)]
     [Input("optimized-frame-pacing", type: typeof(bool), isOptional: true)]
+    [Input(KeyAppBundle)]
     public class PlayerSettingsAndroid : IAction
     {
+        private const string KeyAppBundle = "app-bundle";
+
         public class Registration : IRegistration
         {
             public void Register(DeserializerBuilder builder)
@@ -82,6 +85,7 @@ namespace UActions.Editor.Actions
 #if UNITY_2019_4_OR_NEWER
             PlayerSettings.Android.optimizedFramePacing = context.With.Is("optimized-frame-pacing");
 #endif
+            EditorUserBuildSettings.buildAppBundle = context.With.Is(KeyAppBundle);
         }
     }
 }
