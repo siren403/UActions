@@ -52,7 +52,7 @@ public class SchemaCommands : ConsoleAppBase
                                             {
                                                 type = "object",
                                                 properties = args.ToDictionary(arg => arg.Name,
-                                                    arg => new {type = ExportUtils.ValueTypeToString(arg)})
+                                                    ExportUtils.ArgumentToProperty)
                                             }
                                         }
                                     }

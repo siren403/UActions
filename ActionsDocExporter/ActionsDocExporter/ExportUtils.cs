@@ -35,10 +35,10 @@ public static class ExportUtils
             str = "array";
         }
 
-        if (!string.IsNullOrEmpty(info.Tag))
-        {
-            str = "string";
-        }
+        // if (!string.IsNullOrEmpty(info.Tag))
+        // {
+        //     str = "string";
+        // }
 
         return str;
     }
@@ -69,6 +69,37 @@ public static class ExportUtils
         // }
 
         return argumentsMap.Values.ToArray();
+    }
+
+    public static object ArgumentToProperty(ActionArgumentInfo arg)
+    {
+        var type = ValueTypeToString(arg);
+        switch (type)
+        {
+            case "array":
+                object items = arg.ValueType.GetElementType() switch
+                {
+                    {IsEnum: true} element => new Dictionary<string, object>()
+                    {
+                        {"type", "string"},
+                        {
+                            "enum", element.GetEnumNames()
+                        }
+                    },
+                    _ => new
+                    {
+                        type = "string"
+                    }
+                };
+
+                var arr = new
+                {
+                    type, items
+                };
+                return arr;
+            default:
+                return new {type};
+        }
     }
 
     public class ActionArgumentInfo
