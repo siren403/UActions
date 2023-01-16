@@ -90,6 +90,9 @@
                   },
                   "optimized-frame-pacing": {
                     "type": "boolean"
+                  },
+                  "app-bundle": {
+                    "type": "string"
                   }
                 }
               }
