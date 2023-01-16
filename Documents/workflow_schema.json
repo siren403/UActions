@@ -13,60 +13,10 @@
           {
             "type": "object",
             "properties": {
-              "auto-increment-version-code": {
-                "type": "object",
-                "properties": {
-                  "a": {
-                    "type": "number"
-                  },
-                  "b": {
-                    "type": "string"
-                  },
-                  "c": {
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
               "build": {
                 "type": "object",
-                "properties": {}
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
-              "command": {
-                "type": "object",
                 "properties": {
-                  "args": {
-                    "type": "string"
-                  },
-                  "working-directory": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
-              "fastlane": {
-                "type": "object",
-                "properties": {
-                  "platform": {
-                    "type": "string"
-                  },
-                  "lane": {
-                    "type": "string"
-                  },
-                  "directory": {
+                  "path": {
                     "type": "string"
                   }
                 }
@@ -87,18 +37,12 @@
             "properties": {
               "injection": {
                 "type": "object",
-                "properties": {}
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
-              "ios-resolver": {
-                "type": "object",
                 "properties": {
-                  "with": {
-                    "type": "object"
+                  "path": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "string"
                   }
                 }
               }
@@ -109,44 +53,17 @@
             "properties": {
               "player-settings": {
                 "type": "object",
-                "properties": {}
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
-              "player-settings-android": {
-                "type": "object",
-                "properties": {}
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
-              "player-settings-ios": {
-                "type": "object",
-                "properties": {}
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
-              "print": {
-                "type": "object",
-                "properties": {}
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
-              "process": {
-                "type": "object",
                 "properties": {
-                  "file-name": {
+                  "preset": {
+                    "type": "string"
+                  },
+                  "company-name": {
+                    "type": "string"
+                  },
+                  "product-name": {
+                    "type": "string"
+                  },
+                  "version": {
                     "type": "string"
                   }
                 }
@@ -156,11 +73,23 @@
           {
             "type": "object",
             "properties": {
-              "semantic-versioning": {
+              "player-settings-android": {
                 "type": "object",
                 "properties": {
-                  "type": {
-                    "type": "object"
+                  "package-name": {
+                    "type": "string"
+                  },
+                  "architectures": {
+                    "type": "string"
+                  },
+                  "keystore": {
+                    "type": "string"
+                  },
+                  "increment-version-code": {
+                    "type": "boolean"
+                  },
+                  "optimized-frame-pacing": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -169,18 +98,35 @@
           {
             "type": "object",
             "properties": {
-              "pbx-project": {
+              "player-settings-ios": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "identifier": {
+                    "type": "string"
+                  },
+                  "increment-version-code": {
+                    "type": "boolean"
+                  },
+                  "target-sdk": {
+                    "type": "string"
+                  },
+                  "ios-version": {
+                    "type": "string"
+                  }
+                }
               }
             }
           },
           {
             "type": "object",
             "properties": {
-              "android-log": {
+              "print": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
