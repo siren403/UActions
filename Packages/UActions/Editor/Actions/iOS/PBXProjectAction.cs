@@ -1,6 +1,6 @@
 ﻿namespace UActions.Editor.Actions.iOS
 {
-    [Obsolete]
+    [System.Obsolete]
     [Action("pbx-project")]
     public class PBXProjectAction : IAction
     {

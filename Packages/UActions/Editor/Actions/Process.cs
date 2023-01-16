@@ -3,7 +3,7 @@ using Debug = UnityEngine.Debug;
 
 namespace UActions.Editor.Actions
 {
-    [Obsolete]
+    [System.Obsolete]
     public class Process : IAction
     {
         private readonly string _fileName;
