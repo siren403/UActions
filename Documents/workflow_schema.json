@@ -92,7 +92,7 @@
                     "type": "boolean"
                   },
                   "app-bundle": {
-                    "type": "string"
+                    "type": "boolean"
                   }
                 }
               }
