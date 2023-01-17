@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using UActions.Editor;
+using UActions.Editor.Actions;
+using UnityEditor;
 
 namespace ActionsDocExporter;
 
@@ -35,6 +37,10 @@ public static class ExportUtils
             str = "array";
         }
 
+        if (info.ValueType.IsEnum)
+        {
+            str = "string";
+        }
         // if (!string.IsNullOrEmpty(info.Tag))
         // {
         //     str = "string";
@@ -97,6 +103,19 @@ public static class ExportUtils
                     type, items
                 };
                 return arr;
+            case "string":
+                if (arg.ValueType.IsEnum)
+                {
+                    return new Dictionary<string, object>()
+                    {
+                        {"type", "string"},
+                        {
+                            "enum", arg.ValueType.GetEnumNames()
+                        }
+                    };
+                }
+
+                return new {type};
             default:
                 return new {type};
         }
