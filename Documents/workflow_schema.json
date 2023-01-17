@@ -122,7 +122,11 @@
                     "type": "boolean"
                   },
                   "target-sdk": {
-                    "type": "object"
+                    "type": "string",
+                    "enum": [
+                      "DeviceSDK",
+                      "SimulatorSDK"
+                    ]
                   },
                   "ios-version": {
                     "type": "string"
