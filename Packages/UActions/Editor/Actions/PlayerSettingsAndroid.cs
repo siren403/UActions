@@ -62,6 +62,7 @@ namespace UActions.Editor.Actions
 
             if (context.With.TryGetValue("keystore", out Keystore keystore))
             {
+                context.Log("setup keystore");
                 PlayerSettings.Android.useCustomKeystore = true;
                 PlayerSettings.Android.keystoreName = context.Format(keystore.path);
                 PlayerSettings.Android.keystorePass = context.Format(keystore.passwd);
@@ -70,11 +71,16 @@ namespace UActions.Editor.Actions
             }
             else if (context.With.TryGetValue("keystore", out bool value) && !value)
             {
+                context.Log("clean keystore");
                 PlayerSettings.Android.useCustomKeystore = false;
                 PlayerSettings.Android.keystoreName = string.Empty;
                 PlayerSettings.Android.keystorePass = string.Empty;
                 PlayerSettings.Android.keyaliasName = string.Empty;
                 PlayerSettings.Android.keyaliasPass = string.Empty;
+            }
+            else
+            {
+                context.Log("skip keystore");
             }
 
             if (context.With.Is("increment-version-code"))
