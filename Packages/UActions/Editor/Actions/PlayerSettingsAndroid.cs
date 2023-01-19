@@ -68,7 +68,7 @@ namespace UActions.Editor.Actions
                 PlayerSettings.Android.keyaliasName = context.Format(keystore.alias);
                 PlayerSettings.Android.keyaliasPass = context.Format(keystore.aliasPasswd);
             }
-            else if (context.With.Is("keystore") == false)
+            else if (context.With.TryGetValue("keystore", out bool value) && !value)
             {
                 PlayerSettings.Android.useCustomKeystore = false;
                 PlayerSettings.Android.keystoreName = string.Empty;
