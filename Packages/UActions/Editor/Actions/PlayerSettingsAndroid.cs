@@ -87,6 +87,11 @@ namespace UActions.Editor.Actions
             {
                 PlayerSettings.Android.bundleVersionCode++;
             }
+            else if (context.With.TryGetFormat("version-code", out string versionCode))
+            {
+                PlayerSettings.Android.bundleVersionCode = Convert.ToInt32(versionCode);
+                context.Log($"set version: {PlayerSettings.Android.bundleVersionCode}");
+            }
 
 #if UNITY_2019_4_OR_NEWER
             PlayerSettings.Android.optimizedFramePacing = context.With.Is("optimized-frame-pacing");
