@@ -9,6 +9,7 @@ namespace UActions.Editor
     public interface IWith
     {
         bool Is(string key, bool defaultValue = false);
+        bool TryIs(string key, out bool value);
         bool TryGetFormat(string key, out string value);
         string GetFormat(string key, string defaultValue = null);
         bool TryGetValue<T>(string key, out T value);
@@ -26,6 +27,9 @@ namespace UActions.Editor
         }
 
         public bool Is(string key, bool defaultValue = false) => Data.Is(key, defaultValue);
+
+        public bool TryIs(string key, out bool value) => Data.TryIs(key, out value);
+
         public bool TryGetFormat(string key, out string value) => Data.TryGetFormat(key, _context, out value);
         public bool TryGetValue<T>(string key, out T value) => Data.TryGetIsValue(key, out value);
         public T GetValue<T>(string key, T defaultValue = default) => Data.GetIsValue(key, defaultValue);
