@@ -15,9 +15,10 @@ namespace UActions.Editor.Actions
                 obj is T matched)
             {
                 value = matched;
+                return true;
             }
 
-            return value != null;
+            return false;
         }
 
         public static bool TryGetFormat(this Dictionary<string, object> dictionary, string key,
