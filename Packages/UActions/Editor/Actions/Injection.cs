@@ -54,6 +54,8 @@ namespace UActions.Editor.Actions
                     BindingFlags.NonPublic)
                 .ToDictionary(f => f.Name);
 
+            void LogSuccess<T>(string key, T v) => Log(context, $"set {key} : {v}");
+
             foreach (var pair in data)
             {
                 var key = pair.Key.ToString();
@@ -63,21 +65,10 @@ namespace UActions.Editor.Actions
                     continue;
                 }
 
-                void LogSuccess<T>(T v) => Log(context, $"set {key} : {v}");
-
                 var value = pair.Value;
                 if (value.GetType() == field.FieldType)
                 {
-                    if (value is string str)
-                    {
-                        field.SetValue(asset, context.Format(str));
-                    }
-                    else
-                    {
-                        field.SetValue(asset, value);
-                    }
-
-                    LogSuccess(value);
+                    SetValue(field, value);
                     continue;
                 }
 
@@ -91,8 +82,7 @@ namespace UActions.Editor.Actions
                         if (names.Contains(str))
                         {
                             var enumValue = Enum.Parse(enumType, str);
-                            field.SetValue(asset, enumValue);
-                            LogSuccess(value);
+                            SetValue(field, enumValue);
                         }
 
                         break;
@@ -102,8 +92,7 @@ namespace UActions.Editor.Actions
                         if (IsInteger(scalar) || IsFloat(scalar))
                         {
                             var n = Convert.ChangeType(scalar, field.FieldType);
-                            field.SetValue(asset, n);
-                            LogSuccess(value);
+                            SetValue(field, n);
                         }
 
                         break;
@@ -120,6 +109,19 @@ namespace UActions.Editor.Actions
                 Regex.IsMatch(input, @"^-? ( 0 | [1-9] [0-9]* ) ( \. [0-9]* )? ( [eE] [-+]? [0-9]+ )?$",
                     RegexOptions.IgnorePatternWhitespace);
 
+            void SetValue(FieldInfo field, object value)
+            {
+                if (value is string str)
+                {
+                    field.SetValue(asset, context.Format(str));
+                }
+                else
+                {
+                    field.SetValue(asset, value);
+                }
+
+                LogSuccess(field.Name, value);
+            }
             // bool IsBool(string input)
             // => Regex.IsMatch(input, @"^(true|false)$", RegexOptions.IgnorePatternWhitespace);
         }
