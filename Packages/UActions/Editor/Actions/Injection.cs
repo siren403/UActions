@@ -68,7 +68,15 @@ namespace UActions.Editor.Actions
                 var value = pair.Value;
                 if (value.GetType() == field.FieldType)
                 {
-                    field.SetValue(asset, value);
+                    if (value is string str)
+                    {
+                        field.SetValue(asset, context.Format(str));
+                    }
+                    else
+                    {
+                        field.SetValue(asset, value);
+                    }
+
                     LogSuccess(value);
                     continue;
                 }
