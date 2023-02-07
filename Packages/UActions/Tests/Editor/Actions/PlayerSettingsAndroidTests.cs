@@ -15,21 +15,21 @@ namespace UActions.Tests.Editor.Actions
         {
             Run(new Dictionary<object, object>()
             {
-                {"package-name", packageName}
+                { "package-name", packageName }
             });
 
             var changePackageName = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
             Assert.AreEqual(packageName, changePackageName);
         }
 
-        [TestCase(new[] {AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64})]
-        [TestCase(new[] {AndroidArchitecture.ARMv7})]
-        [TestCase(new[] {AndroidArchitecture.ARM64})]
+        [TestCase(new[] { AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64 })]
+        [TestCase(new[] { AndroidArchitecture.ARMv7 })]
+        [TestCase(new[] { AndroidArchitecture.ARM64 })]
         public void ArchitecturesTest(AndroidArchitecture[] architectures)
         {
             Run(new Dictionary<object, object>()
             {
-                {"architectures", architectures}
+                { "architectures", architectures }
             });
 
             var expected = architectures.Aggregate((acc, current) => acc | current);
@@ -37,42 +37,41 @@ namespace UActions.Tests.Editor.Actions
             Assert.AreEqual(expected, PlayerSettings.Android.targetArchitectures);
         }
 
+        [Test]
+        public void KeystoreDebugTest()
+        {
+            Run(new Dictionary<object, object>()
+            {
+                { "keystore", false }
+            });
+            Assert.IsFalse(PlayerSettings.Android.useCustomKeystore);
+            Assert.AreEqual(string.Empty, PlayerSettings.Android.keystoreName);
+            Assert.AreEqual(string.Empty, PlayerSettings.Android.keystorePass);
+            Assert.AreEqual(string.Empty, PlayerSettings.Android.keyaliasName);
+            Assert.AreEqual(string.Empty, PlayerSettings.Android.keyaliasPass);
+        }
+
         [TestCase("user.keystore", "000000", "user", "000000")]
-        [TestCase(null, null, null, null)]
         public void KeystoreTest(string path, string passwd, string alias, string aliasPasswd)
         {
-            var keystore = string.IsNullOrEmpty(path)
-                ? null
-                : new PlayerSettingsAndroid.Keystore()
-                {
-                    path = path,
-                    passwd = passwd,
-                    alias = alias,
-                    aliasPasswd = aliasPasswd
-                };
+            var keystore = new PlayerSettingsAndroid.Keystore()
+            {
+                path = path,
+                passwd = passwd,
+                alias = alias,
+                aliasPasswd = aliasPasswd
+            };
 
 
-            if (keystore == null)
+            Run(new Dictionary<object, object>()
             {
-                Run();
-                Assert.IsFalse(PlayerSettings.Android.useCustomKeystore);
-                Assert.AreEqual(string.Empty, PlayerSettings.Android.keystoreName);
-                Assert.AreEqual(string.Empty, PlayerSettings.Android.keystorePass);
-                Assert.AreEqual(string.Empty, PlayerSettings.Android.keyaliasName);
-                Assert.AreEqual(string.Empty, PlayerSettings.Android.keyaliasPass);
-            }
-            else
-            {
-                Run(new Dictionary<object, object>()
-                {
-                    {"keystore", keystore}
-                });
-                Assert.IsTrue(PlayerSettings.Android.useCustomKeystore);
-                Assert.AreEqual(keystore.path, PlayerSettings.Android.keystoreName);
-                Assert.AreEqual(keystore.passwd, PlayerSettings.Android.keystorePass);
-                Assert.AreEqual(keystore.alias, PlayerSettings.Android.keyaliasName);
-                Assert.AreEqual(keystore.aliasPasswd, PlayerSettings.Android.keyaliasPass);
-            }
+                { "keystore", keystore }
+            });
+            Assert.IsTrue(PlayerSettings.Android.useCustomKeystore);
+            Assert.AreEqual(keystore.path, PlayerSettings.Android.keystoreName);
+            Assert.AreEqual(keystore.passwd, PlayerSettings.Android.keystorePass);
+            Assert.AreEqual(keystore.alias, PlayerSettings.Android.keyaliasName);
+            Assert.AreEqual(keystore.aliasPasswd, PlayerSettings.Android.keyaliasPass);
         }
 
         [TestCase(true)]
@@ -84,7 +83,7 @@ namespace UActions.Tests.Editor.Actions
 
             Run(new Dictionary<object, object>()
             {
-                {"increment-version-code", isEnable}
+                { "increment-version-code", isEnable }
             });
 
             if (isEnable)
