@@ -25,7 +25,7 @@ injection
 uses: injection
 with:
   path: <String>
-  data: <String>
+  data: <Object>
 ```
 
 [player-settings](Documents/Actions/player-settings.md)
