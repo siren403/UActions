@@ -82,17 +82,15 @@ namespace UActions.Editor.Actions
                 {
                     case {IsEnum: true}:
                         var enumType = field.FieldType;
-                        var str = value.ToString();
-                        var names = enumType.GetEnumNames();
+                        var enumName = context.Format(value.ToString());
 
-                        if (names.Contains(str))
+                        if (Enum.TryParse(enumType, enumName, out var parsedEnum))
                         {
-                            var enumValue = Enum.Parse(enumType, str);
-                            SetValue(field, enumValue);
+                            SetValue(field, parsedEnum);
                         }
                         else
                         {
-                            LogFailure(field.Name, str);
+                            LogFailure(field.Name, enumName);
                         }
 
                         break;

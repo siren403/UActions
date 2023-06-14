@@ -7,11 +7,46 @@ namespace UActions.Tests.Editor.Actions
 {
     public class ActionsTestsBase<T> where T : IAction
     {
-        protected WorkflowRunner Run(Dictionary<object, object> data = null)
+        protected WorkflowRunner Run()
         {
             var runner = WorkflowRunnerBuilder.Fluent()
                 .Env("ALLOW_INVALID_TARGET", "true")
                 .Action<T>()
+                .Work()
+                .Step<T>(null)
+                .Build();
+            runner.Run();
+
+            return runner;
+        }
+
+        protected WorkflowRunner Run(Dictionary<object, object> data)
+        {
+            var runner = WorkflowRunnerBuilder.Fluent()
+                .Env("ALLOW_INVALID_TARGET", "true")
+                .Action<T>()
+                .Work()
+                .Step<T>(data)
+                .Build();
+            runner.Run();
+
+            return runner;
+        }
+
+        protected WorkflowRunner Run(Dictionary<string, string> env, Dictionary<object, object> data)
+        {
+            var builder = WorkflowRunnerBuilder.Fluent()
+                .Env("ALLOW_INVALID_TARGET", "true");
+
+            if (env != null)
+            {
+                foreach (var pair in env)
+                {
+                    builder.Env(pair.Key, pair.Value);
+                }
+            }
+
+            var runner = builder.Action<T>()
                 .Work()
                 .Step<T>(data)
                 .Build();

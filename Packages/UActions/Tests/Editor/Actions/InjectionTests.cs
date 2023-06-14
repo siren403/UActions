@@ -24,19 +24,25 @@ namespace UActions.Tests.Editor.Actions
             );
             var (url, key, number, mode) = FixtureFactory.Create<(string, string, int, BuildTarget)>();
 
-            Run(new Dictionary<object, object>()
-            {
-                {"path", assetPath},
+            Run(
+                new Dictionary<string, string>()
                 {
-                    "data", new Map()
+                    {"BUILD_MODE", mode.ToString()}
+                },
+                new Dictionary<object, object>()
+                {
+                    {"path", assetPath},
                     {
-                        {"url", url},
-                        {"key", key},
-                        {"number", number},
-                        {"mode", mode.ToString()}
+                        "data", new Map()
+                        {
+                            {"url", url},
+                            {"key", key},
+                            {"number", number},
+                            {"mode", "$(BUILD_MODE)"}
+                        }
                     }
                 }
-            });
+            );
 
             AssetDatabase.Refresh();
             var asset = AssetDatabase.LoadAssetAtPath<InjectionSample>(assetPath);
