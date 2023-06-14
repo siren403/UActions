@@ -74,7 +74,15 @@ namespace UActions.Editor.Actions
                 var value = pair.Value;
                 if (value.GetType() == field.FieldType)
                 {
-                    SetValue(field, value);
+                    if (value is string str)
+                    {
+                        SetValue(field, context.Format(str));
+                    }
+                    else
+                    {
+                        SetValue(field, value);
+                    }
+
                     continue;
                 }
 
@@ -123,15 +131,7 @@ namespace UActions.Editor.Actions
 
             void SetValue(FieldInfo field, object value)
             {
-                if (value is string str)
-                {
-                    field.SetValue(asset, context.Format(str));
-                }
-                else
-                {
-                    field.SetValue(asset, value);
-                }
-
+                field.SetValue(asset, value);
                 LogSuccess(field.Name, value);
             }
             // bool IsBool(string input)
