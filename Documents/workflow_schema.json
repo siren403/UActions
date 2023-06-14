@@ -16,8 +16,22 @@
               "build": {
                 "type": "object",
                 "properties": {
+                  "skip-build": {
+                    "type": "boolean"
+                  },
                   "path": {
                     "type": "string"
+                  },
+                  "xcode-append": {
+                    "type": "string"
+                  },
+                  "symbol": {
+                    "type": "string",
+                    "enum": [
+                      "Disabled",
+                      "Public",
+                      "Debugging"
+                    ]
                   }
                 }
               }

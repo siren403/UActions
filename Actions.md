@@ -4,7 +4,10 @@
 ```yaml
 uses: build
 with:
+  skip-build: <Boolean?>
   path: <String>
+  xcode-append: <String?>
+  symbol: !symbol <AndroidCreateSymbols?>
 ```
 
 get-version
