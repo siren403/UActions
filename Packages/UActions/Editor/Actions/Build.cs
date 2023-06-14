@@ -3,17 +3,41 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
 
 namespace UActions.Editor.Actions
 {
-    [Input("path")]
+    [Input(InputSkipBuild, type: typeof(bool), isOptional: true)]
+    [Input(InputPath)]
+    [Input(InputXcodeAppend, isOptional: true)]
+    [Input(InputSymbol, true, typeof(AndroidCreateSymbols), isOptional: true)]
     public class Build : IAction
     {
+        // todo: struct
+        public const string InputSkipBuild = "skip-build";
+        public const string InputPath = "path";
+        public const string InputXcodeAppend = "xcode-append";
+        public const string InputSymbol = "symbol";
+
+        public class Registration : IRegistration
+        {
+            public void Register(DeserializerBuilder builder)
+            {
+#if UNITY_2021_2_OR_NEWER
+                builder.WithTagMapping(new TagName("!symbol"), typeof(AndroidCreateSymbols));
+#else
+                builder.WithTagMapping("!symbol", typeof(AndroidCreateSymbols));
+#endif
+            }
+        }
+
+
         public TargetPlatform Targets => TargetPlatform.All;
 
         public void Execute(IWorkflowContext context)
         {
-            if (!context.With.TryGetFormat("path", out var path))
+            if (!context.With.TryGetFormat(InputPath, out var path))
             {
                 Console.WriteLine("not found build path");
                 return;
@@ -25,16 +49,21 @@ namespace UActions.Editor.Actions
             var additional = BuildOptions.None;
 
 #if UNITY_2019_4_OR_NEWER
-            if (context.With.Is("xcode-append") &&
+            if (context.With.Is(InputXcodeAppend) &&
                 BuildPipeline.BuildCanBeAppended(context.CurrentTargets.Target, buildPath) == CanAppendBuild.Yes)
             {
 #else
-            if(context.With.Is("xcode-append"))
+            if(context.With.Is(InputXcodeAppend))
             {
 #endif
                 // xcode append
                 additional |= BuildOptions.AcceptExternalModificationsToPlayer;
             }
+
+            EditorUserBuildSettings.androidCreateSymbols =
+                context.With.TryGetValue(InputSymbol, out AndroidCreateSymbols symbols)
+                    ? symbols
+                    : AndroidCreateSymbols.Disabled;
 
             var options = new BuildPlayerOptions
             {
@@ -45,10 +74,13 @@ namespace UActions.Editor.Actions
                 options = additional,
             };
 
-            var report = BuildPipeline.BuildPlayer(options);
-            if (!Application.isBatchMode)
+            if (!context.With.Is(InputSkipBuild))
             {
-                ActionHelper.OpenFolder(report.summary.outputPath);
+                var report = BuildPipeline.BuildPlayer(options);
+                if (!Application.isBatchMode)
+                {
+                    ActionHelper.OpenFolder(report.summary.outputPath);
+                }
             }
         }
 
