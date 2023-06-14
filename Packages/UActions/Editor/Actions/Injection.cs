@@ -54,7 +54,13 @@ namespace UActions.Editor.Actions
                     BindingFlags.NonPublic)
                 .ToDictionary(f => f.Name);
 
+            foreach (var field in fields)
+            {
+                Log(context, $"find field: {field.Key}");
+            }
+
             void LogSuccess<T>(string key, T v) => Log(context, $"set {key} : {v}");
+            void LogFailure<T>(string key, T v) => Log(context, $"miss {key} : {v}");
 
             foreach (var pair in data)
             {
@@ -74,7 +80,7 @@ namespace UActions.Editor.Actions
 
                 switch (field.FieldType)
                 {
-                    case { IsEnum: true }:
+                    case {IsEnum: true}:
                         var enumType = field.FieldType;
                         var str = value.ToString();
                         var names = enumType.GetEnumNames();
@@ -84,15 +90,23 @@ namespace UActions.Editor.Actions
                             var enumValue = Enum.Parse(enumType, str);
                             SetValue(field, enumValue);
                         }
+                        else
+                        {
+                            LogFailure(field.Name, str);
+                        }
 
                         break;
-                    case { IsPrimitive: true }:
+                    case {IsPrimitive: true}:
                         var scalar = value.ToString();
 
                         if (IsInteger(scalar) || IsFloat(scalar))
                         {
                             var n = Convert.ChangeType(scalar, field.FieldType);
                             SetValue(field, n);
+                        }
+                        else
+                        {
+                            LogFailure(field.Name, scalar);
                         }
 
                         break;
