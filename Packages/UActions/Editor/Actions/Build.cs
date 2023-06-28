@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
@@ -74,13 +75,22 @@ namespace UActions.Editor.Actions
                 options = additional,
             };
 
-            if (!context.With.Is(InputSkipBuild))
+            if (context.With.Is(InputSkipBuild)) return;
+
+            BuildReport report = null;
+            try
             {
-                var report = BuildPipeline.BuildPlayer(options);
-                if (!Application.isBatchMode)
-                {
-                    ActionHelper.OpenFolder(report.summary.outputPath);
-                }
+                report = BuildPipeline.BuildPlayer(options);
+            }
+            catch (Exception e)
+            {
+                context.Log(e.Message);
+                EditorApplication.Exit(1);
+            }
+
+            if (!Application.isBatchMode && report != null)
+            {
+                ActionHelper.OpenFolder(report.summary.outputPath);
             }
         }
 
