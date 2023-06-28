@@ -25,6 +25,15 @@ MonoBehaviour:
     m_Scopes: []
     m_IsDefault: 1
     m_Capabilities: 7
+    m_ConfigSource: 0
+  - m_Id: scoped:project:openupm
+    m_Name: openupm
+    m_Url: https://package.openupm.com
+    m_Scopes:
+    - jp.hadashikick.vyaml
+    m_IsDefault: 0
+    m_Capabilities: 0
+    m_ConfigSource: 4
   m_UserSelectedRegistryName: 
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
